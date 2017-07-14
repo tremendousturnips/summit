@@ -1,8 +1,8 @@
 import React from 'react';
 import {Segment, Input} from 'semantic-ui-react';
-const MessageInput = () => (
+const MessageInput = (props) => (
   <Segment attached='bottom'>
-    <Input fluid action={{ icon: 'add' }} size='huge' placeholder='Enter Message...' />
+    <Input fluid action={{ content:'Send', icon: 'send' }} size='medium' placeholder='Enter Message...' />
   </Segment>
 )
 
