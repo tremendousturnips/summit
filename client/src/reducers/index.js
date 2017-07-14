@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
-import todos from './todos';
+// import todos from './todos';
+import MessagesReducer from './MessageListReducer'
 
-const appReducer = combineReducers({
-  todos
+const rootReducer = combineReducers({
+  messages: MessagesReducer
 });
 
-export default appReducer;
+export default rootReducer;
