@@ -3,13 +3,14 @@ import {Comment, Message} from 'semantic-ui-react';
 
 const MessageItem = (props) => (
   <Comment as={Message}>
+    {console.log(props)}
     <Comment.Avatar src='./IMAGE.jpg' />
     <Comment.Content>
-      <Comment.Author as='a'>Matt</Comment.Author>
+      <Comment.Author as='a'>{props.message.username}</Comment.Author>
       <Comment.Metadata>
-        <div>Today at 5:42PM</div>
+        <div>{props.message.timestamp}</div>
       </Comment.Metadata>
-      <Comment.Text>How artistic!</Comment.Text>
+      <Comment.Text>{props.message.text}</Comment.Text>
     </Comment.Content>
   </Comment>
 );
