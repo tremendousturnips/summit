@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react'
 
-import TextChannelList from './TextChannelList';
+import ChannelList from './ChannelList';
 
 class LeftMenu extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class LeftMenu extends Component {
         </Menu.Item>
         <Menu.Item >
           <Menu.Header>Text Channels</Menu.Header>
-          <TextChannelList />
+          <ChannelList />
         </Menu.Item>
         <Menu.Item>
           <Menu.Header>
