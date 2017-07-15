@@ -23,9 +23,8 @@ exports.up = (knex, Promise) => {
       t.increments('id').primary();
       t.string('text').notNull();
       t.integer('user_id').references('id').inTable('profiles').notNull().onDelete('cascade');
-      t.integer('room_id').references('id').inTable('rooms').notNull().onDelete('cascade');
-      t.integer('channel_id').references('id').inTable('channels').notNull().onDelete('cascade');
-      t.dateTime('created_at').notNull();
+      t.integer('channel_id').references('id').inTable('channels').nullable().onDelete('cascade');
+      t.timestamps(true, true);
     }),
     knex.schema.createTableIfNotExists('friends', t => {
       t.increments('id').primary();
@@ -50,8 +49,7 @@ exports.up = (knex, Promise) => {
     }),
     knex.schema.createTableIfNotExists('directs', t => {
       t.increments('id').primary();
-      t.integer('user1_id').references('id').inTable('profiles').notNull().onDelete('cascade');
-      t.integer('user2_id').references('id').inTable('profiles').notNull().onDelete('cascade');
+      t.integer('to_user_id').references('id').inTable('profiles').notNull().onDelete('cascade');
       t.integer('message_id').references('id').inTable('messages').notNull().onDelete('cascade');
     })
   ]);
