@@ -1,30 +1,71 @@
-
-exports.up = function (knex, Promise) {
+exports.up = (knex, Promise) => {
   return Promise.all([
-    knex.schema.createTableIfNotExists('profiles', function (table) {
-      table.increments('id').unsigned().primary();
-      table.string('first', 100).nullable();
-      table.string('last', 100).nullable();
-      table.string('display', 100).nullable();
-      table.string('email', 100).nullable().unique();
-      table.string('phone', 100).nullable();
-      table.timestamps(true, true);
+    knex.schema.createTableIfNotExists('profiles', t => {
+      t.increments('id').unsigned().primary();
+      t.string('first', 100).nullable();
+      t.string('last', 100).nullable();
+      t.string('display', 100).nullable();
+      t.string('email', 100).nullable().unique();
+      t.string('phone', 100).nullable();
+      t.string('image').nullable();
+      t.string('bio').nullable();
+      t.timestamps(true, true);
     }),
-    knex.schema.createTableIfNotExists('auths', function(table) {
-      table.increments('id').unsigned().primary();
-      table.string('type', 8).notNullable();
-      table.string('oauth_id', 30).nullable();
-      table.string('password', 100).nullable();
-      table.string('salt', 100).nullable();
-      table.integer('profile_id').references('profiles.id').onDelete('CASCADE');
+    knex.schema.createTableIfNotExists('auths', t => {
+      t.increments('id').unsigned().primary();
+      t.string('type', 8).notNullable();
+      t.string('oauth_id', 30).nullable();
+      t.string('password', 100).nullable();
+      t.string('salt', 100).nullable();
+      t.integer('profile_id').references('profiles.id').onDelete('CASCADE');
+    }),
+    knex.schema.createTableIfNotExists('messages', t => {
+      t.increments('id').primary();
+      t.string('text').notNull();
+      t.integer('user_id').references('id').inTable('profiles').notNull().onDelete('cascade');
+      t.integer('room_id').references('id').inTable('rooms').notNull().onDelete('cascade');
+      t.integer('channel_id').references('id').inTable('channels').notNull().onDelete('cascade');
+      t.dateTime('created_at').notNull();
+    }),
+    knex.schema.createTableIfNotExists('friends', t => {
+      t.increments('id').primary();
+      t.integer('user_id').references('id').inTable('profiles').notNull().onDelete('cascade');
+      t.integer('friend_id').references('id').inTable('profiles').notNull().onDelete('cascade');
+    }),
+    knex.schema.createTableIfNotExists('rooms', t => {
+      t.increments('id').primary();
+      t.string('name').notNull();
+      t.string('description').nullable();
+    }),
+    knex.schema.createTableIfNotExists('channels', t => {
+      t.increments('id').primary();
+      t.string('name').notNull();
+      t.integer('room_id').references('id').inTable('rooms').notNull().onDelete('cascade');
+    }),
+    knex.schema.createTableIfNotExists('roles', t => {
+      t.increments('id').primary();
+      t.integer('room_id').references('id').inTable('rooms').notNull().onDelete('cascade');
+      t.integer('user_id').references('id').inTable('profiles').notNull().onDelete('cascade');
+      t.string('privilege_level').notNull();
+    }),
+    knex.schema.createTableIfNotExists('directs', t => {
+      t.increments('id').primary();
+      t.integer('user1_id').references('id').inTable('profiles').notNull().onDelete('cascade');
+      t.integer('user2_id').references('id').inTable('profiles').notNull().onDelete('cascade');
+      t.integer('message_id').references('id').inTable('messages').notNull().onDelete('cascade');
     })
   ]);
 };
 
-exports.down = function (knex, Promise) {
+exports.down = (knex, Promise) => {
   return Promise.all([
+    knex.schema.dropTable('friends'),
+    knex.schema.dropTable('roles'),
+    knex.schema.dropTable('directs'),
+    knex.schema.dropTable('messages'),
+    knex.schema.dropTable('channels'),
+    knex.schema.dropTable('rooms'),
     knex.schema.dropTable('auths'),
     knex.schema.dropTable('profiles')
   ]);
 };
-
