@@ -5,7 +5,7 @@ body {
 }
 
 #root {
-  height: 100%;
+  height: 90%;
   width: 100%;
 }
 
@@ -13,6 +13,7 @@ body {
     color: #FFFFFF;
     font-size: 11px;
     min-height: 400px;
+    max-height: 57  0px;
     background-size: cover;
     background-position: 50% 25%;
 }
@@ -32,13 +33,13 @@ body {
   width: 100%;
 }
 
-#messageboardbottom {
-  height: 100%;
+#messageboardmiddle {
+  height: 80%;
   width: 100%;
 }
 
-#messageinput {
-  height: 12%;
+#messageboardbottom {
+  height: 15%;
   width: 100%;
 }
 /* div.ui.segment {

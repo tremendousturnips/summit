@@ -36,8 +36,10 @@ const Main = () => (
       <Segment attached='top' inverted id='messageboardtop'>
         <NavBar /> 
       </Segment>  
+      <Segment attached id='messageboardmiddle'>
+        <MessageList />
+      </Segment>
       <Segment attached='bottom' id='messageboardbottom'>
-          <MessageList />
           <MessageInput />
      </Segment>
     </Grid.Column>
