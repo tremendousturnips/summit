@@ -1,3 +1,9 @@
-export function addMessage(message) {
-  console.log('add message:', message.text);
-}
+export const setMessages = messages => ({
+  type: 'SET_MESSAGES',
+  messages
+});
+
+export const addMessage = message => ({
+  type: 'ADD_MESSAGE',
+  message
+});

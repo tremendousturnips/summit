@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {Grid, Menu, Segment, Header, Container, Sidebar} from 'semantic-ui-react';
 
-import MessageList from '../containers/MessageList'
 import LeftMenu from './LeftMenu';
 import NavBar from '../containers/NavBar';
-import MessageInput from './MessageInput'
+import MessageInput from '../containers/MessageInput';
+import MessageBoard from '../containers/MessageBoard';
 
 const Main = () => (
 
@@ -17,7 +17,7 @@ const Main = () => (
               <NavBar /> 
             </Grid.Row>
             <Segment.Group>
-              <MessageList />
+              <MessageBoard />
               <MessageInput />
             </Segment.Group>
           </Grid.Column>
