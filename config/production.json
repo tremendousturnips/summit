@@ -1,7 +1,7 @@
 {
   "knex": {
     "connection": {
-      "database": "DATABASE_URL"
+      "database": "postgres://mdgozyftgtjlwv:f57faaefa5b30b2555c828134b0c4c221f4b63ca222ba66e06aff5462c1cfd0d@ec2-107-22-250-33.compute-1.amazonaws.com:5432/dehse1urco1ukn"
     },
     "debug": false,
     "pool": {
