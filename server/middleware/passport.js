@@ -6,7 +6,7 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
 let config;
 
-if (process.env.Google_CLIENT_ID === undefined) {
+if (process.env.GOOGLE_CLIENT_ID === undefined) {
   console.log('reached in Google_CLIENT_ID')
   config = require('config')['passport'];
 }
@@ -113,9 +113,9 @@ passport.use('local-login', new LocalStrategy({
   }));
 
 passport.use('google', new GoogleStrategy({
-  clientID: process.env.Google_CLIENT_ID || config.Google.clientID,
-  clientSecret: process.env.Google_CLIENT_SECRET   || config.Google.clientSecret,
-  callbackURL: process.env.Google_CALLBACK || config.Google.callbackURL
+  clientID: process.env.GOOGLE_CLIENT_ID || config.Google.clientID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET   || config.Google.clientSecret,
+  callbackURL: process.env.GOOGLE_CALLBACK || config.Google.callbackURL
 },
   (accessToken, refreshToken, profile, done) => getOrCreateOAuthProfile('google', profile, done))
 );
