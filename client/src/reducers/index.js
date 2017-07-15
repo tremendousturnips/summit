@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 // import todos from './todos';
-import MessagesReducer from './MessageListReducer'
+import MessagesReducer from './messageListReducer'
 
 const rootReducer = combineReducers({
   messages: MessagesReducer
