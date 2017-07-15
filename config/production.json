@@ -1,0 +1,32 @@
+{
+  "knex": {
+    "connection": {
+      "database": "postgres://mdgozyftgtjlwv:f57faaefa5b30b2555c828134b0c4c221f4b63ca222ba66e06aff5462c1cfd0d@ec2-107-22-250-33.compute-1.amazonaws.com:5432/dehse1urco1ukn"
+    },
+    "debug": false,
+    "pool": {
+      "min": 2,
+      "max": 10
+    }
+  },
+
+  "passport": {
+    "Google": {
+      "clientID": "510410308978-2bmfc9imnkdgq371dl99v331igfpp2fk.apps.googleusercontent.com",
+      "clientSecret": "786Va7VAZxAF8xW6PS_mDIWn",
+      "callbackURL": "https://chattertips.herokuapp.com/auth/google/callback" 
+    },
+
+    "Facebook": {
+      "clientID": "FILL_ME_IN",
+      "clientSecret": "FILL_ME_IN",
+      "callbackURL": "http://FILL_ME_IN/auth/facebook/callback"
+    },
+
+    "Twitter": {
+      "consumerKey": "FILL_ME_IN",
+      "consumerSecret": "FILL_ME_IN",
+      "callbackURL": "http://FILL_ME_IN/auth/twitter/callback"
+    }
+  }
+}
