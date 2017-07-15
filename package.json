@@ -5,7 +5,7 @@
     "start": "node server/index.js",
     "test": "NODE_ENV=test grunt test",
     "build": "webpack --watch",
-    "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress"
+    "heroku-postbuild": "webpack -p --config ./webpack.config.babel.js --progress"
   },
   "author": "Hack Reactor",
   "license": "MIT",
