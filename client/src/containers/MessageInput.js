@@ -17,7 +17,7 @@ class MessageInput extends Component {
     const message = {
       username: 'HOW DO I GET THIS',
       text: this.state.text,
-      timestamp: new Date()
+      timestamp: Date()
     };
     this.props.dispatch(addMessage(message));
   }

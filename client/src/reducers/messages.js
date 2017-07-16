@@ -1,9 +1,9 @@
 const initialState = [
-    { username: 'joe', text: 'whatever', timestamp: '0:00:00', id: 0
+    { username: 'joe', text: 'whatever', timestamp: Date(), id: 0
     },
-    { username: 'joe', text: 'whatever1', timestamp: '0:00:00', id: 1
+    { username: 'joe', text: 'whatever1', timestamp: Date(), id: 1
     },
-    { username: 'joe', text: 'whatever2', timestamp: '0:00:00', id: 2
+    { username: 'joe', text: 'whatever2', timestamp: Date(), id: 2
     }
   ];
 
