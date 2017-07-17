@@ -1,6 +1,6 @@
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
-const redisClient = require('redis').createClient();
+let redisClient = require('redis').createClient();
 const url = require('url');
 
 module.exports.verify = (req, res, next) => {
@@ -30,7 +30,7 @@ if (process.env.REDIS_URL) {
 
   console.log('redisConfig', redisConfig.host, redisConfig.port)
   redisClient = require('redis').createClient(process.env.REDIS_URL);
-  
+
 };
 
 module.exports.session = session({
