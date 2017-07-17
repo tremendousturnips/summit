@@ -33,7 +33,7 @@ let redisConfig = {
     //ssl: true
 };
 
-console.log('redisConfig after', redisConfig.host, redisConfig.port, redisClient)
+console.log('redisConfig after', redisConfig.host, redisConfig.port)
 
 let redisSession = session({
   store: new RedisStore({
