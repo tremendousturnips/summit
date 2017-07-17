@@ -33,7 +33,7 @@ if (process.env.REDIS_URL) {
 
 };
 
-let session = session({
+let redisSession = session({
   store: new RedisStore({
     client: redisClient,
     host: redisConfig.host,
@@ -46,4 +46,4 @@ let session = session({
 
 console.log('Connected to Redis')
 
-module.exports.session = session;
+module.exports.session = redisSession;
