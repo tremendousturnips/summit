@@ -29,6 +29,8 @@ if (process.env.REDIS_URL) {
   };
 
   console.log('redisConfig', redisConfig.host, redisConfig.port)
+  redisClient = require('redis').createClient(process.env.REDIS_URL);
+  
 };
 
 module.exports.session = session({
