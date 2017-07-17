@@ -17,9 +17,12 @@ module.exports.verify = (req, res, next) => {
 
 //console.log('redisConfig before', redisConfig.host, redisConfig.port)
 
+let params;
+let auth;
+
 if (process.env.REDIS_URL) {
-  const params = url.parse(process.env.REDIS_URL);
-  const auth = params.auth.split(':');
+  params = url.parse(process.env.REDIS_URL);
+  auth = params.auth.split(':');
   redisClient = require('redis').createClient(process.env.REDIS_URL);
 };
 
@@ -28,7 +31,7 @@ let redisConfig = {
     port: params.port || 6379
     //database: params.pathname.split('/')[1],
     //ssl: true
-  };
+};
 
 console.log('redisConfig after', redisConfig.host, redisConfig.port, redisClient)
 
