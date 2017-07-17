@@ -2,10 +2,10 @@
   "name": "course.thesis",
   "version": "1.0.0",
   "scripts": {
-    "start": "node server/index.js",
     "test": "NODE_ENV=test grunt test",
     "build": "webpack --watch",
-    "heroku-postbuild": "webpack -p --config ./webpack.config.babel.js --progress"
+    "heroku-postbuild": "webpack -p --config ./webpack.config.babel.js --progress grunt uglify",
+    "start": "node server/index.js"
   },
   "author": "Hack Reactor",
   "license": "MIT",
@@ -23,8 +23,10 @@
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "express-session": "^1.15.1",
+    "grunt": "0.4.5",
+    "grunt-cli": "1.2.0",
+    "grunt-contrib-uglify": "3.0.1",
     "grunt-pg": "https://github.com/watsoncj/grunt-pg.git",
-    "grunt": "~0.4.5",
     "knex": "^0.12.9",
     "morgan": "^1.8.1",
     "passport": "^0.3.2",
