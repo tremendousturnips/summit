@@ -39,7 +39,8 @@ let redisSession = session({
   store: new RedisStore({
     client: redisClient,
     host: redisConfig.host,
-    port: redisConfig.port
+    port: redisConfig.port,
+
   }),
   secret: 'more laughter, more love, more life',
   resave: false,
