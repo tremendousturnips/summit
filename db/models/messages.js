@@ -5,9 +5,6 @@ const Message = db.Model.extend({
   user: function() {
     return this.belongsTo('Profile');
   },
-  room: function() {
-    return this.belongsTo('Room');
-  },
   channel: function() {
     return this.belongsTo('Channel');
   }
