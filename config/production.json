@@ -1,5 +1,6 @@
 {
   "knex": {
+    "database": "thesis",
     "connection": "process.env.DATABASE_URL"
   },
 
