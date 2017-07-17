@@ -28,19 +28,22 @@ if (process.env.REDIS_URL) {
 
 let redisConfig = {
     host: params.hostname ||  'localhost',
-    port: params.port || 6379
+    port: params.port || 6379,
+    user: params.user,
+    password: params.password
     //database: params.pathname.split('/')[1],
     //ssl: true
 };
 
-console.log('redisConfig after', redisConfig.host, redisConfig.port)
+console.log('redisConfig after', redisConfig.host, redisConfig.port, redisConfig.user, redisConfig.password)
 
 let redisSession = session({
   store: new RedisStore({
     client: redisClient,
+    user: redisConfig.user,
+    password: redisConfig.password,
     host: redisConfig.host,
     port: redisConfig.port,
-
   }),
   secret: 'more laughter, more love, more life',
   resave: false,
