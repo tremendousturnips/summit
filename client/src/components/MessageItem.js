@@ -1,10 +1,10 @@
 import React from 'react';
-import {Comment, Message} from 'semantic-ui-react';
+import {Comment, Message, Icon} from 'semantic-ui-react';
 
 const MessageItem = (props) => (
   <Comment as={Message}>
-    {console.log(props)}
-    <Comment.Avatar src='./IMAGE.jpg' />
+     {console.log('messageItem: ',props)} 
+    <Icon name='user'/>
     <Comment.Content>
       <Comment.Author as='a'>{props.message.username}</Comment.Author>
       <Comment.Metadata>

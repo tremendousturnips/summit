@@ -21,7 +21,8 @@ const config = {
         ]
       }
     ]
-  }
+  },
+  devtool: 'source-map'
 };
 
 export default config;
