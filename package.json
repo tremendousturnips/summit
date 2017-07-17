@@ -4,7 +4,7 @@
   "scripts": {
     "test": "NODE_ENV=test grunt test",
     "build": "webpack --watch",
-    "heroku-postbuild": "webpack -p --config ./webpack.config.babel.js --progress grunt uglify",
+    "heroku-postbuild": "webpack -p --config ./webpack.config.babel.js --progress",
     "start": "node server/index.js"
   },
   "author": "Hack Reactor",
