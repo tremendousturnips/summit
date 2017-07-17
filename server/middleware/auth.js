@@ -15,11 +15,11 @@ let redisConfig = {
   port: 6379 //env var: PGPORT // this should NOT be the same as your server's port
 };
 
+console.log('redisConfig before', redisConfig.host, redisConfig.port)
+
 if (process.env.REDIS_URL) {
   const params = url.parse(process.env.REDIS_URL);
   const auth = params.auth.split(':');
-
-  console.log('redisConfig before', redisConfig.host, redisConfig.port)
 
   redisConfig = {
     host: params.hostname,
@@ -28,10 +28,11 @@ if (process.env.REDIS_URL) {
     ssl: true
   };
 
-  console.log('redisConfig', redisConfig.host, redisConfig.port)
   redisClient = require('redis').createClient(process.env.REDIS_URL);
 
 };
+
+console.log('redisConfig after', redisConfig.host, redisConfig.port)
 
 let redisSession = session({
   store: new RedisStore({
