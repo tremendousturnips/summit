@@ -1,21 +1,32 @@
 {
+  "knex": {
+    "connection": {
+      "database": "postgres://mdgozyftgtjlwv:f57faaefa5b30b2555c828134b0c4c221f4b63ca222ba66e06aff5462c1cfd0d@ec2-107-22-250-33.compute-1.amazonaws.com:5432/dehse1urco1ukn"
+    },
+    "debug": false,
+    "pool": {
+      "min": 2,
+      "max": 10
+    }
+  },
+
   "passport": {
     "Google": {
-      "clientID": "GOOGLE_CLIENT_ID",
-      "clientSecret": "GOOGLE_CLIENT_SECRET",
-      "callbackURL": "GOOGLE_CALLBACK_URL"
+      "clientID": "FILL_ME_IN",
+      "clientSecret": "FILL_ME_IN",
+      "callbackURL": "http://FILL_ME_IN/auth/facebook/callback" 
     },
 
     "Facebook": {
-      "clientID": "FACEBOOK_CLIENT_ID",
-      "clientSecret": "FACEBOOK_CLIENT_SECRET",
-      "callbackURL": "FACEBOOK_CALLBACK_URL"
+      "clientID": "FILL_ME_IN",
+      "clientSecret": "FILL_ME_IN",
+      "callbackURL": "http://FILL_ME_IN/auth/facebook/callback"
     },
 
     "Twitter": {
-      "consumerKey": "TWITTER_CLIENT_ID",
-      "consumerSecret": "TWITTER_CLIENT_SECRET",
-      "callbackURL": "TWITTER_CALLBACK_URL"
+      "consumerKey": "FILL_ME_IN",
+      "consumerSecret": "FILL_ME_IN",
+      "callbackURL": "http://FILL_ME_IN/auth/twitter/callback"
     }
   }
 }
