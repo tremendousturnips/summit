@@ -30,7 +30,6 @@ module.exports = function(grunt) {
         name: config.connection.database
       }
     }
-
   });
 
 //  grunt.loadNpmTasks('grunt-mocha-test');
