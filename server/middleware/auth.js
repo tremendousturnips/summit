@@ -9,11 +9,28 @@ module.exports.verify = (req, res, next) => {
   res.redirect('/login');
 };
 
+let redisConfig = {
+  host: 'localhost', // Server hosting the postgres database
+  port: 6379 //env var: PGPORT // this should NOT be the same as your server's port
+};
+
+if (process.env.REDIS_URL) {
+  const params = url.parse(process.env.REDIS_URL);
+  const auth = params.auth.split(':');
+
+  redisConfig = {
+    host: params.hostname,
+    port: params.port,
+    database: params.pathname.split('/')[1],
+    ssl: true
+  };
+};
+
 module.exports.session = session({
   store: new RedisStore({
     client: redisClient,
-    host: 'localhost',
-    port: 6379
+    host: redisConfig.host,
+    port: redisConfig.port
   }),
   secret: 'more laughter, more love, more life',
   resave: false,
