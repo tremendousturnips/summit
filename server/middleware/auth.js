@@ -19,12 +19,16 @@ if (process.env.REDIS_URL) {
   const params = url.parse(process.env.REDIS_URL);
   const auth = params.auth.split(':');
 
+  console.log('redisConfig before', redisConfig.host, redisConfig.port)
+
   redisConfig = {
     host: params.hostname,
     port: params.port,
-    database: params.pathname.split('/')[1],
+    //database: params.pathname.split('/')[1],
     ssl: true
   };
+
+  console.log('redisConfig', redisConfig.host, redisConfig.port)
 };
 
 module.exports.session = session({
