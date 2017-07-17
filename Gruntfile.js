@@ -33,10 +33,10 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.loadNpmTasks('grunt-mocha-test');
-  grunt.loadNpmTasks('grunt-eslint');
+//  grunt.loadNpmTasks('grunt-mocha-test');
+//  grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-pg');
 
-  grunt.registerTask('default', ['eslint']);
-  grunt.registerTask('test', ['mochaTest']);
+//  grunt.registerTask('default', ['eslint']);
+//  grunt.registerTask('test', ['mochaTest']);
 };
