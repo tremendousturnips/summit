@@ -10,29 +10,27 @@ module.exports.verify = (req, res, next) => {
   res.redirect('/login');
 };
 
-let redisConfig = {
-  host: 'localhost', // Server hosting the postgres database
-  port: 6379 //env var: PGPORT // this should NOT be the same as your server's port
-};
+// let redisConfig = {
+//   host: // Server hosting the postgres database
+//   port: 6379 //env var: PGPORT // this should NOT be the same as your server's port
+// };
 
-console.log('redisConfig before', redisConfig.host, redisConfig.port)
+//console.log('redisConfig before', redisConfig.host, redisConfig.port)
 
 if (process.env.REDIS_URL) {
   const params = url.parse(process.env.REDIS_URL);
   const auth = params.auth.split(':');
-
-  redisConfig = {
-    host: params.hostname,
-    port: params.port,
-    //database: params.pathname.split('/')[1],
-    ssl: true
-  };
-
   redisClient = require('redis').createClient(process.env.REDIS_URL);
-
 };
 
-console.log('redisConfig after', redisConfig.host, redisConfig.port)
+let redisConfig = {
+    host: params.hostname ||  'localhost',
+    port: params.port || 6379
+    //database: params.pathname.split('/')[1],
+    //ssl: true
+  };
+
+console.log('redisConfig after', redisConfig.host, redisConfig.port, redisClient)
 
 let redisSession = session({
   store: new RedisStore({
