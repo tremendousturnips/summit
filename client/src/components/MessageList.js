@@ -5,9 +5,7 @@ import MessageItem from './MessageItem';
 
 const MessageList = ({ messages }) => (
   <Comment.Group>
-    {messages.map((message, index) => {
-      return <MessageItem message={message} key={index}/>
-    })}
+    {messages.map((message, index) => <MessageItem message={message} key={index}/> )}
   </Comment.Group>
 );
 
