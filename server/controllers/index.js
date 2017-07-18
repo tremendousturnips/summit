@@ -1,1 +1,6 @@
-module.exports.Profiles = require('./profiles');
+module.exports = {
+  ProfileController: require('./profiles'),
+  RoomController: require('./rooms'),
+  ChannelController: require('./channels'),
+  MessageController: require('./messages')
+};

@@ -1,6 +1,8 @@
-module.exports.auth = require('./auth');
-module.exports.passport = require('./passport');
-module.exports.morgan = require('morgan');
-module.exports.bodyParser = require('body-parser');
-module.exports.flash = require('connect-flash');
-module.exports.cookieParser = require('cookie-parser');
+module.exports = {
+  auth: require('./auth'),
+  passport: require('./passport'),
+  morgan: require('morgan'),
+  bodyParser: require('body-parser'),
+  flash: require('connect-flash'),
+  cookieParser: require('cookie-parser')
+};
