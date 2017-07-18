@@ -7,8 +7,6 @@ import MessageInput from '../containers/MessageInput';
 import MessageBoard from '../containers/MessageBoard';
 
 const Main = () => (
-<<<<<<< HEAD
-
     <Sidebar.Pushable>
       <LeftMenu/>
       <Sidebar.Pusher>
@@ -25,26 +23,6 @@ const Main = () => (
         </Grid>
       </Sidebar.Pusher>
     </Sidebar.Pushable>
-
-=======
-  <Grid>
-      {/* <Menu fluid vertical tabular floated>
-        <Menu.Item name='test'></Menu.Item>
-      </Menu> */}
-      <SideBar />
-    <Grid.Column width={12} id='MessageBoard'>
-      <Segment attached='top' inverted id='messageboardtop'>
-        <NavBar /> 
-      </Segment>  
-      <Segment attached id='messageboardmiddle'>
-        <MessageList />
-      </Segment>
-      <Segment attached='bottom' id='messageboardbottom'>
-          <MessageInput />
-     </Segment>
-    </Grid.Column>
-  </Grid>
->>>>>>> Work in progress front-end piece
 )
 
 export default Main;
