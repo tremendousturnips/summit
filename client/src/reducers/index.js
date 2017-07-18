@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 // import todos from './todos';
-import messages from './messages'
+import messages from './messages';
+import user from './user';
 
 const rootReducer = combineReducers({
+  user,
   messages
 });
 

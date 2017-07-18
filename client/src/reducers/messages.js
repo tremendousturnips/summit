@@ -10,10 +10,8 @@ const initialState = [
 const messages = (state = initialState, action) => {
   switch (action.type) {
   case 'SET_MESSAGES':
-    console.log('reducer message', action.messages);
     return action.messages;
   case 'ADD_MESSAGE':
-    console.log('add message: ', action.message);
     return [...state, action.message];
   default:
     return state;

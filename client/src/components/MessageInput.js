@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import {Form, Segment} from 'semantic-ui-react';
-import { addMessage } from '../actions/messages';
 
 class MessageInput extends Component {
   constructor(props) {
@@ -15,11 +14,11 @@ class MessageInput extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const message = {
-      username: 'HOW DO I GET THIS',
+      username: this.props.user.display,
       text: this.state.text,
       timestamp: Date()
     };
-    this.props.dispatch(addMessage(message));
+    this.props.onSubmit(message);
   }
   handleChange(e) {
     e.preventDefault();
@@ -34,4 +33,4 @@ class MessageInput extends Component {
   }
 }
 
-export default connect()(MessageInput);
+export default MessageInput;

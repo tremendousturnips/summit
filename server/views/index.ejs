@@ -1,6 +1,11 @@
 <% include head.ejs%>
 
     <div id='root'></div>
+    <script>
+      // WARNING: See the following for security issues around embedding JSON in HTML:
+      // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
+      window.__PRELOADED_STATE__ = <%- JSON.stringify( user ).replace(/</g, '\\u003c'); %>
+    </script>
     <script src="/dist/bundle.js"></script>
 
 <% include foot.ejs%>
