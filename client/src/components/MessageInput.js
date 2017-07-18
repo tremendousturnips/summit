@@ -8,13 +8,14 @@ class MessageInput extends Component {
     this.state = {
       text: ''
     };
+    console.log(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleSubmit(e) {
     e.preventDefault();
     const message = {
-      username: 'HOW DO I GET THIS',
+      username: this.props.user.display,
       text: this.state.text,
       timestamp: Date()
     };

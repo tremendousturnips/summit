@@ -5,6 +5,7 @@ import LeftMenu from './LeftMenu';
 import NavBar from '../containers/NavBar';
 // import MessageInput from '../containers/MessageInput';
 import MessageContainer from '../containers/MessageContainer';
+import InputContainer from '../containers/InputContainer';
 
 const Main = () => (
 
@@ -18,7 +19,7 @@ const Main = () => (
             </Grid.Row>
             <Segment.Group>
               <MessageContainer />
-              {/* <MessageInput /> */}
+              <InputContainer />
             </Segment.Group>
           </Grid.Column>
         </Grid>

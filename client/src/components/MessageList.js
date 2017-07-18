@@ -10,7 +10,7 @@ const MessageList = ({ messages }) => (
 );
 
 MessageList.propTypes = {
-  messages: PropTypes.array
+  messages: PropTypes.array.isRequired
 };
 
 export default MessageList;
