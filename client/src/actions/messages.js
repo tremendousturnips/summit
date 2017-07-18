@@ -1,4 +1,4 @@
-let messageCount = 3;
+let messageCount = 0
 export const setMessages = messages => ({
   type: 'SET_MESSAGES',
   messages
