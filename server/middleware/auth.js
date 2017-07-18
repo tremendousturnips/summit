@@ -13,7 +13,7 @@ if (process.env.REDIS_URL) {
   const params = url.parse(process.env.REDIS_URL);
   const auth = params.auth.split(':');
   redisClient = require('redis').createClient(params.port, params.hostname);
-  redisClient.auth(params.auth.split(":")[1]);
+  redisClient.auth(params.auth.split(':')[1]);
   redisSession = session({
     store: new RedisStore({
       client: redisClient
@@ -25,14 +25,14 @@ if (process.env.REDIS_URL) {
 } else {
   redisClient = require('redis').createClient();
   redisSession = session({
-  store: new RedisStore({
-    client: redisClient,
-    host: 'localhost',
-    port: 6379
-  }),
-  secret: 'more laughter, more love, more life',
-  resave: false,
-  saveUninitialized: false
-});
+    store: new RedisStore({
+      client: redisClient,
+      host: 'localhost',
+      port: 6379
+    }),
+    secret: 'more laughter, more love, more life',
+    resave: false,
+    saveUninitialized: false
+  });
 }
 module.exports.session = redisSession;
