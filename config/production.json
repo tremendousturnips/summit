@@ -1,6 +1,6 @@
 {
   "knex": {
-    "connection": "postgres://mdgozyftgtjlwv:f57faaefa5b30b2555c828134b0c4c221f4b63ca222ba66e06aff5462c1cfd0d@ec2-107-22-250-33.compute-1.amazonaws.com:5432/dehse1urco1ukn",
+    "connection": "process.env.DATABASE_URL",
     "migrations": {
       "tableName": "knex_migrations",
       "directory": "db/migrations"
@@ -10,7 +10,7 @@
     }
   },
   "redis": {
-    "connection": "redis://h:p737002afcf4ea8a955b28c64cbf2e91ca5ed4e12ac7fa0dbb6538a9721b91e1c@ec2-34-230-117-175.compute-1.amazonaws.com:40059"
+    "connection": "process.env.REDIS_URL"
   },
 
   "passport": {
