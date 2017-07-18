@@ -4,8 +4,42 @@ body {
    /* background-color: black;  */
 }
 
-div#root {
+#root {
   height: 100%;
+  width: 100%;
+}
+
+.column {
+    color: #FFFFFF;
+    font-size: 11px;
+    min-height: 400px;
+    background-size: cover;
+    background-position: 50% 25%;
+}
+
+#sidebartop {
+  height: 100%;
+  width: 100%;
+}
+
+#sidebarbottom {
+  height: 10%;
+  width: 100%;
+}
+
+#messageboardtop {
+  height: 12%;
+  width: 100%;
+}
+
+#messageboardbottom {
+  height: 100%;
+  width: 100%;
+}
+
+#messageinput {
+  height: 12%;
+  width: 100%;
 }
 /* div.ui.segment {
   height: 100% 

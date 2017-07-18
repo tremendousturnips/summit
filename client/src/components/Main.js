@@ -8,7 +8,6 @@ import MessageContainer from '../containers/MessageContainer';
 import InputContainer from '../containers/InputContainer';
 
 const Main = () => (
-
     <Sidebar.Pushable>
       <LeftMenu/>
       <Sidebar.Pusher>
@@ -25,7 +24,6 @@ const Main = () => (
         </Grid>
       </Sidebar.Pusher>
     </Sidebar.Pushable>
-
 )
 
 export default Main;

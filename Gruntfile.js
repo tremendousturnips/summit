@@ -30,13 +30,14 @@ module.exports = function(grunt) {
         name: config.connection.database
       }
     }
-
   });
 
-  grunt.loadNpmTasks('grunt-mocha-test');
-  grunt.loadNpmTasks('grunt-eslint');
+//  grunt.loadNpmTasks('grunt-mocha-test');
+//  grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-pg');
 
-  grunt.registerTask('default', ['eslint']);
-  grunt.registerTask('test', ['mochaTest']);
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+
+//  grunt.registerTask('default', ['eslint']);
+//  grunt.registerTask('test', ['mochaTest']);
 };
