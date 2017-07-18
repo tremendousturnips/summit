@@ -1,7 +1,7 @@
 const db = require('../');
 
 const Direct = db.Model.extend({
-  tableName: 'direts',
+  tableName: 'directs',
   user1: function() {
     return this.belongsTo('User');
   },
