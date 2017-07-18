@@ -9,6 +9,10 @@
       "directory": "db/seeds"
     }
   },
+  "redis": {
+    "connection": "redis://h:p737002afcf4ea8a955b28c64cbf2e91ca5ed4e12ac7fa0dbb6538a9721b91e1c@ec2-34-230-117-175.compute-1.amazonaws.com:40059"
+  },
+
   "passport": {
     "Google": {
       "clientID": "FILL_ME_IN",
