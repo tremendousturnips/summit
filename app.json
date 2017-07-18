@@ -1,0 +1,42 @@
+{
+  "name": "turnips",
+  "scripts": {
+  },
+  "env": {
+    "GOOGLE_CALLBACK": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_ID": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_SECRET": {
+      "required": true
+    },
+    "NODE_ENV": {
+      "required": true
+    },
+    "NODE_MODULES_CACHE": {
+      "required": true
+    },
+    "NPM_CONFIG_LOGLEVEL": {
+      "required": true
+    },
+    "NPM_CONFIG_PRODUCTION": {
+      "required": true
+    },
+    "REDIS_URL": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+    "heroku-postgresql",
+    "heroku-redis"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
