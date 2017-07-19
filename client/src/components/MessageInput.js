@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import {Form, Segment} from 'semantic-ui-react';
+import axios from 'axios';
 
 class MessageInput extends Component {
   constructor(props) {
@@ -13,15 +14,24 @@ class MessageInput extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    const message = {
+
+    let message = {
       userId: this.props.user.id,
       text: this.state.text,
       channelId: 1
     };
-    this.props.socket.emit('send', message);
-    this.setState({
-      text: ''
-    })
+    axios.post('/api/messages/', message)
+      .then(res => {
+        console.log(res);
+        this.props.socket.emit('send', message);
+        this.setState({
+          text: ''
+        })
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+    
     // this.props.onSubmit(message);
   }
   handleChange(e) {
