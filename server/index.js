@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3000;
 const {ProfileController, RoomController, ChannelController, MessageController} = require('./controllers');
 
 var server = app.listen(PORT, () => {
-  console.log('Example app listening on port' + PORT + '!');
+  console.log('Example app listening on port ' + PORT + '!');
 });
 
 var io = require('socket.io').listen(server);

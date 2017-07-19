@@ -21,21 +21,18 @@ const initialState = {
 // Allow the passed state to be garbage-collected
 delete window.__PRELOADED_STATE__;
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const enhancer = composeEnhancers(
+  applyMiddleware(thunk),
+  // other store enhancers if any
+);
 // Create Redux store with initial state
 const store = createStore(
   rootReducer,
   initialState,
-  compose(
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-    applyMiddleware(thunk)
-  )
+  enhancer
 );
-
-// const store = createStore(
-//   rootReducer, /* preloadedState, */
-//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-// );
-
 ReactDOM.render(
   <Provider store={store}>
     <Main/>
