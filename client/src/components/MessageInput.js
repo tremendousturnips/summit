@@ -22,8 +22,7 @@ class MessageInput extends Component {
     };
     axios.post('/api/messages/', message)
       .then(res => {
-        console.log(res);
-        this.props.socket.emit('send', message);
+        this.props.socket.emit('send', res.data);
         this.setState({
           text: ''
         })
