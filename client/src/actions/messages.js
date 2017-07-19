@@ -5,7 +5,6 @@ export const setMessages = messages => ({
 });
 
 export const addMessage = message => {
-  message.id = messageCount++;
   return {
     type: 'ADD_MESSAGE',
     message
@@ -31,6 +30,6 @@ export const receiveMessages = (room, data) => {
 export const sendMessage = () => {
   return {
     type: 'SEND_MESSAGE',
-    
+
   }
 }
