@@ -35,5 +35,19 @@ module.exports = {
         console.log('ERROR saving message:', err);
         res.status(503).send(err);
       });
+  },
+
+  getDirectMessages: (req, res) => {
+    const { userId, toUserId } = req.params;
+    Direct.query({ where: { to_user_id: toUserId }, orWhere: { to_user_id: userId } } )
+      .fetchAll({ withRelated: ['message'] })
+      .then(directs => {
+        const messages = directs.toJSON().map(direct => direct.message);
+        res.status(200).send(messages);
+      })
+      .catch(err => {
+        console.log('ERROR getting rooms:', err);
+        res.status(503).send(err);
+      });
   }
 };
