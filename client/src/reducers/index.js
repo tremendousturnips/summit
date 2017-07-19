@@ -3,11 +3,13 @@ import { combineReducers } from 'redux';
 import messages from './messages';
 import user from './user';
 import socket from './socket';
+import channels from './channels';
 
 const rootReducer = combineReducers({
   user,
   messages,
-  socket
+  socket,
+  channels
 });
 
 export default rootReducer;
