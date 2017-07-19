@@ -1,7 +1,14 @@
 import { connect } from 'react-redux';
-import { addMessage } from '../actions';
 import MessageList from '../components/MessageList';
+import { addMessage } from '../actions';
 
-const mapStateToProps = ({ messages }) => ({ messages });
+const mapStateToProps = ({ messages, socket }) => ({ messages, socket });
 
-export default connect(mapStateToProps)(MessageList);
+const mapDispatchToProps = (dispatch) => ({
+  addMessage: (message) => {
+    console.log('addmessage inside container')
+    dispatch(addMessage(message));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessageList);
