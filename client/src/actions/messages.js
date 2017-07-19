@@ -27,3 +27,10 @@ export const receiveMessages = (room, data) => {
     receivedAt: Date.now()
   }
 }
+
+export const sendMessage = () => {
+  return {
+    type: 'SEND_MESSAGE',
+    
+  }
+}
