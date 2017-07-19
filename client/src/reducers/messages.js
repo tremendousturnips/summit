@@ -6,11 +6,10 @@ const messages = (state = [], action) => {
     action.message.created_at = Date();
     return [...state, action.message];
   case 'RECEIEVE_MESSAGES':
-    return action.messages;
-  case 'SEND_MESSAGE':
-    
+    return action.messages;    
   case 'FETCH_MESSAGES':
     //
+  case 'SEND_MESSAGE':
   default:
     return state;
   }
