@@ -3,6 +3,7 @@ const messages = (state = [], action) => {
   case 'SET_MESSAGES':
     return action.messages;
   case 'ADD_MESSAGE':
+    action.message.created_at = Date();
     return [...state, action.message];
   case 'RECEIEVE_MESSAGES':
     return action.messages;
