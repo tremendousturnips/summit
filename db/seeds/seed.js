@@ -11,7 +11,8 @@ const tables = [
 ];
 
 exports.seed = function(knex, Promise) {
-  const tableDeletes = tables.map(tablename => knex(tablename).del());
+  const tableDeletes = tables.map(tablename => knex.raw(`truncate table ${tablename} cascade`));
+  // const tableDeletes = tables.map(tablename => knex(tablename).del());
   return Promise.all(tableDeletes)
     .then(() => {
       return knex('profiles').insert([
