@@ -14,11 +14,15 @@ class MessageInput extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const message = {
-      username: this.props.user.display,
+      userId: this.props.user.id,
       text: this.state.text,
-      timestamp: Date()
+      channelId: 1
     };
-    this.props.onSubmit(message);
+    this.props.socket.emit('send', message);
+    this.setState({
+      text: ''
+    })
+    // this.props.onSubmit(message);
   }
   handleChange(e) {
     e.preventDefault();

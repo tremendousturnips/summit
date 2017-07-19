@@ -11,3 +11,19 @@ export const addMessage = message => {
     message
   }
 };
+
+export const fetchMessages = room => {
+  return {
+    type: 'FETCH_MESSAGES',
+    room
+  }
+}
+
+export const receiveMessages = (room, data) => {
+  return {
+    type: 'RECEIVE_MESSAGES',
+    room,
+    messages,
+    receivedAt: Date.now()
+  }
+}
