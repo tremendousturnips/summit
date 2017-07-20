@@ -25,7 +25,7 @@ class LeftMenu extends Component {
 
   render() {
     const { visible } = this.state;
-    const { channels } = this.props;
+    const { channels, selectChannel } = this.props;
     return (
       <Sidebar as={Menu} animation='push' width='thin' visible={visible} icon='labeled' vertical inverted color='grey' fixed="left">
         <Menu.Item name='mail' onClick={this.handleClick.bind(this)}>
@@ -35,7 +35,7 @@ class LeftMenu extends Component {
         <Menu.Item >
           <Menu.Header>
             <Menu.Header>Text Channels</Menu.Header>
-            <ChannelList channels={channels}/>
+            <ChannelList channels={channels} selectChannel={selectChannel}/>
           </Menu.Header>
         </Menu.Item>
         <Menu.Item>

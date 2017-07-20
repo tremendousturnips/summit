@@ -10,10 +10,10 @@ export const addChannel = channel => ({
   channel
 });
 
-export const selectChannel = channel => {
+export const selectChannel = channel => ({
   type: 'SELECT_CHANNEL',
   channel
-}
+});
 
 // export const requestChannels = room => {
 //   type: 'REQUEST_CHANNELS',
