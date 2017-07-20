@@ -5,9 +5,11 @@ import MessageItem from './MessageItem';
 
 class MessageList extends Component {
   componentDidMount() {
-    const {socket, addMessage} = this.props;
+    console.log(this.props);
+    const {socket, addMessage, fetchMessages} = this.props;
     socket.emit('subscribe', 1)
     socket.on('message', addMessage);
+    fetchMessages(1,1);
   }
   render () {
     const { messages } = this.props;
