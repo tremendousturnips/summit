@@ -5,17 +5,12 @@ let channelList = [
   'CHANNEL 2',
   'CHANNEL 3'
 ]
-class ChannelList extends Component {
-  state = {activeItem: ''}
-  render() {
-    return (
-      <Menu vertical inverted color='grey' fluid>
-        {channelList.map((channel, index) => (
-          <Menu.Item key={index}>{channel}</Menu.Item>)
-        )}
-      </Menu>
-    );
-  }
-}
+const ChannelList = () => (
+  <Menu vertical inverted color='grey' fluid>
+    {channelList.map((channel, index) => (
+      <Menu.Item key={index}>{channel}</Menu.Item>)
+    )}
+  </Menu>
+);
 
 export default ChannelList;

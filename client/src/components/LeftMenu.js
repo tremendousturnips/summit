@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react'
 
 import ChannelList from './ChannelList';
+import DirectMessageList from './DirectMessageList';
 
 class LeftMenu extends Component {
   constructor(props) {
@@ -26,12 +27,15 @@ class LeftMenu extends Component {
           INSERT USER PHOTO
         </Menu.Item>
         <Menu.Item >
-          <Menu.Header>Text Channels</Menu.Header>
-          <ChannelList />
+          <Menu.Header>
+            <Menu.Header>Text Channels</Menu.Header>
+            <ChannelList />
+          </Menu.Header>
         </Menu.Item>
         <Menu.Item>
           <Menu.Header>
-            Direct Messages
+            <Menu.Header>Direct Messages</Menu.Header>
+            <DirectMessageList/>
           </Menu.Header>
         </Menu.Item>
       </Sidebar>

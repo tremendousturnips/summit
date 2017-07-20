@@ -17,13 +17,8 @@ const io = require('socket.io').listen(server);
 
 io.on('connection', socket => {
   console.log('user connected');
-<<<<<<< HEAD
   socket.on('send', message => {
     io.to(message.channel_id).emit('message', message);
-=======
-  socket.on('send', (message) => {
-    socket.to(message.channel_id).emit('message', message);
->>>>>>> Change sequence of actions such that client first sees their own message sent before writing to db
   });
   socket.on('subscribe', roomid => {
     socket.join(roomid);
