@@ -10,7 +10,6 @@ class LeftMenu extends Component {
 
     this.state = { 
       visible: true,
-      activeItem: 'tab1' 
     };
   }
 
@@ -19,18 +18,19 @@ class LeftMenu extends Component {
     this.props.fetchChannels(1);
   }
 
-  handleClick(e, { name }) {
+  handleClick(e) {
+    console.log('click on profile');
     // do things to the state of the app inherited as props
   }
 
   render() {
     const { visible } = this.state;
-    const { channels, selectChannel } = this.props;
+    const { channels, selectChannel, user } = this.props;
     return (
       <Sidebar as={Menu} animation='push' width='thin' visible={visible} icon='labeled' vertical inverted color='grey' fixed="left">
         <Menu.Item name='mail' onClick={this.handleClick.bind(this)}>
-          <Icon name='user' />
-          INSERT USER PHOTO
+          <Menu.Header>{user.first}</Menu.Header>
+          <Image src={user.image} size='tiny' shape='circular' centered/>
         </Menu.Item>
         <Menu.Item >
           <Menu.Header>
