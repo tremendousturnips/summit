@@ -1,4 +1,4 @@
-const { Room, Role } = require('../../db/models');
+const { Role } = require('../../db/models');
 
 module.exports = {
   getAll: (req, res) => {

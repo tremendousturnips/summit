@@ -2,11 +2,11 @@ const db = require('../');
 
 const Friend = db.Model.extend({
   tableName: 'friends',
-  user1: function() {
-    return this.belongsTo('User');
+  user: function() {
+    return this.belongsTo('Profile');
   },
-  user2: function() {
-    return this.belongsTo('User');
+  friend: function() {
+    return this.belongsTo('Profile');
   }
 });
 
