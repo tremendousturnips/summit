@@ -2,8 +2,8 @@
 const request = require('supertest');
 const express = require('express');
 const expect = require('chai').expect;
-const app = require('../app.js');
-const dbUtils = require('../../db/lib/utils.js');
+const app = require('../../app.js');
+const dbUtils = require('../../../db/lib/utils.js');
 
 describe('Profiles API', function () {
   beforeEach(function (done) {
@@ -122,3 +122,91 @@ describe('Profiles API', function () {
   //     .end(done);
   // });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const express = require('express');
+const { passport, auth } = require('../middleware');
+const { authenticate } = passport;
+const { verify } = auth;
+
+const router = express.Router();
+
+router.route('/')
+  .get(verify, (req, res) => {
+    res.render('index.ejs', { user: req.user });
+  });
+
+router.route('/login')
+  .get((req, res) => {
+    res.render('login.ejs', { message: req.flash('loginMessage') });
+  })
+  .post(authenticate('local-login', {
+    successRedirect: '/profile',
+    failureRedirect: '/login',
+    failureFlash: true
+  }));
+
+router.route('/signup')
+  .get((req, res) => {
+    res.render('signup.ejs', { message: req.flash('signupMessage') });
+  })
+  .post(authenticate('local-signup', {
+    successRedirect: '/profile',
+    failureRedirect: '/signup',
+    failureFlash: true
+  }));
+
+router.route('/profile')
+  .get(verify, (req, res) => {
+    res.render('profile.ejs', {
+      user: req.user // get the user out of session and pass to template
+    });
+  });
+
+router.route('/logout')
+  .get((req, res) => {
+    req.logout();
+    res.redirect('/');
+  });
+
+router.get('/auth/google', authenticate('google', {
+  scope: ['email', 'profile']
+}));
+
+router.get('/auth/google/callback', authenticate('google', {
+  successRedirect: '/profile',
+  failureRedirect: '/login'
+}));
+
+router.get('/auth/facebook', authenticate('facebook', {
+  scope: ['public_profile', 'email']
+}));
+
+router.get('/auth/facebook/callback', authenticate('facebook', {
+  successRedirect: '/profile',
+  failureRedirect: '/login',
+  failureFlash: true
+}));
+
+router.get('/auth/twitter', authenticate('twitter'));
+
+router.get('/auth/twitter/callback', authenticate('twitter', {
+  successRedirect: '/profile',
+  failureRedirect: '/login'
+}));
+
+module.exports = router;

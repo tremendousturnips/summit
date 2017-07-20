@@ -1,8 +1,8 @@
 const expect = require('chai').expect;
 const httpMocks = require('node-mocks-http');
-const dbUtils = require('../../db/lib/utils.js');
-const passport = require('../middleware/passport');
-const models = require('../../db/models');
+const dbUtils = require('../../../db/lib/utils.js');
+const passport = require('../../middleware/passport');
+const models = require('../../../db/models');
 
 describe('Authentication', () => {
   let fakeFlash = function(key, message) {
