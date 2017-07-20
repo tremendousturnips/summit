@@ -20,11 +20,11 @@ export const selectChannel = channel => {
 //   room
 // }
 
-export const fetchChannels = channels => {
+export const fetchChannels = roomId => {
   return (dispatch) => {
     axios.get(`/api/rooms/${roomId}/channels`)
       .then((res) => {
-        console.log(res.data);
+        dispatch(setChannels(res.data));
       });
   };
 };

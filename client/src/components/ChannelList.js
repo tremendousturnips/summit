@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Label} from 'semantic-ui-react'
-let channelList = [
-  'CHANNEL 1',
-  'CHANNEL 2',
-  'CHANNEL 3'
-]
-const ChannelList = () => (
+
+const ChannelList = ({ channels }) => (
   <Menu vertical inverted color='grey' fluid>
-    {channelList.map((channel, index) => (
-      <Menu.Item key={index}>{channel}</Menu.Item>)
+    {console.log(channels)}
+    {channels.map((channel, index) => (
+      <Menu.Item key={index}>{channel.name}</Menu.Item>)
     )}
   </Menu>
 );

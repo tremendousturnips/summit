@@ -14,12 +14,18 @@ class LeftMenu extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log(this.props);
+    this.props.fetchChannels(1);
+  }
+
   handleClick(e, { name }) {
     // do things to the state of the app inherited as props
   }
 
   render() {
-    const { visible } = this.state
+    const { visible } = this.state;
+    const { channels } = this.props;
     return (
       <Sidebar as={Menu} animation='push' width='thin' visible={visible} icon='labeled' vertical inverted color='grey' fixed="left">
         <Menu.Item name='mail' onClick={this.handleClick.bind(this)}>
@@ -29,7 +35,7 @@ class LeftMenu extends Component {
         <Menu.Item >
           <Menu.Header>
             <Menu.Header>Text Channels</Menu.Header>
-            <ChannelList />
+            <ChannelList channels={channels}/>
           </Menu.Header>
         </Menu.Item>
         <Menu.Item>

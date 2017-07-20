@@ -1,7 +1,8 @@
 
-const channel = (state = [], action) => {
+const channels = (state = [], action) => {
   switch (action.type) {
   case 'SET_CHANNELS':
+    console.log('setting channels');
     return action.channels;
   case 'ADD_CHANNEL':
     return [...state, action.channel];
@@ -10,5 +11,5 @@ const channel = (state = [], action) => {
   }
 };
 
-export default channel;
+export default channels;
 

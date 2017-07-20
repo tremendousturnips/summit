@@ -8,9 +8,6 @@ const mapDispatchToProps = (dispatch) => ({
   fetchChannels: (roomId) => {
     dispatch(fetchChannels(roomId));
   },
-  setChannels: (channelId) => {
-    dispatch(setChannels(channelId));
-  },
   selectChannel: (channelId) => {
     dispatch(selectChannel(channelId));
   }
