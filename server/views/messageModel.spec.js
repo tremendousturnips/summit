@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const { Profile } = require('../../db/models');
+const { Message } = require('../../db');
 const dbUtils = require('../../db/lib/utils.js');
 
 describe('Profile model tests', function () {
@@ -16,7 +16,7 @@ describe('Profile model tests', function () {
   it('Should be able to retrieve test data', function (done) {
     Profile.forge().fetchAll()
       .then(function (results) {
-        expect(results.length).to.be.greaterThan(0);
+        expect(results.length).to.equal(1);
         expect(results.at(0).get('id')).to.equal(1);
         done();
       })
@@ -30,7 +30,7 @@ describe('Profile model tests', function () {
   //   // Insert a user with a username that's already in existence
   //   Profile.forge({ username: 'TestUser1', password: 'abc' }).save()
   //     .then(function (result) {
-  //       done(new Error('was not supposed to succeed'));
+  //       done(new Error('was not supposed to succeed'))
   //     })
   //     .catch(function (err) {
   //       expect(err).to.be.an('error');

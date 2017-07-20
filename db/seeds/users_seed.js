@@ -28,8 +28,8 @@ exports.seed = function (knex, Promise) {
     .error(err => {
       console.error('ERROR: failed to create auth');
     })
-    .catch(() => {
-      console.log('WARNING: defualt user already exists.');
+    .catch((err) => {
+      console.log('WARNING: defualt user already exists. ERROR:', err);
     });
 
 };
