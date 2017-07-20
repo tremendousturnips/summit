@@ -22,14 +22,12 @@ module.exports = {
       .save()
       .then(message => {
         if (toUserId) {
-          return Direct.forge({
+          Direct.forge({
             to_user_id: toUserId,
             message_id: message.id
           }).save();
         }
-      })
-      .then(() => {
-        res.status(200).send('Message saved successfully');
+        res.status(200).json(message);
       })
       .catch(err => {
         console.log('ERROR saving message:', err);

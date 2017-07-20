@@ -3,12 +3,13 @@ const messages = (state = [], action) => {
   case 'SET_MESSAGES':
     return action.messages;
   case 'ADD_MESSAGE':
-    console.log(action.message);
+    action.message.created_at = Date();
     return [...state, action.message];
   case 'RECEIEVE_MESSAGES':
-    return action.messages;
+    return action.messages;    
   case 'FETCH_MESSAGES':
-    
+    //
+  case 'SEND_MESSAGE':
   default:
     return state;
   }

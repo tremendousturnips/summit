@@ -6,7 +6,6 @@ const mapStateToProps = ({ messages, socket }) => ({ messages, socket });
 
 const mapDispatchToProps = (dispatch) => ({
   addMessage: (message) => {
-    console.log('addmessage inside container')
     dispatch(addMessage(message));
   }
 });

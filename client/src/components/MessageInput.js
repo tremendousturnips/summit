@@ -20,19 +20,10 @@ class MessageInput extends Component {
       text: this.state.text,
       channelId: 1
     };
-    axios.post('/api/messages/', message)
-      .then(res => {
-        console.log(res);
-        this.props.socket.emit('send', message);
-        this.setState({
-          text: ''
-        })
-      })
-      .catch(err=>{
-        console.log(err);
-      })
-    
-    // this.props.onSubmit(message);
+    this.props.postMessage(message);
+    this.setState({
+      text: ''
+    })
   }
   handleChange(e) {
     e.preventDefault();

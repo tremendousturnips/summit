@@ -13,7 +13,7 @@ var io = require('socket.io').listen(server);
 io.on('connection', function (socket) {
   console.log('user connected');
   socket.on('send', (message) => {
-    io.to(message.channelId).emit('message', message);
+    io.to(message.channel_id).emit('message', message);
   });
   socket.on('subscribe', (roomid) => {
     socket.join(roomid);
