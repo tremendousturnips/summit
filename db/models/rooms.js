@@ -4,6 +4,9 @@ const Room = db.Model.extend({
   tableName: 'rooms',
   channels: function() {
     return this.hasMany('Channel');
+  },
+  roles: function() {
+    return this.hasMany('Role');
   }
 });
 

@@ -6,7 +6,7 @@ const Role = db.Model.extend({
     return this.belongsTo('Room');
   },
   user: function() {
-    return this.belongsTo('User');
+    return this.belongsTo('Profile');
   }
 });
 

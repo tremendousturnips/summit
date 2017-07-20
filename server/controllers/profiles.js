@@ -1,4 +1,4 @@
-const { Profile } = require('../../db/models');
+const { Profile, Role } = require('../../db/models');
 
 module.exports = {
   getAll: (req, res) => {
