@@ -139,10 +139,10 @@ const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
     withRelated: ['profile']
   })
     .then(oauthAccount => {
-
-      if (oauthAccount) {
-        throw oauthAccount;
-      }
+      // commented out so profile information will update on every log-in
+      // if (oauthAccount) {
+      //   throw oauthAccount;
+      // }
 
       if (!oauthProfile.emails || !oauthProfile.emails.length) {
         // FB users can register with a phone number, which is not exposed by Passport
@@ -151,12 +151,12 @@ const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
       return models.Profile.where({ email: oauthProfile.emails[0].value }).fetch();
     })
     .then(profile => {
-
       let profileInfo = {
         first: oauthProfile.name.givenName,
         last: oauthProfile.name.familyName,
         display: oauthProfile.displayName || `${oauthProfile.name.givenName} ${oauthProfile.name.familyName}`,
-        email: oauthProfile.emails[0].value
+        email: oauthProfile.emails[0].value,
+        image: oauthProfile.photos[0].value
       };
 
       if (profile) {
