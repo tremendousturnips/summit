@@ -14,11 +14,10 @@ class MessageInput extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-
     let message = {
-      userId: this.props.user.id,
+      user_id: this.props.user.id,
       text: this.state.text,
-      channelId: 1
+      channel_id: 1
     };
     this.props.postMessage(message);
     this.setState({

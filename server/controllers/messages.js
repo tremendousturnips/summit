@@ -13,11 +13,11 @@ module.exports = {
   },
 
   saveMessage: (req, res) => {
-    const { text, userId, channelId, toUserId } = req.body;
+    const { text, user_id, channel_id, toUserId } = req.body;
     Message.forge({
       text: text,
-      user_id: parseInt(userId),
-      channel_id: channelId ? parseInt(channelId) : null
+      user_id: parseInt(user_id),
+      channel_id: channel_id ? parseInt(channel_id) : null
     })
       .save()
       .then(message => {
