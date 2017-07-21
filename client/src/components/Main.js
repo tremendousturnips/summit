@@ -16,23 +16,23 @@ const Main = () => (
         <Grid>
           <Grid.Column width={2}>
               <LeftMenuContainer/>
-          </Grid.Column>  
+          </Grid.Column>
           <Grid.Column>
-          </Grid.Column>  
+          </Grid.Column>
           <Grid.Column width={10} >
             <Grid.Row>
-              <NavBar /> 
+              <NavBar />
             </Grid.Row>
             <Grid.Row>
               <MessageContainer />
             </Grid.Row>
             <Grid.Row>
               <InputContainer />
-            </Grid.Row>  
-          </Grid.Column> 
+            </Grid.Row>
+          </Grid.Column>
           <Grid.Column>
             <RightMenu />
-          </Grid.Column>  
+          </Grid.Column>
         </Grid>
       </Sidebar.Pusher> 
     </Sidebar.Pushable>
