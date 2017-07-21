@@ -6,16 +6,16 @@ const { ProfileController, RoomController, MessageController } = require('../con
 router.route('/').get(ProfileController.getAll);
 // .post(ProfileController.create)
 
-router.route('/:userId').get(ProfileController.getOne).put(ProfileController.update);
+router.route('/:id').get(ProfileController.getOne).put(ProfileController.update);
 // .delete(ProfileController.deleteOne)
 
-router.route('/:userId/rooms').get(RoomController.getAll);
+router.route('/:id/rooms').get(RoomController.getAll);
 
 
 // OURS
 
-router.route('/:userId/friends').get();
+router.route('/:id/friends').get();
 
-router.route('/:userId/directs/:toUserId/messages').get(MessageController.getDirectMessages);
+router.route('/:id/directs/:toUserId/messages').get(MessageController.getDirectMessages);
 
 module.exports = router;

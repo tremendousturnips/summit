@@ -2,7 +2,7 @@ const { Role } = require('../../db/models');
 
 module.exports = {
   getAll: (req, res) => {
-    Role.where({ user_id: req.params.userId })
+    Role.where({ user_id: req.params.id })
       .fetchAll({ withRelated: ['room'] })
       .then(roles => {
         const rooms = roles.toJSON().map(role => role.room);
@@ -14,7 +14,7 @@ module.exports = {
       });
   }
   // getMessages: (req, res) => {
-  //   const room_id = req.params.roomId;
+  //   const room_id = req.params.id;
   //   Channel.fetch({ room_id }).fetch({ withRelated: ['messages'] }).then(messages => {
   //     console.log('MESSAGES:', messages);
   //   });
