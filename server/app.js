@@ -25,5 +25,5 @@ app.use('/api', routes.api);
 app.use('/api/profiles', routes.profiles);
 app.use('/api/rooms', routes.rooms);
 app.use('/api/messages', routes.messages);
-
+app.use('/api/roles', routes.roles);
 module.exports = app;
