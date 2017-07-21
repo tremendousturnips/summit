@@ -6,6 +6,7 @@ const messages = (state = [], action) => {
     action.message.created_at = Date();
     return [...state, action.message];
   case 'RECEIEVE_MESSAGES':
+    //unused
     return action.messages;
   case 'SEND_MESSAGE':
   default:

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const setChannels = channels => ({
   type: 'SET_CHANNELS',
   channels
@@ -8,7 +10,21 @@ export const addChannel = channel => ({
   channel
 });
 
-export const selectChannel = channel => {
+export const selectChannel = channel => ({
   type: 'SELECT_CHANNEL',
   channel
-}
+});
+
+// export const requestChannels = room => {
+//   type: 'REQUEST_CHANNELS',
+//   room
+// }
+
+export const fetchChannels = roomId => {
+  return (dispatch) => {
+    axios.get(`/api/rooms/${roomId}/channels`)
+      .then((res) => {
+        dispatch(setChannels(res.data));
+      });
+  };
+};

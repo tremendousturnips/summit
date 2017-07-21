@@ -6,11 +6,13 @@ import NavBar from '../containers/NavBar';
 // import MessageInput from '../containers/MessageInput';
 import MessageContainer from '../containers/MessageContainer';
 import InputContainer from '../containers/InputContainer';
+import LeftMenuContainer from '../containers/LeftMenuContainer';
 
 const Main = () => (
 
     <Sidebar.Pushable>
-      <LeftMenu/>
+      {/* <LeftMenu/> */}
+      <LeftMenuContainer/>
       <Sidebar.Pusher>
         <Grid padded>
           <Grid.Column width={12}>

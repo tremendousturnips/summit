@@ -1,6 +1,4 @@
 import axios from 'axios';
-// import { arrayOf, normalize } from 'normalizr';
-// import {messageSchema} from '../schemas/messages';
 
 let messageCount = 0
 export const setMessages = messages => ({
@@ -12,7 +10,6 @@ export const addMessage = message => ({
     type: 'ADD_MESSAGE',
     message
 });
-
 
 export const receiveMessages = (room, data) => {
   //unused
