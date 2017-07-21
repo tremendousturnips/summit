@@ -46,7 +46,7 @@ describe('Rooms API', function () {
       .end(done);
   });
 
-  it('accepts GET requests to /api/rooms/:id/channels/:channelId/messages', function (done) {
+  it('accepts GET requests to /api/rooms/:id/channels/:channel_id/messages', function (done) {
     request(app)
       .get('/api/rooms/1/channels/1/messages')
       .expect(res => {

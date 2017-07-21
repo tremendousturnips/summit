@@ -11,11 +11,8 @@ router.route('/:id').get(ProfileController.getOne).put(ProfileController.update)
 
 router.route('/:id/rooms').get(RoomController.getAll);
 
-
-// OURS
-
 router.route('/:id/friends').get();
 
-router.route('/:id/directs/:toUserId/messages').get(MessageController.getDirectMessages);
+router.route('/:id/directs/:to_user_id/messages').get(MessageController.getDirectMessages);
 
 module.exports = router;
