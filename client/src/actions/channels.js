@@ -28,11 +28,6 @@ export const joinChannels = (channels, socket) => {
   });
 }
 
-// export const requestChannels = room => {
-//   type: 'REQUEST_CHANNELS',
-//   room
-// }
-
 export const fetchChannels = roomId => {
   return (dispatch, getState) => {
     axios.get(`/api/rooms/${roomId}/channels`)
@@ -40,7 +35,7 @@ export const fetchChannels = roomId => {
         dispatch(setChannels(res.data));
       })
       .then(() => {
-        dispatch(joinChannels(getState().channels), getState().socket);
+        joinChannels(getState().channels, getState().socket);
       })
   };
 };
