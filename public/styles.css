@@ -6,6 +6,7 @@ body {
 
 div#root {
   height: 100%;
+  width:100%;
 }
 /* div.ui.segment {
   height: 100% 

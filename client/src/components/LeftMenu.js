@@ -27,7 +27,7 @@ class LeftMenu extends Component {
     const { visible } = this.state;
     const { channels, selectChannel, user } = this.props;
     return (
-      <Sidebar as={Menu} animation='push' width='thin' visible={visible} icon='labeled' vertical inverted color='grey' fixed="left">
+      <Sidebar as={Menu} animation='push' width='thin' visible={visible} icon='labeled' vertical inverted color='black' fixed="left">
         <Menu.Item name='mail' onClick={this.handleClick.bind(this)}>
           <Menu.Header>{user.first}</Menu.Header>
           <Image src={user.image} size='tiny' shape='circular' centered/>
