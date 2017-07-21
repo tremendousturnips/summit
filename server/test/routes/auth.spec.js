@@ -4,7 +4,7 @@ const dbUtils = require('../../../db/lib/utils.js');
 const passport = require('../../middleware/passport');
 const models = require('../../../db/models');
 
-describe('Authentication', () => {
+xdescribe('Authentication', () => {
   let fakeFlash = function(key, message) {
     let object = {};
     object[key] = message;

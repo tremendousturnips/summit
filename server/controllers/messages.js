@@ -13,7 +13,8 @@ module.exports = {
   },
 
   saveMessage: (req, res) => {
-    const { text, user_id, channel_id, toUserId } = req.body;
+    const { text, userId, channelId, toUserId } = req.body;
+
     Message.forge({
       text: text,
       user_id: parseInt(user_id),

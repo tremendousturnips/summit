@@ -27,7 +27,7 @@ module.exports = {
   // },
 
   getOne: (req, res) => {
-    Profile.where({ id: req.params.userId })
+    Profile.where({ id: req.params.id })
       .fetch()
       .then(profile => {
         if (!profile) {
@@ -44,7 +44,7 @@ module.exports = {
   },
 
   update: (req, res) => {
-    Profile.where({ id: req.params.userId })
+    Profile.where({ id: req.params.id })
       .fetch()
       .then(profile => {
         if (!profile) {
@@ -64,7 +64,7 @@ module.exports = {
   }
 
   // deleteOne: (req, res) => {
-  //   Profile.where({ id: req.params.userId }).fetch()
+  //   Profile.where({ id: req.params.id }).fetch()
   //     .then(profile => {
   //       if (!profile) {
   //         throw profile;
