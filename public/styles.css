@@ -1,11 +1,13 @@
 
 body {
   /* padding-top:80px; */
-   /* background-color: black;  */
+  /* background-color:black; */
+   color: royalblue;
 }
 
 div#root {
   height: 100%;
+  width:100%;
 }
 /* div.ui.segment {
   height: 100% 

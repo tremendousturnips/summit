@@ -6,7 +6,7 @@ let dmList = [
   'DUDE 3'
 ]
 const DirectMessageList = (props) => (
-  <Menu vertical inverted color='grey' fluid>
+  <Menu vertical fluid>
     {dmList.map((channel, index) => (
       <Menu.Item key={index}>{channel}</Menu.Item>)
     )}

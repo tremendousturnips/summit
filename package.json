@@ -26,9 +26,11 @@
     "express": "^4.15.2",
     "express-session": "^1.15.1",
     "grunt-pg": "https://github.com/watsoncj/grunt-pg.git",
+    "jquery": "^3.2.1",
     "knex": "^0.12.9",
     "morgan": "^1.8.1",
     "normalizr": "^3.2.3",
+    "node-uuid": "^1.4.8",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
@@ -45,10 +47,12 @@
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "semantic-ui-react": "^0.71.0",
+    "simplewebrtc": "^3.0.1",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
     "webpack": "^2.3.2",
-    "webpack-dev-server": "^2.4.2"
+    "webpack-dev-server": "^2.4.2",
+    "webrtc-adapter": "^4.2.1"
   },
   "devDependencies": {
     "babel-loader": "^7.0.0",

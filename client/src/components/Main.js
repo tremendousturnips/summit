@@ -7,27 +7,36 @@ import NavBar from '../containers/NavBar';
 import MessageContainer from '../containers/MessageContainer';
 import InputContainer from '../containers/InputContainer';
 import LeftMenuContainer from '../containers/LeftMenuContainer';
+import RightMenu from './RightMenu';
 
 const Main = () => (
-
     <Sidebar.Pushable>
       {/* <LeftMenu/> */}
-      <LeftMenuContainer/>
       <Sidebar.Pusher>
-        <Grid padded>
-          <Grid.Column width={12}>
+        <Grid>
+          <Grid.Column width={2}>
+              <LeftMenuContainer/>
+          </Grid.Column>  
+          <Grid.Column>
+          </Grid.Column>  
+          <Grid.Column width={10} >
             <Grid.Row>
               <NavBar /> 
             </Grid.Row>
-            <Segment.Group>
+            <Grid.Row>
               <MessageContainer />
+            </Grid.Row>
+            <Grid.Row>
               <InputContainer />
-            </Segment.Group>
-          </Grid.Column>
+            </Grid.Row>  
+          </Grid.Column> 
+          <Grid.Column>
+            <RightMenu />
+          </Grid.Column>  
         </Grid>
-      </Sidebar.Pusher>
+      </Sidebar.Pusher> 
     </Sidebar.Pushable>
-
+    
 )
 
 export default Main;
