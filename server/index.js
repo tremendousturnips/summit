@@ -102,14 +102,15 @@ io.sockets.on('connection', function (socket) {
 
         for (var id in channels[channel]) {
             channels[channel][id].emit('removePeer', {'peer_id': socket.id});
-            socket.emit('removePeer', {'peer_id': id});
+            io.emit('removePeer', {'peer_id': id});
         }
     }
+
     socket.on('part', part);
 
     socket.on('relayICECandidate', function(config) {
-        var peer_id = config.peer_id;
-        var ice_candidate = config.ice_candidate;
+        let peer_id = config.peer_id;
+        let ice_candidate = config.ice_candidate;
         console.log("["+ socket.id + "] relaying ICE candidate to [" + peer_id + "] ", ice_candidate);
 
         if (sockets[peer_id]) {
@@ -118,8 +119,8 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('relaySessionDescription', function(config) {
-        var peer_id = config.peer_id;
-        var session_description = config.session_description;
+        let peer_id = config.peer_id;
+        let session_description = config.session_description;
         console.log("["+ socket.id + "] relaying session description to [" + peer_id + "] ", session_description);
 
         if (sockets[peer_id]) {

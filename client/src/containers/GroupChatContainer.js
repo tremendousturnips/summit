@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import GroupChat from '../components/GroupChat';
 //import { addMessage } from '../actions';
 
-const mapStateToProps = ({ socket }) => ({ socket });
+const mapStateToProps = ({ socket, user }) => ({ socket, user });
 
 const mapDispatchToProps = (dispatch) => ({
 //   addMessage: (message) => {

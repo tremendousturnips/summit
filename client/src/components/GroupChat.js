@@ -1,28 +1,34 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'semantic-ui-react'; 
+import { Button, Label } from 'semantic-ui-react'; 
 import $ from 'jquery';
 
 class GroupChat extends React.Component {
 
     constructor(props) {
         super (props)
-        this.socket = this.props.socket;
+        this.signaling_socket = this.props.socket;  
+        this.local_media_stream = null; 
+        this.peers = {};               
+        this.peer_media_elements = {}; 
+
+        this.startVideo = this.startVideo.bind(this)
+        this.endVideo = this.endVideo.bind(this)
+        this.attachMediaStream = this.attachMediaStream.bind(this)
+        this.setLocalMediaStream = this.setLocalMediaStream.bind(this)
+        this.setup_local_media = this.setup_local_media.bind(this)
+        this.join_chat_channel = this.join_chat_channel.bind(this)
+        this.part_chat_channel = this.part_chat_channel.bind(this)
 
     }
 
-    //Communicate audio/video over channel
-    componentWillMount() {
-        console.log('url', window.location.href);
-        let socket = this.socket
+    // componentWillMount() {
+    //     console.log('url', window.location.href);
+    //     let socket = this.socket
         
-    }
+    // }
 
     componentDidMount() {
-        var signaling_socket = this.socket;   /* our socket.io connection to our webserver */
-        var local_media_stream = null; /* our own microphone / webcam */
-        var peers = {};                /* keep track of our peer connections, indexed by peer_id (aka socket.io id) */
-        var peer_media_elements = {};  /* keep track of our <video>/<audio> tags, indexed by peer_id */
 
         var ICE_SERVERS = [{"url":"stun:global.stun.twilio.com:3478?transport=udp"},
         {"url":"turn:global.turn.twilio.com:3478?transport=udp",
@@ -35,70 +41,42 @@ class GroupChat extends React.Component {
         "username":"f65cf69e15b57ecc4f6b9d5fc0e4242b244b50d7dae1c7bf9133ea2a3b86081c",
         "credential":"3CYsqO4NpVKT4uLXjndrXgCn1wMBv86rabLYZZdM6NE="}];
 
-        var SIGNALING_SERVER = window.location.href;
-        var USE_AUDIO = true;
-        var USE_VIDEO = true;
-        var DEFAULT_CHANNEL = 'videochat';
-        var MUTE_AUDIO_BY_DEFAULT = false;
+        let USE_AUDIO = true;
+        let USE_VIDEO = true;
+        let MUTE_AUDIO_BY_DEFAULT = true;
 
-        let attachMediaStream = function(element, stream) {
-            console.log('attachMediaStream element', element);
-            element.srcObject = stream;
-        };
-        console.log("Connecting to signaling server");
-        // signaling_socket = io(window.location.href);
-        // signaling_socket = io();
-        signaling_socket.on('connect', function() {
+        this.signaling_socket.on('connect', function() {
             console.log("Connected to signaling server");
-            setup_local_media(function() {
-                /* once the user has given us access to their
-                    * microphone/camcorder, join the channel and start peering up */
-                join_chat_channel(DEFAULT_CHANNEL, {'whatever-you-want-here': 'stuff'});
-            });
         });
-        signaling_socket.on('disconnect', function() {
+
+        this.signaling_socket.on('disconnect', function() {
             console.log("Disconnected from signaling server");
-            /* Tear down all of our peer connections and remove all the
-                * media divs when we disconnect */
-            for (var peer_id in peer_media_elements) {
-                peer_media_elements[peer_id].remove();
+ 
+            for (var peer_id in this.peer_media_elements) {
+                this.peer_media_elements[peer_id].remove();
             }
-            for (var peer_id in peers) {
-                peers[peer_id].close();
+            for (var peer_id in this.peers) {
+                this.peers[peer_id].close();
             }
-            peers = {};
-            peer_media_elements = {};
+            this.peers = {};
+            this.peer_media_elements = {};
         });
-        function join_chat_channel(channel, userdata) {
-            signaling_socket.emit('join', {"channel": channel, "userdata": userdata});
-        }
-        function part_chat_channel(channel) {
-            signaling_socket.emit('part', channel);
-        }
-        /** 
-        * When we join a group, our signaling server will send out 'addPeer' events to each pair
-        * of users in the group (creating a fully-connected graph of users, ie if there are 6 people
-        * in the channel you will connect directly to the other 5, so there will be a total of 15 
-        * connections in the network). 
-        */
-        signaling_socket.on('addPeer', function(config) {
+
+        this.signaling_socket.on('addPeer', function(config) {
             console.log('Signaling server said to add peer:', config);
-            var peer_id = config.peer_id;
-            if (peer_id in peers) {
-                /* This could happen if the user joins multiple channels where the other peer is also in. */
+            let peer_id = config.peer_id;
+            if (this.peers[peer_id]) {
                 console.log("Already connected to peer ", peer_id);
                 return;
             }
             var peer_connection = new RTCPeerConnection(
                 {"iceServers": ICE_SERVERS},
-                {"optional": [{"DtlsSrtpKeyAgreement": true}]} /* this will no longer be needed by chrome
-                                                                * eventually (supposedly), but is necessary 
-                                                                * for now to get firefox to talk to chrome */
+                {"optional": [{"DtlsSrtpKeyAgreement": true}]} 
             );
-            peers[peer_id] = peer_connection;
+            this.peers[peer_id] = peer_connection;
             peer_connection.onicecandidate = function(event) {
                 if (event.candidate) {
-                    signaling_socket.emit('relayICECandidate', {
+                    this.signaling_socket.emit('relayICECandidate', {
                         'peer_id': peer_id, 
                         'ice_candidate': {
                             'sdpMLineIndex': event.candidate.sdpMLineIndex,
@@ -109,7 +87,7 @@ class GroupChat extends React.Component {
             }
             peer_connection.onaddstream = function(event) {
                 console.log("onAddStream", event);
-                var remote_media = document.createElement('video');
+                let remote_media = document.createElement('video');
                 //var remote_media = USE_VIDEO ? $("<video>") : $("<audio>");
                 remote_media.setAttribute("autoPlay", "");
                 remote_media.setAttribute("height", "100");
@@ -118,17 +96,11 @@ class GroupChat extends React.Component {
                 if (MUTE_AUDIO_BY_DEFAULT) {
                     remote_media.setAttribute("muted", "true");
                 }
-                peer_media_elements[peer_id] = remote_media;
-                document.getElementById('remotesVideos').append(remote_media);
+                this.peer_media_elements[peer_id] = remote_media;
+                document.getElementById('peers').append(remote_media);
                 attachMediaStream(remote_media, event.stream);
             }
-            /* Add our local stream */
-            peer_connection.addStream(local_media_stream);
-            /* Only one side of the peer connection should create the
-                * offer, the signaling server picks one to be the offerer. 
-                * The other user will get a 'sessionDescription' event and will
-                * create an offer, then send back an answer 'sessionDescription' to us
-                */
+
             if (config.should_create_offer) {
                 console.log("Creating RTC offer to ", peer_id);
                 peer_connection.createOffer(
@@ -136,7 +108,7 @@ class GroupChat extends React.Component {
                         console.log("Local offer description is: ", local_description);
                         peer_connection.setLocalDescription(local_description,
                             function() { 
-                                signaling_socket.emit('relaySessionDescription', 
+                                this.signaling_socket.emit('relaySessionDescription', 
                                     {'peer_id': peer_id, 'session_description': local_description});
                                 console.log("Offer setLocalDescription succeeded"); 
                             },
@@ -147,21 +119,18 @@ class GroupChat extends React.Component {
                         console.log("Error sending offer: ", error);
                     });
             }
+            
+            peer_connection.addStream(this.local_media_stream);
         });
-        /** 
-         * Peers exchange session descriptions which contains information
-         * about their audio / video settings and that sort of stuff. First
-         * the 'offerer' sends a description to the 'answerer' (with type
-         * "offer"), then the answerer sends one back (with type "answer").  
-         */
-        signaling_socket.on('sessionDescription', function(config) {
+    
+        this.signaling_socket.on('sessionDescription', function(config) {
             console.log('Remote description received: ', config);
-            var peer_id = config.peer_id;
-            var peer = peers[peer_id];
-            var remote_description = config.session_description;
+            let peer_id = config.peer_id;
+            let peer = this.peers[peer_id];
+            let remote_description = config.session_description;
             console.log(config.session_description);
-            var desc = new RTCSessionDescription(remote_description);
-            var stuff = peer.setRemoteDescription(desc, 
+            let desc = new RTCSessionDescription(remote_description);
+            let stuff = peer.setRemoteDescription(desc, 
                 function() {
                     console.log("setRemoteDescription succeeded");
                     if (remote_description.type == "offer") {
@@ -171,11 +140,10 @@ class GroupChat extends React.Component {
                                 console.log("Answer description is: ", local_description);
                                 peer.setLocalDescription(local_description,
                                     function() { 
-                                        signaling_socket.emit('relaySessionDescription', 
+                                        this.signaling_socket.emit('relaySessionDescription', 
                                             {'peer_id': peer_id, 'session_description': local_description});
                                         console.log("Answer setLocalDescription succeeded");
                                     },
-                                    function() { Alert("Answer setLocalDescription failed!"); }
                                 );
                             },
                             function(error) {
@@ -190,94 +158,107 @@ class GroupChat extends React.Component {
             );
             console.log("Description Object: ", desc);
         });
-        /**
-         * The offerer will send a number of ICE Candidate blobs to the answerer so they 
-         * can begin trying to find the best path to one another on the net.
-         */
-        signaling_socket.on('iceCandidate', function(config) {
-            var peer = peers[config.peer_id];
-            var ice_candidate = config.ice_candidate;
+
+        this.signaling_socket.on('iceCandidate', function(config) {
+            let peer = this.peers[config.peer_id];
+            let ice_candidate = config.ice_candidate;
             peer.addIceCandidate(new RTCIceCandidate(ice_candidate));
         });
-        /**
-         * When a user leaves a channel (or is disconnected from the
-         * signaling server) everyone will recieve a 'removePeer' message
-         * telling them to trash the media channels they have open for those
-         * that peer. If it was this client that left a channel, they'll also
-         * receive the removePeers. If this client was disconnected, they
-         * wont receive removePeers, but rather the
-         * signaling_socket.on('disconnect') code will kick in and tear down
-         * all the peer sessions.
-         */
-        signaling_socket.on('removePeer', function(config) {
-            console.log('Signaling server said to remove peer:', config);
-            var peer_id = config.peer_id;
-            if (peer_id in peer_media_elements) {
-                peer_media_elements[peer_id].remove();
-            }
-            if (peer_id in peers) {
-                peers[peer_id].close();
-            }
-            delete peers[peer_id];
-            delete peer_media_elements[config.peer_id];
-        });
 
-        /***********************/
-        /** Local media stuff **/
-        /***********************/
-        function setup_local_media(callback, errorback) {
-            if (local_media_stream != null) {  /* ie, if we've already been initialized */
-                if (callback) callback();
-                return; 
+        this.signaling_socket.on('removePeer', function(config) {
+            console.log('Signaling server said to remove peer:', config);
+            let peer_id = config.peer_id;
+            if (peer_id in this.peer_media_elements) {
+                this.peer_media_elements[peer_id].remove();
             }
-            /* Ask user for permission to use the computers microphone and/or camera, 
-                * attach it to an <audio> or <video> tag if they give us access. */
-            console.log("Requesting access to local audio / video inputs");
-            navigator.getUserMedia = ( navigator.getUserMedia ||
-                    navigator.webkitGetUserMedia ||
-                    navigator.mozGetUserMedia ||
-                    navigator.msGetUserMedia);
-            navigator.getUserMedia({"audio":USE_AUDIO, "video":USE_VIDEO},
-                function(stream) { /* user accepted access to a/v */
-                    console.log("Access granted to audio/video");
-                    local_media_stream = stream;
-                    var local_media = document.getElementById('localVideo');
-                    //var local_media = `<video height="100" width="100" id="localVideo" autoPlay muted='true'></video>`;
-                    // local_media.attr("autoplay", "autoplay");
-                    // local_media.attr("muted", "true"); /* always mute ourselves by default */
-                    // local_media.attr("controls", "");
-                    //$('body').append(local_media);
-                    attachMediaStream(local_media, stream);
-                    if (callback) callback();
-                },
-                function() { /* user denied access to a/v */
-                    console.log("Access denied for audio/video");
-                    alert("You chose not to provide access to the camera/microphone, demo will not work.");
-                    if (errorback) errorback();
-                });
+            if (peer_id in this.peers) {
+                this.peers[peer_id].close();
+            }
+            delete this.peers[peer_id];
+            delete this.peer_media_elements[config.peer_id];
+        });
+    }
+
+    attachMediaStream = function (element, stream) {
+        element.srcObject = stream;
+    };
+
+    setLocalMediaStream = function(stream) {
+        let local_media = document.createElement('video');
+        local_media.setAttribute("autoPlay", "");
+        local_media.setAttribute("height", "100");
+        local_media.setAttribute("width", "100");
+        local_media.setAttribute("id", 'localVideoStream');
+        local_media.setAttribute("muted", "true");
+        document.getElementById('localVideo').append(local_media);
+        if (this.local_media_stream === null) {
+            this.local_media_stream = stream
         }
+        this.attachMediaStream(local_media, this.local_media_stream);
+    }
+
+    setup_local_media = function (callback, errorback) {
+        if (this.local_media_stream != null) {  
+            this.setLocalMediaStream()
+            if (callback) callback();
+            return; 
+        }
+        console.log("Requesting access to local audio / video inputs");
+        navigator.getUserMedia = ( navigator.getUserMedia ||
+                navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia ||
+                navigator.msGetUserMedia); 
+        let setLocalMediaStream = this.setLocalMediaStream;
+        let attachMediaStream = this.attachMediaStream;            
+        navigator.getUserMedia({"audio":'true', "video":'true'},
+            function(stream) { 
+                setLocalMediaStream(stream);
+                if (callback) callback();
+            },
+            function() { 
+                console.log("Access denied for audio/video");
+                if (errorback) errorback();
+            });
+    }
+
+
+    join_chat_channel = function (channel, userdata) {
+        this.signaling_socket.emit('join', {"channel": channel, "userdata": userdata});
+    }
+        
+    part_chat_channel = function (channel) {
+        this.signaling_socket.emit('part', channel);
+        document.getElementById('localVideoStream').remove();
+        //this.signaling_socket.emit('disconnect')
     }
 
     startVideo = function () {
         console.log('In startVideo')
+        let join_chat_channel = this.join_chat_channel
+        let DEFAULT_CHANNEL = 'videochat';
+        this.setup_local_media(function() {
+            join_chat_channel(DEFAULT_CHANNEL, {'first video chat': 'user1'});
+        });
     }
 
     endVideo = function () {
-
+        this.part_chat_channel('videochat')
     }
 
     //render audio/video
     render() {
         return (
             <div id="remotesVideos">
-                <video height="100" width="100" id="localVideo" autoPlay></video>
-                    {/* <div>
-                    <button id="callButton">Call</button> 
+                <div>
                     <Button.Group labeled>
                         <Button circular icon='play' id="startButton" size='small' color='green' onClick={this.startVideo.bind(this)}/>
                         <Button circular icon='stop' id="hangupButton" size='small' color='red' onClick={this.endVideo.bind(this)} />
                     </Button.Group>
-                </div>  */}
+                </div>
+                <div id='localVideo'>
+                </div>    
+                <div id='peers'>
+               </div>     
             </div>
         )
     }

@@ -20,7 +20,7 @@ class RightMenu extends Component {
   render() {
     const { visible } = this.state
     return (
-      <Sidebar as={Menu} direction='right' animation='push' width='thin' visible={visible} icon='labeled' vertical inverted color='black' >
+      <Sidebar as={Menu} direction='right' animation='push' width='thin' visible={visible} icon='labeled' vertical >
         <Menu.Item name='mail'>
           <Icon name='video' />
           Video Chat

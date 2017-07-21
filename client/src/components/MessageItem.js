@@ -1,5 +1,5 @@
 import React from 'react';
-import {Comment, Message, Icon} from 'semantic-ui-react';
+import {Comment, Message, Icon, Segment} from 'semantic-ui-react';
 
 const MessageItem = (props) => (
   <Comment as={Message}>

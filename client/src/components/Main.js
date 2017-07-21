@@ -12,26 +12,31 @@ import RightMenu from './RightMenu';
 const Main = () => (
     <Sidebar.Pushable>
       {/* <LeftMenu/> */}
-      <LeftMenuContainer/>
       <Sidebar.Pusher>
-        <Grid color='black'>
-          <Grid.Column width={12} >
+        <Grid>
+          <Grid.Column width={2}>
+              <LeftMenuContainer/>
+          </Grid.Column>  
+          <Grid.Column>
+          </Grid.Column>  
+          <Grid.Column width={10} >
             <Grid.Row>
               <NavBar /> 
             </Grid.Row>
-            <Segment.Group raised>
-              <Segment vertical attached='top'>
-                <MessageContainer />
-              </Segment>
-              <Segment attached='bottom'>  
-                <InputContainer />
-              </Segment>  
-            </Segment.Group>
+            <Grid.Row>
+              <MessageContainer />
+            </Grid.Row>
+            <Grid.Row>
+              <InputContainer />
+            </Grid.Row>  
           </Grid.Column> 
+          <Grid.Column>
+            <RightMenu />
+          </Grid.Column>  
         </Grid>
       </Sidebar.Pusher> 
-      <RightMenu />
     </Sidebar.Pushable>
+    
 )
 
 export default Main;
