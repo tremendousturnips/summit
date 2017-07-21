@@ -2,14 +2,10 @@ import React, { Component } from 'react'
 import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Label} from 'semantic-ui-react'
 
 const ChannelList = ({ channels, selectChannel }) => (
-<<<<<<< HEAD
   <Menu vertical fluid>
-=======
-  <Menu vertical inverted color='black' fluid>
->>>>>>> Never go back
     {console.log(channels, selectChannel)}
     {channels.map((channel, index) => (
-      <Menu.Item key={channel.id} onClick={()=>{selectChannel(channel.id)}}>{channel.name}</Menu.Item>)
+      <Menu.Item key={channel.id} onClick={()=>{selectChannel(channel)}}>{channel.name}</Menu.Item>)
     )}
   </Menu>
 );

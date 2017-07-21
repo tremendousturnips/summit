@@ -17,7 +17,7 @@ class MessageInput extends Component {
     let message = {
       user_id: this.props.user.id,
       text: this.state.text,
-      channel_id: 1
+      channel_id: this.props.currentChannel.id
     };
     this.props.postMessage(message);
     this.setState({
