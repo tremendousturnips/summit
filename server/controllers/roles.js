@@ -14,6 +14,26 @@ module.exports = {
       .catch(err => {
         res.status(503).send(`ERROR fetching profiles for room ${req.params.id}:`, err);
       });
+  },
+
+  saveRole: (req, res) => {
+    console.log('scott', req);
+
+    const { room_id, user_id, privilege_level } = req.body;
+
+    Role.forge({
+      room_id: parseInt(room_id),
+      user_id: parseInt(user_id),
+      privilege_level: privilege_level
+    })
+      .save()
+      .then(role => {
+        res.status(200).json(role);
+      })
+      .catch(err => {
+        console.log('ERROR saving message:', err);
+        res.status(503).send(err);
+      });
   }
 };
 // module.exports = {
