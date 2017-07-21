@@ -43,8 +43,14 @@ io.on('connection', socket => {
   socket.on('send', message => {
     socket.to(message.channel_id).emit('message', message);
   });
+<<<<<<< HEAD
   socket.on('subscribe', roomId => {
     socket.join(roomId);
+=======
+  socket.on('subscribe', roomid => {
+    console.log('subscribed to namespace:', roomid);
+    socket.join(roomid);
+>>>>>>> Attempt to join all socket namespaces upon fetchChannels success
   });
   socket.on('unsubscribe', roomId => {
     socket.leave(roomId);
