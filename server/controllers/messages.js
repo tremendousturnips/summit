@@ -3,17 +3,17 @@ const { Direct } = require('../../db/models');
 
 module.exports = {
   getChannelMessages: (req, res) => {
-    Message.where({ channel_id: req.params.channelId })
+    Message.where({ channel_id: req.params.channel_id })
       .fetchAll()
       .then(room => res.status(200).send(room))
       .catch(err => {
-        console.log('ERROR fetching messages for channelId', req.params.channelId, ':', err);
+        console.log('ERROR fetching messages for channel_id', req.params.channel_id, ':', err);
         res.status(503).send(err);
       });
   },
 
   saveMessage: (req, res) => {
-    const { text, userId, channelId, toUserId } = req.body;
+    const { text, user_id, channel_id, to_user_id } = req.body;
 
     Message.forge({
       text: text,
@@ -22,9 +22,9 @@ module.exports = {
     })
       .save()
       .then(message => {
-        if (toUserId) {
+        if (to_user_id) {
           Direct.forge({
-            to_user_id: toUserId,
+            to_user_id: to_user_id,
             message_id: message.id
           }).save();
         }
@@ -37,8 +37,8 @@ module.exports = {
   },
 
   getDirectMessages: (req, res) => {
-    const { userId, toUserId } = req.params;
-    Direct.query({ where: { to_user_id: toUserId }, orWhere: { to_user_id: userId } } )
+    const { user_id, to_user_id } = req.params;
+    Direct.query({ where: { to_user_id: user_id }, orWhere: { to_user_id } })
       .fetchAll({ withRelated: ['message'] })
       .then(directs => {
         const messages = directs.toJSON().map(direct => direct.message);

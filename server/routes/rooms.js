@@ -8,6 +8,6 @@ router.route('/:id/users').get(RoleController.getUsersInRoom);
 
 router.route('/:id/channels').get(ChannelController.getAll);
 
-router.route('/:id/channels/:channelId/messages').get(MessageController.getChannelMessages);
+router.route('/:id/channels/:channel_id/messages').get(MessageController.getChannelMessages);
 
 module.exports = router;

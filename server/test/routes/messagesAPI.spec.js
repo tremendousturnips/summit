@@ -17,9 +17,9 @@ describe('Messages API', function() {
 
   it('accepts POST requests to /api/messages', function(done) {
     let message = {
-      'text': 'some text',
-      'userId': 1,
-      'channelId': 2
+      text: 'some text',
+      user_id: 1,
+      channel_id: 2
     };
 
     request(app)
