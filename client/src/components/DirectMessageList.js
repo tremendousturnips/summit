@@ -6,7 +6,11 @@ let dmList = [
   'DUDE 3'
 ]
 const DirectMessageList = (props) => (
+<<<<<<< HEAD
   <Menu vertical fluid>
+=======
+  <Menu vertical inverted color='black' fluid>
+>>>>>>> Never go back
     {dmList.map((channel, index) => (
       <Menu.Item key={index}>{channel}</Menu.Item>)
     )}
