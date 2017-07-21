@@ -41,7 +41,7 @@ let sockets = {};
 
 io.on('connection', socket => {
   socket.on('send', message => {
-    io.to(message.channel_id).emit('message', message);
+    socket.to(message.channel_id).emit('message', message);
   });
   socket.on('subscribe', roomId => {
     socket.join(roomId);
