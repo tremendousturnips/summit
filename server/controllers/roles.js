@@ -17,8 +17,6 @@ module.exports = {
   },
 
   saveRole: (req, res) => {
-    console.log('scott', req);
-
     const { room_id, user_id, privilege_level } = req.body;
 
     Role.forge({

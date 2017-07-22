@@ -34,9 +34,8 @@ const Main = () => (
             <RightMenu />
           </Grid.Column>
         </Grid>
-      </Sidebar.Pusher> 
+      </Sidebar.Pusher>
     </Sidebar.Pushable>
-    
-)
+);
 
 export default Main;

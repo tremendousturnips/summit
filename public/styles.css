@@ -1,14 +1,27 @@
-
 body {
-  /* padding-top:80px; */
-  /* background-color:black; */
-   color: royalblue;
+  color: royalblue;
 }
 
-div#root {
+#root {
   height: 100%;
-  width:100%;
+  width: 100%;
 }
-/* div.ui.segment {
-  height: 100% 
-} */
+
+.ui.comments {
+  max-width: 100vw;
+  max-height: 75vh;
+  overflow-y: scroll;
+  margin: 2rem 1rem !important;
+  border: .1rem solid #eee;
+  border-radius: .3rem;
+}
+
+.ui.message.comment {
+  margin: .7rem !important;
+  box-shadow: none;
+}
+
+form.ui.form {
+  width: 100%;
+  margin: 0 auto;
+}
