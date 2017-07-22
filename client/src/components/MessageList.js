@@ -11,7 +11,7 @@ class MessageList extends Component {
     fetchMessages(1,1);
   }
   render () {
-    const { messages } = this.props;
+    const { messages, profiles } = this.props;
     return (
       <Comment.Group>
         {messages.map((message, index) => <MessageItem message={message} key={index}/> )}

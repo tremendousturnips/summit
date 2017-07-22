@@ -4,13 +4,15 @@ import user from './user';
 import socket from './socket';
 import channels from './channels';
 import currentChannel from './currentChannel';
+import profiles from './profiles';
 
 const rootReducer = combineReducers({
   user,
   socket,
   messages,
   channels,
-  currentChannel
+  currentChannel,
+  profiles
 });
 
 export default rootReducer;

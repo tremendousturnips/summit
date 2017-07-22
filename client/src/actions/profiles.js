@@ -12,8 +12,9 @@ export const addProfile = profile => ({
 export const fetchProfiles = (roomId) => {
   return (dispatch, getState) => {
     axios(`/api/rooms/${roomId}/profiles`)
-      .then( (profiles) => {
-        console.log(profiles);
+      .then( (res) => {
+        console.log(res.data);
+        dispatch(setProfiles(res.data));
       })
   }
 }
