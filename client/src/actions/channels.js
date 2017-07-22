@@ -10,21 +10,32 @@ export const addChannel = channel => ({
   channel
 });
 
+
 export const selectChannel = channel => ({
   type: 'SELECT_CHANNEL',
   channel
 });
 
-// export const requestChannels = room => {
-//   type: 'REQUEST_CHANNELS',
-//   room
-// }
+export const changeChannel = channel => {
+
+}
+
+export const joinChannels = (channels, socket) => {
+  console.log('in join channels', channels);
+  console.log(socket);
+  channels.forEach(channel => {
+    socket.emit('subscribe', channel.id);
+  });
+}
 
 export const fetchChannels = roomId => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     axios.get(`/api/rooms/${roomId}/channels`)
       .then((res) => {
         dispatch(setChannels(res.data));
-      });
+      })
+      .then(() => {
+        joinChannels(getState().channels, getState().socket);
+      })
   };
 };

@@ -1,8 +1,7 @@
 
-const currentChannel = (state = 1, action) => {
+const currentChannel = (state = {}, action) => {
   switch (action.type) {
   case 'SELECT_CHANNEL':
-    console.log('selecting channels');
     return action.channel;
   default:
     return state;

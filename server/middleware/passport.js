@@ -182,7 +182,19 @@ const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
       }
       return oauthAccount.related('profile');
     })
+    //PURPOSE OF THE TAP BELOW is to give each user by default a role in ROOM 1
+    //TODO: MOVE THIS SOMEWHERE ELSE THAT MAKES SENSE AND WILL ONLY TRIGGER WHEN A USER JOINS A ROOM. ONLY HERE FOR DEMO PURPOSES
+    .tap((profile) => {
+      console.log(profile.id);
+      const role = {
+        room_id: 1,
+        user_id: profile.id,
+        privilege_level: "guest"
+      }
+      return models.Role.forge(role).save();
+    })
     .then(profile => {
+      console.log(profile);
       if (profile) {
         done(null, profile.serialize());
       }

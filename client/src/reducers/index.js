@@ -8,8 +8,8 @@ import currentChannel from './currentChannel';
 
 const rootReducer = combineReducers({
   user,
-  messages,
   socket,
+  messages,
   channels,
   currentChannel
 });
