@@ -7,76 +7,84 @@ class GroupChat extends React.Component {
 
     constructor(props) {
         super (props)
-        this.signaling_socket = this.props.socket;  
-        this.local_media_stream = null; 
+        this.signalingSocket = this.props.socket;  
+        this.localMediaStream = null; 
         this.peers = {};               
-        this.peer_media_elements = {}; 
+        this.peerMediaElements = {}; 
 
         this.startVideo = this.startVideo.bind(this)
         this.endVideo = this.endVideo.bind(this)
         this.attachMediaStream = this.attachMediaStream.bind(this)
         this.setLocalMediaStream = this.setLocalMediaStream.bind(this)
-        this.setup_local_media = this.setup_local_media.bind(this)
-        this.join_chat_channel = this.join_chat_channel.bind(this)
-        this.part_chat_channel = this.part_chat_channel.bind(this)
+        this.setupLocalMedia = this.setupLocalMedia.bind(this)
+        this.joinChatChannel = this.joinChatChannel.bind(this)
+        this.partChatChannel = this.partChatChannel.bind(this)
+        this.getLocalMediaStream = this.getLocalMediaStream.bind(this)
+        this.pauseMediaStream = this.pauseMediaStream.bind(this)
 
     }
-
-    // componentWillMount() {
-    //     console.log('url', window.location.href);
-    //     let socket = this.socket
-        
-    // }
 
     componentDidMount() {
 
         var ICE_SERVERS = [{"url":"stun:global.stun.twilio.com:3478?transport=udp"},
         {"url":"turn:global.turn.twilio.com:3478?transport=udp",
-        "username":"f65cf69e15b57ecc4f6b9d5fc0e4242b244b50d7dae1c7bf9133ea2a3b86081c",
-        "credential":"3CYsqO4NpVKT4uLXjndrXgCn1wMBv86rabLYZZdM6NE="},
+        "username":"21ec244c825a533da292cef0169c27004ddfaa8263a058f05ac0581502f5eef7",
+        "credential":"+H38m72VGDFW/JNI8dk8fGpDSbAPPiKVy9tC9jjUxaY="},
         {"url":"turn:global.turn.twilio.com:3478?transport=tcp",
-        "username":"f65cf69e15b57ecc4f6b9d5fc0e4242b244b50d7dae1c7bf9133ea2a3b86081c",
-        "credential":"3CYsqO4NpVKT4uLXjndrXgCn1wMBv86rabLYZZdM6NE="},
+        "username":"21ec244c825a533da292cef0169c27004ddfaa8263a058f05ac0581502f5eef7",
+        "credential":"+H38m72VGDFW/JNI8dk8fGpDSbAPPiKVy9tC9jjUxaY="},
         {"url":"turn:global.turn.twilio.com:443?transport=tcp",
-        "username":"f65cf69e15b57ecc4f6b9d5fc0e4242b244b50d7dae1c7bf9133ea2a3b86081c",
-        "credential":"3CYsqO4NpVKT4uLXjndrXgCn1wMBv86rabLYZZdM6NE="}];
+        "username":"21ec244c825a533da292cef0169c27004ddfaa8263a058f05ac0581502f5eef7",
+        "credential":"+H38m72VGDFW/JNI8dk8fGpDSbAPPiKVy9tC9jjUxaY="}];
 
         let USE_AUDIO = true;
         let USE_VIDEO = true;
         let MUTE_AUDIO_BY_DEFAULT = true;
+        let localMediaStream = this.localMediaStream; 
+        let peers = this.peers;               
+        let peerMediaElements = this.peerMediaElements;
+        let signalingSocket = this.signalingSocket;
+        let attachMediaStream = this.attachMediaStream;
+        let getLocalMediaStream = this.getLocalMediaStream;
 
-        this.signaling_socket.on('connect', function() {
+        this.signalingSocket.on('connect', function() {
             console.log("Connected to signaling server");
         });
 
-        this.signaling_socket.on('disconnect', function() {
+        this.signalingSocket.on('disconnect', function() {
             console.log("Disconnected from signaling server");
  
-            for (var peer_id in this.peer_media_elements) {
-                this.peer_media_elements[peer_id].remove();
+            for (var peer_id in peerMediaElements) {
+                peerMediaElements[peer_id].remove();
             }
-            for (var peer_id in this.peers) {
-                this.peers[peer_id].close();
+            for (var peer_id in peers) {
+                peers[peer_id].close();
             }
-            this.peers = {};
-            this.peer_media_elements = {};
+            peers = {};
+            peerMediaElements = {};
         });
 
-        this.signaling_socket.on('addPeer', function(config) {
-            console.log('Signaling server said to add peer:', config);
+
+
+        this.signalingSocket.on('addPeer', function(config) {
+
             let peer_id = config.peer_id;
-            if (this.peers[peer_id]) {
+            if (peers[peer_id] !== undefined) {
                 console.log("Already connected to peer ", peer_id);
                 return;
             }
+
             var peer_connection = new RTCPeerConnection(
                 {"iceServers": ICE_SERVERS},
                 {"optional": [{"DtlsSrtpKeyAgreement": true}]} 
             );
-            this.peers[peer_id] = peer_connection;
+
+            peers[peer_id] = peer_connection;
+
             peer_connection.onicecandidate = function(event) {
+                console.log('In on icecandicate')
                 if (event.candidate) {
-                    this.signaling_socket.emit('relayICECandidate', {
+                    signalingSocket.emit('relayICECandidate', {
                         'peer_id': peer_id, 
                         'ice_candidate': {
                             'sdpMLineIndex': event.candidate.sdpMLineIndex,
@@ -96,10 +104,32 @@ class GroupChat extends React.Component {
                 if (MUTE_AUDIO_BY_DEFAULT) {
                     remote_media.setAttribute("muted", "true");
                 }
-                this.peer_media_elements[peer_id] = remote_media;
+                peerMediaElements[peer_id] = remote_media;
                 document.getElementById('peers').append(remote_media);
                 attachMediaStream(remote_media, event.stream);
             }
+
+            peer_connection.ontrack = function(event) {
+                console.log("ontrack", event);
+                let remote_media = document.createElement('video');
+                //var remote_media = USE_VIDEO ? $("<video>") : $("<audio>");
+                remote_media.setAttribute("autoPlay", "");
+                remote_media.setAttribute("height", "100");
+                remote_media.setAttribute("width", "100");
+                remote_media.setAttribute("id", peer_id);
+                if (MUTE_AUDIO_BY_DEFAULT) {
+                    remote_media.setAttribute("muted", "true");
+                }
+                peerMediaElements[peer_id] = remote_media;
+                document.getElementById('peers').append(remote_media);
+                attachMediaStream(remote_media, event.stream);
+            }
+            
+            if (localMediaStream === undefined || localMediaStream === null) {
+                localMediaStream = getLocalMediaStream()
+            }
+
+            peer_connection.addStream(localMediaStream);
 
             if (config.should_create_offer) {
                 console.log("Creating RTC offer to ", peer_id);
@@ -108,7 +138,7 @@ class GroupChat extends React.Component {
                         console.log("Local offer description is: ", local_description);
                         peer_connection.setLocalDescription(local_description,
                             function() { 
-                                this.signaling_socket.emit('relaySessionDescription', 
+                                signalingSocket.emit('relaySessionDescription', 
                                     {'peer_id': peer_id, 'session_description': local_description});
                                 console.log("Offer setLocalDescription succeeded"); 
                             },
@@ -120,15 +150,15 @@ class GroupChat extends React.Component {
                     });
             }
             
-            peer_connection.addStream(this.local_media_stream);
         });
     
-        this.signaling_socket.on('sessionDescription', function(config) {
+        this.signalingSocket.on('sessionDescription', function(config) {
             console.log('Remote description received: ', config);
             let peer_id = config.peer_id;
-            let peer = this.peers[peer_id];
+            let peer = peers[peer_id];
             let remote_description = config.session_description;
             console.log(config.session_description);
+
             let desc = new RTCSessionDescription(remote_description);
             let stuff = peer.setRemoteDescription(desc, 
                 function() {
@@ -140,10 +170,11 @@ class GroupChat extends React.Component {
                                 console.log("Answer description is: ", local_description);
                                 peer.setLocalDescription(local_description,
                                     function() { 
-                                        this.signaling_socket.emit('relaySessionDescription', 
+                                        signalingSocket.emit('relaySessionDescription', 
                                             {'peer_id': peer_id, 'session_description': local_description});
                                         console.log("Answer setLocalDescription succeeded");
                                     },
+                                    function() { Alert("Answer setLocalDescription failed!"); }
                                 );
                             },
                             function(error) {
@@ -159,29 +190,38 @@ class GroupChat extends React.Component {
             console.log("Description Object: ", desc);
         });
 
-        this.signaling_socket.on('iceCandidate', function(config) {
-            let peer = this.peers[config.peer_id];
+        this.signalingSocket.on('iceCandidate', function(config) {
+            let peer = peers[config.peer_id];
             let ice_candidate = config.ice_candidate;
             peer.addIceCandidate(new RTCIceCandidate(ice_candidate));
         });
 
-        this.signaling_socket.on('removePeer', function(config) {
+        this.signalingSocket.on('removePeer', function(config) {
             console.log('Signaling server said to remove peer:', config);
             let peer_id = config.peer_id;
-            if (peer_id in this.peer_media_elements) {
-                this.peer_media_elements[peer_id].remove();
+            if (peer_id in peerMediaElements) {
+                peerMediaElements[peer_id].remove();
             }
-            if (peer_id in this.peers) {
-                this.peers[peer_id].close();
+            if (peer_id in peers) {
+                peers[peer_id].close();
             }
-            delete this.peers[peer_id];
-            delete this.peer_media_elements[config.peer_id];
+            delete peers[peer_id];
+            delete peerMediaElements[config.peer_id];
         });
     }
 
     attachMediaStream = function (element, stream) {
         element.srcObject = stream;
     };
+
+    pauseMediaStream = function (element, stream) {
+        element.pause()
+        element.srcObject = "";
+    }
+    
+    getLocalMediaStream = function () {
+        return this.localMediaStream
+    }
 
     setLocalMediaStream = function(stream) {
         let local_media = document.createElement('video');
@@ -191,14 +231,16 @@ class GroupChat extends React.Component {
         local_media.setAttribute("id", 'localVideoStream');
         local_media.setAttribute("muted", "true");
         document.getElementById('localVideo').append(local_media);
-        if (this.local_media_stream === null) {
-            this.local_media_stream = stream
+        if (this.localMediaStream === null) {
+            this.localMediaStream = stream
+            console.log('localMediaStream after udate0.1', Object.keys(this.localMediaStream).length)
         }
-        this.attachMediaStream(local_media, this.local_media_stream);
+        console.log('localMediaStream after udate', this.localMediaStream )
+        this.attachMediaStream(local_media, this.localMediaStream);
     }
 
-    setup_local_media = function (callback, errorback) {
-        if (this.local_media_stream != null) {  
+    setupLocalMedia = function (callback, errorback) {
+        if (this.localMediaStream != null) {  
             this.setLocalMediaStream()
             if (callback) callback();
             return; 
@@ -222,27 +264,34 @@ class GroupChat extends React.Component {
     }
 
 
-    join_chat_channel = function (channel, userdata) {
-        this.signaling_socket.emit('join', {"channel": channel, "userdata": userdata});
+    joinChatChannel = function (channel, userdata) {
+        this.signalingSocket.emit('join', {"channel": channel, "userdata": userdata});
     }
         
-    part_chat_channel = function (channel) {
-        this.signaling_socket.emit('part', channel);
+    partChatChannel = function (channel) {
+        this.signalingSocket.emit('part', channel);
         document.getElementById('localVideoStream').remove();
-        //this.signaling_socket.emit('disconnect')
+        for (let track of this.localMediaStream.getTracks()) {
+            track.stop()
+        }
+        this.localMediaStream = null
     }
 
     startVideo = function () {
         console.log('In startVideo')
-        let join_chat_channel = this.join_chat_channel
+        let joinChatChannel = this.joinChatChannel
         let DEFAULT_CHANNEL = 'videochat';
-        this.setup_local_media(function() {
-            join_chat_channel(DEFAULT_CHANNEL, {'first video chat': 'user1'});
+        this.setupLocalMedia(function() {
+            joinChatChannel(DEFAULT_CHANNEL, {'first video chat': 'user1'});
         });
     }
 
     endVideo = function () {
-        this.part_chat_channel('videochat')
+        if (this.localMediaStream === null) {
+            return
+        }
+        this.partChatChannel('videochat');
+        //this.signalingSocket.emit('disconnect', 'videochat');
     }
 
     //render audio/video

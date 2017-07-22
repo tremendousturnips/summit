@@ -18,15 +18,16 @@ const config = {
       url: 'stun:global.stun.twilio.com:3478?transport=udp'
     }
   ],
-  turnservers: [
-    {
-      // "urls": ["turn:your.turn.servers.here"],
-      // "secret": "turnserversharedsecret",
-      // "expiry": 86400
-      url: 'turn:global.turn.twilio.com:3478?transport=tcp',
-      username: 'f65cf69e15b57ecc4f6b9d5fc0e4242b244b50d7dae1c7bf9133ea2a3b86081c',
-      credential: '3CYsqO4NpVKT4uLXjndrXgCn1wMBv86rabLYZZdM6NE='
-    }
+  "turnservers": [
+  {"url":"turn:global.turn.twilio.com:3478?transport=udp",
+        "username":"21ec244c825a533da292cef0169c27004ddfaa8263a058f05ac0581502f5eef7",
+        "credential":"+H38m72VGDFW/JNI8dk8fGpDSbAPPiKVy9tC9jjUxaY="},
+        {"url":"turn:global.turn.twilio.com:3478?transport=tcp",
+        "username":"21ec244c825a533da292cef0169c27004ddfaa8263a058f05ac0581502f5eef7",
+        "credential":"+H38m72VGDFW/JNI8dk8fGpDSbAPPiKVy9tC9jjUxaY="},
+        {"url":"turn:global.turn.twilio.com:443?transport=tcp",
+        "username":"21ec244c825a533da292cef0169c27004ddfaa8263a058f05ac0581502f5eef7",
+        "credential":"+H38m72VGDFW/JNI8dk8fGpDSbAPPiKVy9tC9jjUxaY="}
   ]
 };
 
@@ -41,7 +42,7 @@ let sockets = {};
 
 io.on('connection', socket => {
   socket.on('send', message => {
-    io.to(message.channel_id).emit('message', message);
+    socket.to(message.channel_id).emit('message', message);
   });
   socket.on('subscribe', roomId => {
     socket.join(roomId);
@@ -100,7 +101,7 @@ io.sockets.on('connection', function(socket) {
 
     for (var id in channels[channel]) {
       channels[channel][id].emit('removePeer', { peer_id: socket.id });
-      io.emit('removePeer', { peer_id: id });
+      socket.emit('removePeer', { peer_id: id });
     }
   }
 
