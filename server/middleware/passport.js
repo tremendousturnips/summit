@@ -139,10 +139,11 @@ const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
     withRelated: ['profile']
   })
     .then(oauthAccount => {
+      
       // commented out so profile information will update on every log-in
-      // if (oauthAccount) {
-      //   throw oauthAccount;
-      // }
+      if (oauthAccount) {
+        throw oauthAccount;
+      }
 
       if (!oauthProfile.emails || !oauthProfile.emails.length) {
         // FB users can register with a phone number, which is not exposed by Passport
@@ -185,16 +186,18 @@ const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
     //PURPOSE OF THE TAP BELOW is to give each user by default a role in ROOM 1
     //TODO: MOVE THIS SOMEWHERE ELSE THAT MAKES SENSE AND WILL ONLY TRIGGER WHEN A USER JOINS A ROOM. ONLY HERE FOR DEMO PURPOSES
     .tap((profile) => {
-      console.log(profile.id);
-      const role = {
+      const tempRole = {
         room_id: 1,
-        user_id: profile.id,
-        privilege_level: "guest"
+        user_id: profile.id
       }
-      return models.Role.forge(role).save();
+      models.Role.forge(tempRole).fetch().then((role)=>{
+        if (!role) {
+          tempRole.privilege_level = 'guest';
+          models.Role.forge(tempRole).save()
+        }
+      });
     })
     .then(profile => {
-      console.log(profile);
       if (profile) {
         done(null, profile.serialize());
       }
