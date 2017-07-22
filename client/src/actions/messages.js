@@ -23,11 +23,7 @@ export const receiveMessages = (room, data) => {
 };
 
 export const sendMessage = message => ({
-<<<<<<< HEAD
   type: SEND_MESSAGE,
-=======
-  type: 'SEND_MESSAGE',
->>>>>>> add profile action adn reducer
   message
 });
 
