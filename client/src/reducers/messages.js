@@ -1,14 +1,16 @@
+import { SET_MESSAGES, ADD_MESSAGE, RECEIVE_MESSAGES, SEND_MESSAGE } from '../actions/actionTypes';
+
 const messages = (state = [], action) => {
   switch (action.type) {
-  case 'SET_MESSAGES':
+  case SET_MESSAGES:
     return action.messages;
-  case 'ADD_MESSAGE':
+  case ADD_MESSAGE:
     action.message.created_at = Date();
     return [...state, action.message];
-  case 'RECEIEVE_MESSAGES':
+  case RECEIEVE_MESSAGES:
     //unused
     return action.messages;
-  case 'SEND_MESSAGE':
+  case SEND_MESSAGE:
   default:
     return state;
   }

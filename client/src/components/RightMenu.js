@@ -1,15 +1,14 @@
-import React, { Component } from 'react'
-import { Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react';
 
 import GroupChatContainer from '../containers/GroupChatContainer';
 
 class RightMenu extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { 
+    this.state = {
       visible: true,
-      activeItem: 'tab1' 
+      activeItem: 'tab1'
     };
   }
 
@@ -18,14 +17,22 @@ class RightMenu extends Component {
   }
 
   render() {
-    const { visible } = this.state
+    const { visible } = this.state;
     return (
-      <Sidebar as={Menu} direction='right' animation='push' width='thin' visible={visible} icon='labeled' vertical >
-        <Menu.Item name='mail'>
-          <Icon name='video' />
+      <Sidebar
+        as={Menu}
+        direction="right"
+        animation="push"
+        width="thin"
+        visible={visible}
+        icon="labeled"
+        vertical
+      >
+        <Menu.Item name="mail">
+          <Icon name="video" />
           Video Chat
         </Menu.Item>
-        <Menu.Item >
+        <Menu.Item>
           <Menu.Header>Live Streaming</Menu.Header>
         </Menu.Item>
         <Menu.Item>
