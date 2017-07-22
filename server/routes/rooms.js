@@ -4,7 +4,7 @@ const { RoleController, RoomController, ChannelController, MessageController } =
 
 
 
-router.route('/:id/users').get(RoleController.getUsersInRoom);
+router.route('/:id/profiles').get(RoleController.getUsersInRoom);
 
 router.route('/:id/channels').get(ChannelController.getAll);
 
