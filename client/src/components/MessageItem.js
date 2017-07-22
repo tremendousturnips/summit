@@ -5,7 +5,7 @@ const MessageItem = (props) => (
   <Comment as={Message}>
     <Icon name='user'/>
     <Comment.Content>
-      <Comment.Author as='a'>{props.message.user_id}</Comment.Author>
+      <Comment.Author as='a'>{props.profile.display}</Comment.Author>
       <Comment.Metadata>
         <div>{props.message.created_at}</div>
       </Comment.Metadata>

@@ -14,7 +14,7 @@ class MessageList extends Component {
     const { messages, profiles } = this.props;
     return (
       <Comment.Group>
-        {messages.map((message, index) => <MessageItem message={message} key={index}/> )}
+        {messages.map((message, index) => <MessageItem profile={profiles[message.user_id]} message={message} key={index}/> )}
       </Comment.Group>
     );
   }
