@@ -34,7 +34,6 @@ describe(`${modelName.toUpperCase()} model tests`, function() {
     const updateObj = { name: 'boba guys' };
     const updateCols = Object.keys(updateObj);
     const expected = Object.values(updateObj);
-    Object.keys(updateObj).map((k) => obj[k]);
 
     model.where({ id: 1 })
       .fetch()
