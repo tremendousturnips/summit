@@ -5,7 +5,6 @@ import MessageItem from './MessageItem';
 
 class MessageList extends Component {
   componentDidMount() {
-    console.log(this.props);
     const {socket, addMessage, fetchMessages} = this.props;
     socket.on('message', addMessage);
     fetchMessages(1,1);

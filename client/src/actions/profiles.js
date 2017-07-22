@@ -13,7 +13,6 @@ export const fetchProfiles = (roomId) => {
   return (dispatch, getState) => {
     axios(`/api/rooms/${roomId}/profiles`)
       .then( (res) => {
-        console.log(res.data);
         dispatch(setProfiles(res.data));
       })
   }
