@@ -11,17 +11,15 @@ import RightMenu from './RightMenu';
 
 const Main = () => (
     <Sidebar.Pushable>
-      {/* <LeftMenu/> */}
       <Sidebar.Pusher>
         <Grid>
-          <Grid.Column width={2}>
+          <Grid.Column width={3}>
               <LeftMenuContainer/>
           </Grid.Column>
-          <Grid.Column>
-          </Grid.Column>
-          <Grid.Column width={10} >
+          <Grid.Column width={12} >
             <Grid.Row>
               <NavBar />
+              <RightMenu />
             </Grid.Row>
             <Grid.Row>
               <MessageContainer />
@@ -30,12 +28,37 @@ const Main = () => (
               <InputContainer />
             </Grid.Row>
           </Grid.Column>
-          <Grid.Column>
-            <RightMenu />
-          </Grid.Column>
         </Grid>
       </Sidebar.Pusher>
     </Sidebar.Pushable>
 );
+// const Main = () => (
+//     <Sidebar.Pushable>
+//       {/* <LeftMenu/> */}
+//       <Sidebar.Pusher>
+//         <Grid>
+//           <Grid.Column width={2}>
+//               <LeftMenuContainer/>
+//           </Grid.Column>
+//           <Grid.Column>
+//           </Grid.Column>
+//           <Grid.Column width={10} >
+//             <Grid.Row>
+//               <NavBar />
+//             </Grid.Row>
+//             <Grid.Row>
+//               <MessageContainer />
+//             </Grid.Row>
+//             <Grid.Row>
+//               <InputContainer />
+//             </Grid.Row>
+//           </Grid.Column>
+//           <Grid.Column>
+//             <RightMenu />
+//           </Grid.Column>
+//         </Grid>
+//       </Sidebar.Pusher>
+//     </Sidebar.Pushable>
+// );
 
 export default Main;

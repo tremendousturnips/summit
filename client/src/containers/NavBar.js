@@ -2,7 +2,7 @@ import React from 'react';
 import { Menu, Input } from 'semantic-ui-react';
 
 const NavBar = (props) => (
-  <Menu pointing >
+  <Menu id='nav-bar' pointing >
     <Menu.Item name='home'/>
     <Menu.Item name='messages' />
     <Menu.Item name='friends' />

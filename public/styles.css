@@ -7,9 +7,13 @@ body {
   width: 100%;
 }
 
+#nav-bar {
+  margin-top: 1rem;
+}
+
 .ui.comments {
   max-width: 100vw;
-  max-height: 75vh;
+  max-height: 60vh;
   overflow-y: scroll;
   margin: 2rem 1rem !important;
   border: .1rem solid #eee;
@@ -23,5 +27,5 @@ body {
 
 form.ui.form {
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto 2rem auto;
 }

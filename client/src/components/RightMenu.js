@@ -19,26 +19,20 @@ class RightMenu extends Component {
   render() {
     const { visible } = this.state;
     return (
-      <Sidebar
-        as={Menu}
-        direction="right"
+      <Menu
         animation="push"
-        width="thin"
         visible={visible}
         icon="labeled"
-        vertical
+        horizontal
       >
         <Menu.Item name="mail">
           <Icon name="video" />
           Video Chat
         </Menu.Item>
         <Menu.Item>
-          <Menu.Header>Live Streaming</Menu.Header>
-        </Menu.Item>
-        <Menu.Item>
           <GroupChatContainer />
         </Menu.Item>
-      </Sidebar>
+      </Menu>
     );
   }
 }
