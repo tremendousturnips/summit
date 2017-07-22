@@ -197,6 +197,7 @@ const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
         }
       });
     })
+    //END TEMP TAP
     .then(profile => {
       if (profile) {
         done(null, profile.serialize());
