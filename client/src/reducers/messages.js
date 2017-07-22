@@ -7,7 +7,7 @@ const messages = (state = [], action) => {
   case ADD_MESSAGE:
     action.message.created_at = Date();
     return [...state, action.message];
-  case RECEIEVE_MESSAGES:
+  case RECEIVE_MESSAGES:
     //unused
     return action.messages;
   case SEND_MESSAGE:
