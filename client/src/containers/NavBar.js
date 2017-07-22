@@ -7,6 +7,7 @@ const NavBar = (props) => (
     <Menu.Item name='messages' />
     <Menu.Item name='friends' />
     <Menu.Menu position='right'>
+      <Menu.Item name='join video chat' />
       <Menu.Item>
         <Input icon='users' iconPosition='left' placeholder='Search users...' />
       </Menu.Item>

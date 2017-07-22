@@ -8,7 +8,7 @@ class LeftMenu extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { 
+    this.state = {
       visible: true,
     };
   }
@@ -32,6 +32,7 @@ class LeftMenu extends Component {
           <Image src={user.image} size='tiny' shape='circular' centered />
           <p />
           <Menu.Header>{user.first}</Menu.Header>
+          <a href="/logout">Log Out</a>
         </Menu.Item>
         <Menu.Item >
           <Menu.Header>
