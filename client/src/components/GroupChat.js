@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Segment, Button, Label } from 'semantic-ui-react'; 
+import { Segment, Button, Label, Sidebar, Menu } from 'semantic-ui-react'; 
 import $ from 'jquery';
 import LocalVideo from './LocalVideo';
 
@@ -272,18 +272,14 @@ class GroupChat extends React.Component {
     //render audio/video
     render() {
         return (
-            <div id="remotesVideos">
-                <Button.Group labeled>
-                    <Button circular icon='play' id="startButton" size='small' color='green' onClick={this.startVideo.bind(this)}/>
-                    <Button circular icon='stop' id="hangupButton" size='small' color='red' onClick={this.endVideo.bind(this)} />
-                </Button.Group>
-                <br /><br />
-                <div id='localVideo'>
+            <Menu as={Segment.Group} direction='top' visible='true' id='remotesVideos'>
+                {this.props.toggleVideo ? this.startVideo() : this.endVideo()}
+                <Menu.Item id='localVideo'>    
                     {this.state.localVideo}   
-                </div>    
-                <div id='peers'>
-               </div>     
-            </div>
+                </Menu.Item>
+                <Menu.Item id='peers'>       
+               </Menu.Item>     
+            </Menu>
         )
     }
 };
