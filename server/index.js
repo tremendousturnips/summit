@@ -19,15 +19,15 @@ const config = {
     }
   ],
   "turnservers": [
-  {"url":"turn:global.turn.twilio.com:3478?transport=udp",
-        "username":"21ec244c825a533da292cef0169c27004ddfaa8263a058f05ac0581502f5eef7",
-        "credential":"+H38m72VGDFW/JNI8dk8fGpDSbAPPiKVy9tC9jjUxaY="},
+    {"url":"turn:global.turn.twilio.com:3478?transport=udp",
+        "username":"995e1483c0da224d8cf4af9c009f8031e06ce791d7ee4021ccb0076ba9fca01c",
+        "credential":"I1gYpgJj33o34oXqPTTvS7XdkG2JL5sYHDN8mcyL++Q="},
         {"url":"turn:global.turn.twilio.com:3478?transport=tcp",
-        "username":"21ec244c825a533da292cef0169c27004ddfaa8263a058f05ac0581502f5eef7",
-        "credential":"+H38m72VGDFW/JNI8dk8fGpDSbAPPiKVy9tC9jjUxaY="},
+        "username":"995e1483c0da224d8cf4af9c009f8031e06ce791d7ee4021ccb0076ba9fca01c",
+        "credential":"I1gYpgJj33o34oXqPTTvS7XdkG2JL5sYHDN8mcyL++Q="},
         {"url":"turn:global.turn.twilio.com:443?transport=tcp",
-        "username":"21ec244c825a533da292cef0169c27004ddfaa8263a058f05ac0581502f5eef7",
-        "credential":"+H38m72VGDFW/JNI8dk8fGpDSbAPPiKVy9tC9jjUxaY="}
+        "username":"995e1483c0da224d8cf4af9c009f8031e06ce791d7ee4021ccb0076ba9fca01c",
+        "credential":"I1gYpgJj33o34oXqPTTvS7XdkG2JL5sYHDN8mcyL++Q="}
   ]
 };
 
