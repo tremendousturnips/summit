@@ -8,6 +8,8 @@ class MessageList extends Component {
     const {socket, addMessage, fetchMessages} = this.props;
     socket.on('message', addMessage);
     fetchMessages(1,1);
+    fetchMessages(1,2);
+    fetchMessages(1,3);
   }
   render () {
     const { messages, profiles } = this.props;
