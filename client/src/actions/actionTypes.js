@@ -14,3 +14,6 @@ export const SET_SOCKET = 'SET_SOCKET';
 
 // user
 export const SET_USER = 'SET_USER';
+
+//rooms
+export const SELECT_ROOM = 'SELECT_ROOM';

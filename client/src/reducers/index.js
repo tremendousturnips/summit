@@ -5,6 +5,7 @@ import socket from './socket';
 import channels from './channels';
 import currentChannel from './currentChannel';
 import profiles from './profiles';
+import currentRoom from './currentRoom';
 
 const rootReducer = combineReducers({
   user,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   messages,
   channels,
   currentChannel,
-  profiles
+  profiles,
+  currentRoom
 });
 
 export default rootReducer;
