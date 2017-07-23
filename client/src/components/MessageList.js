@@ -5,16 +5,17 @@ import MessageItem from './MessageItem';
 
 class MessageList extends Component {
   componentDidMount() {
-    console.log(this.props);
     const {socket, addMessage, fetchMessages} = this.props;
     socket.on('message', addMessage);
     fetchMessages(1,1);
+    fetchMessages(1,2);
+    fetchMessages(1,3);
   }
   render () {
-    const { messages } = this.props;
+    const { messages, profiles } = this.props;
     return (
       <Comment.Group>
-        {messages.map((message, index) => <MessageItem message={message} key={index}/> )}
+        {messages.map((message, index) => <MessageItem profile={profiles[message.user_id]} message={message} key={index}/> )}
       </Comment.Group>
     );
   }

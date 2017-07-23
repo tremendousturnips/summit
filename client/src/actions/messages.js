@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { SET_MESSAGES, ADD_MESSAGE, RECEIVE_MESSAGES, SEND_MESSAGE } from './actionTypes';
 
-let messageCount = 0;
 export const setMessages = messages => ({
   type: SET_MESSAGES,
   messages

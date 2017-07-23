@@ -3,7 +3,6 @@ import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Label} from 'seman
 
 const ChannelList = ({ channels, selectChannel }) => (
   <Menu vertical fluid>
-    {console.log(channels, selectChannel)}
     {channels.map((channel, index) => (
       <Menu.Item key={channel.id} onClick={()=>{selectChannel(channel)}}>{channel.name}</Menu.Item>)
     )}

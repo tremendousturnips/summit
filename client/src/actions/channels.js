@@ -19,8 +19,6 @@ export const selectChannel = channel => ({
 export const changeChannel = channel => {};
 
 export const joinChannels = (channels, socket) => {
-  console.log('in join channels', channels);
-  console.log(socket);
   channels.forEach(channel => {
     socket.emit('subscribe', channel.id);
   });
