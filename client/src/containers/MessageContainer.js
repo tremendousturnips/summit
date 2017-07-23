@@ -2,21 +2,20 @@ import { connect } from 'react-redux';
 import MessageList from '../components/MessageList';
 import { addMessage, fetchMessages } from '../actions/messages';
 
-const mapStateToProps = ({ messages, socket, currentChannel}) => { 
+const mapStateToProps = ({ messages, socket, currentChannel }) => {
   return {
-    messages: messages.filter(
-        message => message.channel_id === currentChannel.id),
+    messages: messages.filter(message => message.channel_id === currentChannel.id),
     socket,
     currentChannel
   };
-}
+};
 
-const mapDispatchToProps = (dispatch) => ({
-  addMessage: (message) => {
+const mapDispatchToProps = dispatch => ({
+  addMessage: message => {
     dispatch(addMessage(message));
   },
   fetchMessages: (roomId, channelId) => {
-    dispatch(fetchMessages(roomId, channelId))
+    dispatch(fetchMessages(roomId, channelId));
   }
 });
 
