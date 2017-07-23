@@ -1,16 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Label } from 'semantic-ui-react'; 
+import { Segment, Button, Label } from 'semantic-ui-react'; 
 import $ from 'jquery';
+import LocalVideo from './LocalVideo';
 
 class GroupChat extends React.Component {
 
     constructor(props) {
         super (props)
+        this.state = {
+            localVideo: []
+        }
         this.signalingSocket = this.props.socket;  
         this.localMediaStream = null; 
         this.peers = {};               
-        this.peerMediaElements = {}; 
+        this.peerMediaElements = {};
+        this.mute = true; 
 
         this.startVideo = this.startVideo.bind(this)
         this.endVideo = this.endVideo.bind(this)
@@ -19,27 +24,24 @@ class GroupChat extends React.Component {
         this.setupLocalMedia = this.setupLocalMedia.bind(this)
         this.joinChatChannel = this.joinChatChannel.bind(this)
         this.partChatChannel = this.partChatChannel.bind(this)
-        this.getLocalMediaStream = this.getLocalMediaStream.bind(this)
-        this.pauseMediaStream = this.pauseMediaStream.bind(this)
-
+        this.getLocalMediaStream = this.getLocalMediaStream.bind(this);
     }
 
     componentDidMount() {
 
         var ICE_SERVERS = [{"url":"stun:global.stun.twilio.com:3478?transport=udp"},
         {"url":"turn:global.turn.twilio.com:3478?transport=udp",
-        "username":"21ec244c825a533da292cef0169c27004ddfaa8263a058f05ac0581502f5eef7",
-        "credential":"+H38m72VGDFW/JNI8dk8fGpDSbAPPiKVy9tC9jjUxaY="},
+        "username":"995e1483c0da224d8cf4af9c009f8031e06ce791d7ee4021ccb0076ba9fca01c",
+        "credential":"I1gYpgJj33o34oXqPTTvS7XdkG2JL5sYHDN8mcyL++Q="},
         {"url":"turn:global.turn.twilio.com:3478?transport=tcp",
-        "username":"21ec244c825a533da292cef0169c27004ddfaa8263a058f05ac0581502f5eef7",
-        "credential":"+H38m72VGDFW/JNI8dk8fGpDSbAPPiKVy9tC9jjUxaY="},
+        "username":"995e1483c0da224d8cf4af9c009f8031e06ce791d7ee4021ccb0076ba9fca01c",
+        "credential":"I1gYpgJj33o34oXqPTTvS7XdkG2JL5sYHDN8mcyL++Q="},
         {"url":"turn:global.turn.twilio.com:443?transport=tcp",
-        "username":"21ec244c825a533da292cef0169c27004ddfaa8263a058f05ac0581502f5eef7",
-        "credential":"+H38m72VGDFW/JNI8dk8fGpDSbAPPiKVy9tC9jjUxaY="}];
+        "username":"995e1483c0da224d8cf4af9c009f8031e06ce791d7ee4021ccb0076ba9fca01c",
+        "credential":"I1gYpgJj33o34oXqPTTvS7XdkG2JL5sYHDN8mcyL++Q="}];
 
         let USE_AUDIO = true;
         let USE_VIDEO = true;
-        let MUTE_AUDIO_BY_DEFAULT = true;
         let localMediaStream = this.localMediaStream; 
         let peers = this.peers;               
         let peerMediaElements = this.peerMediaElements;
@@ -64,8 +66,6 @@ class GroupChat extends React.Component {
             peerMediaElements = {};
         });
 
-
-
         this.signalingSocket.on('addPeer', function(config) {
 
             let peer_id = config.peer_id;
@@ -82,7 +82,7 @@ class GroupChat extends React.Component {
             peers[peer_id] = peer_connection;
 
             peer_connection.onicecandidate = function(event) {
-                console.log('In on icecandicate')
+                console.log('In onicecandicate')
                 if (event.candidate) {
                     signalingSocket.emit('relayICECandidate', {
                         'peer_id': peer_id, 
@@ -96,38 +96,19 @@ class GroupChat extends React.Component {
             peer_connection.onaddstream = function(event) {
                 console.log("onAddStream", event);
                 let remote_media = document.createElement('video');
-                //var remote_media = USE_VIDEO ? $("<video>") : $("<audio>");
                 remote_media.setAttribute("autoPlay", "");
                 remote_media.setAttribute("height", "100");
                 remote_media.setAttribute("width", "100");
                 remote_media.setAttribute("id", peer_id);
-                if (MUTE_AUDIO_BY_DEFAULT) {
-                    remote_media.setAttribute("muted", "true");
-                }
+                remote_media.setAttribute("muted", "false");
                 peerMediaElements[peer_id] = remote_media;
                 document.getElementById('peers').append(remote_media);
                 attachMediaStream(remote_media, event.stream);
-            }
+            };
 
-            peer_connection.ontrack = function(event) {
-                console.log("ontrack", event);
-                let remote_media = document.createElement('video');
-                //var remote_media = USE_VIDEO ? $("<video>") : $("<audio>");
-                remote_media.setAttribute("autoPlay", "");
-                remote_media.setAttribute("height", "100");
-                remote_media.setAttribute("width", "100");
-                remote_media.setAttribute("id", peer_id);
-                if (MUTE_AUDIO_BY_DEFAULT) {
-                    remote_media.setAttribute("muted", "true");
-                }
-                peerMediaElements[peer_id] = remote_media;
-                document.getElementById('peers').append(remote_media);
-                attachMediaStream(remote_media, event.stream);
-            }
-            
             if (localMediaStream === undefined || localMediaStream === null) {
                 localMediaStream = getLocalMediaStream()
-            }
+            };
 
             peer_connection.addStream(localMediaStream);
 
@@ -211,33 +192,22 @@ class GroupChat extends React.Component {
     }
 
     attachMediaStream = function (element, stream) {
+        console.log('In attachMediaStream', stream )
         element.srcObject = stream;
-    };
-
-    pauseMediaStream = function (element, stream) {
-        element.pause()
-        element.srcObject = "";
     }
-    
+
     getLocalMediaStream = function () {
         return this.localMediaStream
     }
 
     setLocalMediaStream = function(stream) {
-        let local_media = document.createElement('video');
-        local_media.setAttribute("autoPlay", "");
-        local_media.setAttribute("height", "100");
-        local_media.setAttribute("width", "100");
-        local_media.setAttribute("id", 'localVideoStream');
-        local_media.setAttribute("muted", "true");
-        document.getElementById('localVideo').append(local_media);
         if (this.localMediaStream === null) {
             this.localMediaStream = stream
-            console.log('localMediaStream after udate0.1', Object.keys(this.localMediaStream).length)
-        }
-        console.log('localMediaStream after udate', this.localMediaStream )
-        this.attachMediaStream(local_media, this.localMediaStream);
-    }
+        };
+        this.setState({
+            localVideo: this.state.localVideo.concat(<LocalVideo key='test1' stream={stream}/>)
+        })
+    };
 
     setupLocalMedia = function (callback, errorback) {
         if (this.localMediaStream != null) {  
@@ -270,7 +240,6 @@ class GroupChat extends React.Component {
         
     partChatChannel = function (channel) {
         this.signalingSocket.emit('part', channel);
-        document.getElementById('localVideoStream').remove();
         for (let track of this.localMediaStream.getTracks()) {
             track.stop()
         }
@@ -279,10 +248,14 @@ class GroupChat extends React.Component {
 
     startVideo = function () {
         console.log('In startVideo')
+        if (this.state.localVideo.length > 0) {
+            return
+        }
         let joinChatChannel = this.joinChatChannel
         let DEFAULT_CHANNEL = 'videochat';
+        let user = this.props.user
         this.setupLocalMedia(function() {
-            joinChatChannel(DEFAULT_CHANNEL, {'first video chat': 'user1'});
+            joinChatChannel(DEFAULT_CHANNEL, user);
         });
     }
 
@@ -291,20 +264,22 @@ class GroupChat extends React.Component {
             return
         }
         this.partChatChannel('videochat');
-        //this.signalingSocket.emit('disconnect', 'videochat');
+        this.setState({
+            localVideo: []
+        })
     }
 
     //render audio/video
     render() {
         return (
             <div id="remotesVideos">
-                <div>
-                    <Button.Group labeled>
-                        <Button circular icon='play' id="startButton" size='small' color='green' onClick={this.startVideo.bind(this)}/>
-                        <Button circular icon='stop' id="hangupButton" size='small' color='red' onClick={this.endVideo.bind(this)} />
-                    </Button.Group>
-                </div>
+                <Button.Group labeled>
+                    <Button circular icon='play' id="startButton" size='small' color='green' onClick={this.startVideo.bind(this)}/>
+                    <Button circular icon='stop' id="hangupButton" size='small' color='red' onClick={this.endVideo.bind(this)} />
+                </Button.Group>
+                <br /><br />
                 <div id='localVideo'>
+                    {this.state.localVideo}   
                 </div>    
                 <div id='peers'>
                </div>     
