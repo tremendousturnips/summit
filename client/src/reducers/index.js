@@ -6,6 +6,7 @@ import channels from './channels';
 import currentChannel from './currentChannel';
 import profiles from './profiles';
 import currentRoom from './currentRoom';
+import toggleVideo from './toggleVideo';
 
 const rootReducer = combineReducers({
   user,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   channels,
   currentChannel,
   profiles,
-  currentRoom
+  currentRoom,
+  toggleVideo
 });
 
 export default rootReducer;
