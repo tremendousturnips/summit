@@ -14,3 +14,7 @@ export const SET_SOCKET = 'SET_SOCKET';
 
 // user
 export const SET_USER = 'SET_USER';
+
+// video
+export const TOGGLE_VIDEO = 'TOGGLE_VIDEO';
+export const GET_VIDEO = 'GET_VIDEO';
