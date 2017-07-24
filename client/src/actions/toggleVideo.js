@@ -1,11 +1,6 @@
-import { TOGGLE_VIDEO, GET_VIDEO } from './actionTypes';
+import { TOGGLE_VIDEO_STAT } from './actionTypes';
 
-export const toggleVideo = video => ({
-  type: TOGGLE_VIDEO,
+export const toggleVideoStat = video => ({
+  type: TOGGLE_VIDEO_STAT,
   video
-});
-
-export const getVideo = message => ({
-  type: GET_VIDEO,
-  videoStat
 });

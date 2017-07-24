@@ -35,10 +35,11 @@ class LocalVideo extends Component {
     return (
       <div>
         <video autoPlay height="100" width="100" id='localVideoStream' muted={this.state.mute}>
-      </video> 
-      <Button height='2' width='2' toggle active={this.state.mute} onClick={this.toggleMute} compact>
-        {this.state.muteText}
-      </Button>
+        </video> 
+        <br />
+        <Button height='2' width='2' toggle active={this.state.mute} onClick={this.toggleMute} compact>
+          {this.state.muteText}
+        </Button>
       </div>
     );
   }

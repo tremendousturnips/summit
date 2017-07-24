@@ -19,5 +19,5 @@ export const SET_USER = 'SET_USER';
 export const SELECT_ROOM = 'SELECT_ROOM';
 
 // video
-export const TOGGLE_VIDEO = 'TOGGLE_VIDEO';
-export const GET_VIDEO = 'GET_VIDEO';
+export const TOGGLE_VIDEO_STAT = 'TOGGLE_VIDEO_STAT';
+

@@ -5,12 +5,21 @@ class NavBar extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      video: 'join video chat'
+    }
+
     this.joinVideoChat = this.joinVideoChat.bind(this)
   }
 
   joinVideoChat() {
     console.log('In NavBar joinVideoChat')
-    this.props.toggleVideo()
+    this.props.toggleVideoStat()
+    console.log('this.props.toggleVideo', this.props.toggleVideo)
+    this.setState({
+      video: this.props.toggleVideo ? 'join video chat' : 'end video chat'
+    })
+    
   }
 
   render() {
@@ -20,7 +29,7 @@ class NavBar extends React.Component {
         <Menu.Item name='messages' />
         <Menu.Item name='friends' />
         <Menu.Menu position='right'>
-          <Menu.Item name='join video chat' onClick={this.joinVideoChat}/>
+          <Menu.Item name={this.state.video} onClick={this.joinVideoChat}/>
           <Menu.Item>
             <Input icon='users' iconPosition='left' placeholder='Search users...' />
           </Menu.Item>

@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import NavBar from '../components/NavBar';
-import { toggleVideo } from '../actions/toggleVideo';
+import { toggleVideoStat } from '../actions/toggleVideo';
 
-const mapStateToProps = ({ toogleVideo }) => ({ toggleVideo });
+const mapStateToProps = ({ toggleVideo }) => ({ toggleVideo });
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleVideo: (video) => {
-    dispatch(toggleVideo());
+  toggleVideoStat: () => {
+    dispatch(toggleVideoStat());
   }
 });
 
