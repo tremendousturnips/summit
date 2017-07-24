@@ -7,7 +7,7 @@ import NavBar from '../containers/NavBarContainer';
 import MessageContainer from '../containers/MessageContainer';
 import InputContainer from '../containers/InputContainer';
 import LeftMenuContainer from '../containers/LeftMenuContainer';
-import RightMenu from './RightMenu';
+import VideoChatBarContainer from '../containers/VideoChatBarContainer';
 
 const Main = () => (
     <Sidebar.Pushable>
@@ -19,7 +19,7 @@ const Main = () => (
           <Grid.Column width={12} >
             <Grid.Row>
               <NavBar />
-              <RightMenu />
+              <VideoChatBarContainer />
             </Grid.Row>
             <Grid.Row>
               <MessageContainer />
@@ -54,7 +54,7 @@ const Main = () => (
 //             </Grid.Row>
 //           </Grid.Column>
 //           <Grid.Column>
-//             <RightMenu />
+//             <VideoChatBarContainer />
 //           </Grid.Column>
 //         </Grid>
 //       </Sidebar.Pusher>

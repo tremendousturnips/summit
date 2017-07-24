@@ -29,3 +29,23 @@ form.ui.form {
   width: 100%;
   margin: 0 auto 2rem auto;
 }
+
+.remotes-videos > {
+   display: inline-block;
+}
+
+.vsc-initialized {
+  margin-right: 2rem;
+}
+
+/* .local-video {
+  display: inline-block;
+} */
+
+.video-chat-bar * {
+  display: inline-block;
+}
+
+#peers {
+  display: inline-block;
+}
