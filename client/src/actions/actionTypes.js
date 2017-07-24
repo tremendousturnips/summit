@@ -15,9 +15,15 @@ export const SET_SOCKET = 'SET_SOCKET';
 // user
 export const SET_USER = 'SET_USER';
 
+<<<<<<< HEAD
 //rooms
 export const SELECT_ROOM = 'SELECT_ROOM';
 
 // video
 export const TOGGLE_VIDEO_STAT = 'TOGGLE_VIDEO_STAT';
 
+=======
+// video
+export const TOGGLE_VIDEO = 'TOGGLE_VIDEO';
+export const GET_VIDEO = 'GET_VIDEO';
+>>>>>>> c0307b3152dfcd610ede47e238a00078a522e3c4

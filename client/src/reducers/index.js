@@ -4,8 +4,11 @@ import user from './user';
 import socket from './socket';
 import channels from './channels';
 import currentChannel from './currentChannel';
+<<<<<<< HEAD
 import profiles from './profiles';
 import currentRoom from './currentRoom';
+=======
+>>>>>>> c0307b3152dfcd610ede47e238a00078a522e3c4
 import toggleVideo from './toggleVideo';
 
 const rootReducer = combineReducers({
@@ -14,8 +17,11 @@ const rootReducer = combineReducers({
   messages,
   channels,
   currentChannel,
+<<<<<<< HEAD
   profiles,
   currentRoom,
+=======
+>>>>>>> c0307b3152dfcd610ede47e238a00078a522e3c4
   toggleVideo
 });
 
