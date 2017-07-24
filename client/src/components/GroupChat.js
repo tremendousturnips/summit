@@ -31,7 +31,6 @@ class GroupChat extends React.Component {
 
         var ICE_SERVERS = [{"url":"stun:global.stun.twilio.com:3478?transport=udp"},
         {"url":"turn:global.turn.twilio.com:3478?transport=udp",
-<<<<<<< HEAD
         "username":"7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13",
         "credential":"Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8="},
         {"url":"turn:global.turn.twilio.com:3478?transport=tcp",
@@ -40,16 +39,6 @@ class GroupChat extends React.Component {
         {"url":"turn:global.turn.twilio.com:443?transport=tcp",
         "username":"7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13",
         "credential":"Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8="}];
-=======
-        "username":"995e1483c0da224d8cf4af9c009f8031e06ce791d7ee4021ccb0076ba9fca01c",
-        "credential":"I1gYpgJj33o34oXqPTTvS7XdkG2JL5sYHDN8mcyL++Q="},
-        {"url":"turn:global.turn.twilio.com:3478?transport=tcp",
-        "username":"995e1483c0da224d8cf4af9c009f8031e06ce791d7ee4021ccb0076ba9fca01c",
-        "credential":"I1gYpgJj33o34oXqPTTvS7XdkG2JL5sYHDN8mcyL++Q="},
-        {"url":"turn:global.turn.twilio.com:443?transport=tcp",
-        "username":"995e1483c0da224d8cf4af9c009f8031e06ce791d7ee4021ccb0076ba9fca01c",
-        "credential":"I1gYpgJj33o34oXqPTTvS7XdkG2JL5sYHDN8mcyL++Q="}];
->>>>>>> c0307b3152dfcd610ede47e238a00078a522e3c4
 
         let USE_AUDIO = true;
         let USE_VIDEO = true;
@@ -283,7 +272,6 @@ class GroupChat extends React.Component {
     //render audio/video
     render() {
         return (
-<<<<<<< HEAD
             <Menu as={Segment.Group} direction='top' visible='true' id='remotesVideos' borderless>
                 {this.props.toggleVideo ? this.startVideo() : this.endVideo()}
                 <Menu.Item id='localVideo' >    
@@ -293,15 +281,6 @@ class GroupChat extends React.Component {
                     <Menu.Item id='peers'>       
                     </Menu.Item> 
                 </Menu.Menu>
-=======
-            <Menu as={Segment.Group} direction='top' visible='true' id='remotesVideos'>
-                {this.props.toggleVideo ? this.startVideo() : this.endVideo()}
-                <Menu.Item id='localVideo'>    
-                    {this.state.localVideo}   
-                </Menu.Item>
-                <Menu.Item id='peers'>       
-               </Menu.Item>     
->>>>>>> c0307b3152dfcd610ede47e238a00078a522e3c4
             </Menu>
         )
     }
