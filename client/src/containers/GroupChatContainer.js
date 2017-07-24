@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import GroupChat from '../components/GroupChat';
-//import { addMessage } from '../actions';
+//import { getVideo } from '../actions/toggleVideo';
 
-const mapStateToProps = ({ socket, user }) => ({ socket, user });
+const mapStateToProps = ({ socket, user, toggleVideo }) => ({ socket, user, toggleVideo });
 
 const mapDispatchToProps = (dispatch) => ({
-//   addMessage: (message) => {
-//     dispatch(addMessage(message));
+//   getVideo: (videoStat) => {
+//     dispatch();
 //   }
 });
 

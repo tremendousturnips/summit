@@ -29,9 +29,9 @@ class RightMenu extends Component {
           <Icon name="video" />
           Video Chat
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Menu>
           <GroupChatContainer />
-        </Menu.Item>
+        </Menu.Menu>  
       </Menu>
     );
   }
