@@ -1,48 +1,46 @@
-import React, { Component } from 'react'
-import { Button, Label, Segment} from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { Button, Label, Segment } from 'semantic-ui-react';
 
 class LocalVideo extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-      localVideo: [],
       mute: true,
-      muteText: "Unmute"
-    }
+      muteText: 'Unmute'
+    };
 
-    this.toggleMute = this.toggleMute.bind(this)
+    this.toggleMute = this.toggleMute.bind(this);
   }
 
-  toggleMute = function() {
+  toggleMute() {
     this.setState({
+      muteText: this.state.mute ? 'Mute' : 'Unmute',
       mute: !this.state.mute
-    })
-    if (this.state.mute) {
-      this.setState({
-        muteText: 'Unmute'
-      }) 
-    } else {
-      this.setState({
-        muteText: 'Mute'
-      })  
-    }
-  }
-  componentDidMount() {
-    document.getElementById('localVideoStream').srcObject = this.props.stream
+    });
   }
 
-  render () {
+  componentDidMount() {
+    document.getElementById('localVideoStream').srcObject = this.props.stream;
+  }
+
+  render() {
     return (
       <div>
-        <video autoPlay height="100" width="100" id='localVideoStream' muted={this.state.mute}>
-        </video> 
+        <video autoPlay height="100" width="100" id="localVideoStream" muted={this.state.mute} />
         <br />
-        <Button height='2' width='2' toggle active={this.state.mute} onClick={this.toggleMute} compact>
+        <Button
+          height="2"
+          width="2"
+          toggle
+          active={this.state.mute}
+          onClick={this.toggleMute}
+          compact
+        >
           {this.state.muteText}
         </Button>
       </div>
     );
   }
-} 
+}
 
 export default LocalVideo;

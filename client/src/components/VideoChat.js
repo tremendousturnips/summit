@@ -9,15 +9,15 @@ class VideoChat extends React.Component {
     super(props);
 
     this.state = {
-      something: true,
       localMediaStream: null,
-      localVideo: null
+      peers: {},
+      peerMediaElements: {},
+      mute: true
     };
 
     this.signalingSocket = this.props.socket;
-    this.peers = {};
-    this.peerMediaElements = {};
-    this.mute = true;
+    // this.peers = {};
+    // this.peerMediaElements = {};
 
     const bind = fn => fn.bind(this);
 
@@ -27,7 +27,7 @@ class VideoChat extends React.Component {
     this.setLocalMediaStream = bind(this.setLocalMediaStream);
     this.setupLocalMedia = bind(this.setupLocalMedia);
     this.joinChatChannel = bind(this.joinChatChannel);
-    this.partChatChannel = bind(this.partChatChannel);
+    this.partVideoChat = bind(this.partVideoChat);
   }
 
   componentDidMount() {
@@ -51,14 +51,11 @@ class VideoChat extends React.Component {
       }
     ];
 
-    const state = this.state;
+    const that = this;
     // let USE_AUDIO = true;
     // let USE_VIDEO = true;
-    const localMediaStream = this.state.localMediaStream;
-    let peers = this.peers;
-    let peerMediaElements = this.peerMediaElements;
     let signalingSocket = this.signalingSocket;
-    let attachMediaStream = this.attachMediaStream.bind(this);
+    let attachMediaStream = this.attachMediaStream;
 
     this.signalingSocket.on('connect', () => {
       console.log('Connected to signaling server');
@@ -66,20 +63,21 @@ class VideoChat extends React.Component {
 
     this.signalingSocket.on('disconnect', () => {
       console.log('Disconnected from signaling server');
-
-      for (const peer_id in peerMediaElements) {
-        peerMediaElements[peer_id].remove();
+      for (const element in that.state.peerMediaElements) {
+        that.state.peerMediaElements[element].remove();
       }
-      for (const peer_id in peers) {
-        peers[peer_id].close();
+      for (const peer in that.state.peers) {
+        that.state.peers[peer].close();
       }
-      peers = {};
-      peerMediaElements = {};
+      that.setState({
+        peers: {},
+        peerMediaElements: {}
+      });
     });
 
     this.signalingSocket.on('addPeer', config => {
       let peer_id = config.peer_id;
-      if (peers[peer_id]) {
+      if (that.state.peers[peer_id]) {
         console.log('Already connected to peer ', peer_id);
         return;
       }
@@ -89,7 +87,9 @@ class VideoChat extends React.Component {
         { optional: [{ DtlsSrtpKeyAgreement: true }] }
       );
 
-      peers[peer_id] = peer_connection;
+      that.setState({
+        peers: { ...that.state.peers, peer_id: peer_connection }
+      });
 
       peer_connection.onicecandidate = e => {
         console.log('In onicecandicate');
@@ -111,15 +111,16 @@ class VideoChat extends React.Component {
         remote_media.setAttribute('width', '100');
         remote_media.setAttribute('id', peer_id);
         remote_media.setAttribute('muted', 'false');
-        peerMediaElements[peer_id] = remote_media;
-        document.getElementById('peers').append(remote_media);
+        that.setState({
+          peerMediaElements: { ...that.state.peerMediaElements, peer_id: remote_media }
+        });
+        document.getElementById('peers').append(remote_media); // TODO: MAKE THIS REACT
         attachMediaStream(remote_media, e.stream);
       };
 
-      if (localMediaStream) {
-        peer_connection.addStream(localMediaStream);
+      if (that.state.localMediaStream) {
+        peer_connection.addStream(that.state.localMediaStream);
       }
-      // peer_connection.addStream(localMediaStream);
 
       if (config.should_create_offer) {
         console.log('Creating RTC offer to ', peer_id);
@@ -149,13 +150,13 @@ class VideoChat extends React.Component {
 
     this.signalingSocket.on('sessionDescription', config => {
       console.log('Remote description received: ', config);
-      let peer_id = config.peer_id;
-      let peer = peers[peer_id];
-      let remote_description = config.session_description;
+      const peer_id = config.peer_id;
+      const peer = that.state.peers[peer_id];
+      const remote_description = config.session_description;
       console.log(config.session_description);
 
-      let desc = new RTCSessionDescription(remote_description);
-      let stuff = peer.setRemoteDescription(
+      const desc = new RTCSessionDescription(remote_description);
+      const stuff = peer.setRemoteDescription(
         desc,
         () => {
           console.log('setRemoteDescription succeeded');
@@ -193,22 +194,27 @@ class VideoChat extends React.Component {
     });
 
     this.signalingSocket.on('iceCandidate', config => {
-      let peer = peers[config.peer_id];
-      let ice_candidate = config.ice_candidate;
+      const peer = that.state.peers[config.peer_id];
+      const ice_candidate = config.ice_candidate;
       peer.addIceCandidate(new RTCIceCandidate(ice_candidate));
     });
 
     this.signalingSocket.on('removePeer', config => {
       console.log('Signaling server said to remove peer:', config);
-      let peer_id = config.peer_id;
-      if (peer_id in peerMediaElements) {
-        peerMediaElements[peer_id].remove();
+      const peer_id = config.peer_id;
+      if (peer_id in that.state.peerMediaElements) {
+        // TODO: FIX THIS FOR STATE ARRAY
+        that.state.peerMediaElements[peer_id].remove();
       }
-      if (peer_id in peers) {
-        peers[peer_id].close();
+      if (peer_id in that.state.peers) {
+        that.state.peers[peer].close();
       }
-      delete peers[peer_id];
-      delete peerMediaElements[config.peer_id];
+      that.setState({
+        peers: { ...that.state.peers, peer_id: null },
+        peerMediaElements: { ...that.state.peerMediaElements, peer_id: null }
+      });
+      // delete peers[peer_id];
+      // delete peerMediaElements[peer_id];
     });
   }
 
@@ -223,8 +229,7 @@ class VideoChat extends React.Component {
 
   setLocalMediaStream(stream) {
     this.setState({
-      localMediaStream: stream,
-      localVideo: <LocalVideo key="test1" stream={stream} />
+      localMediaStream: stream
     });
   }
 
@@ -234,7 +239,7 @@ class VideoChat extends React.Component {
       navigator.webkitGetUserMedia ||
       navigator.mozGetUserMedia ||
       navigator.msGetUserMedia;
-    let setLocalMediaStream = this.setLocalMediaStream.bind(this);
+    const setLocalMediaStream = this.setLocalMediaStream;
     navigator.getUserMedia(
       { audio: 'true', video: 'true' },
       stream => {
@@ -253,21 +258,24 @@ class VideoChat extends React.Component {
   }
 
   joinChatChannel(channel, userdata) {
-    this.signalingSocket.emit('join', { channel: channel, userdata: userdata });
+    this.signalingSocket.emit('join', { channel, userdata });
   }
 
-  partChatChannel(channel) {
+  partVideoChat(channel) {
     this.signalingSocket.emit('part', channel);
     for (let track of this.state.localMediaStream.getTracks()) {
       track.stop();
     }
-    this.state.localMediaStream = null;
+    this.setState({
+      localMediaStream: null
+    });
   }
 
   startVideo() {
     if (!this.state.localMediaStream) {
       const DEFAULT_CHANNEL = 'videochat';
       this.setupLocalMedia(() => {
+        console.log(this.props.user);
         this.joinChatChannel(DEFAULT_CHANNEL, this.props.user);
       });
     }
@@ -275,15 +283,16 @@ class VideoChat extends React.Component {
 
   endVideo() {
     if (this.state.localMediaStream) {
-      this.partChatChannel('videochat');
+      this.partVideoChat('videochat');
     }
   }
 
   render() {
     return (
       <Container>
-        {this.state.localVideo}
-        {/*<LocalVideo key="test1" stream={this.state.localMediaStream} />*/}
+        {this.state.localMediaStream
+          ? <LocalVideo key="test1" stream={this.state.localMediaStream} />
+          : ''}
         <div id="peers" />
       </Container>
     );
