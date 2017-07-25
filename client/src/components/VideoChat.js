@@ -47,8 +47,6 @@ class VideoChat extends React.Component {
       }
     ];
 
-    // let USE_AUDIO = true;
-    // let USE_VIDEO = true;
     const signalingSocket = this.props.socket;
 
     signalingSocket.on('connect', () => {
@@ -86,7 +84,7 @@ class VideoChat extends React.Component {
       });
 
       peer_connection.onicecandidate = e => {
-        console.log('In onicecandicate');
+        // console.log('In onicecandicate');
         if (e.candidate) {
           signalingSocket.emit('relayICECandidate', {
             peer_id,
@@ -98,7 +96,7 @@ class VideoChat extends React.Component {
         }
       };
       peer_connection.onaddstream = e => {
-        console.log('onAddStream', e);
+        // console.log('onAddStream', e);
         const remote_media = document.createElement('video');
         remote_media.setAttribute('autoPlay', '');
         remote_media.setAttribute('height', '100');
@@ -110,6 +108,7 @@ class VideoChat extends React.Component {
           peerMediaElements: { ...this.state.peerMediaElements, [peer_id]: remote_media }
         });
 
+        console.log('REMOTE_MEDIA', remote_media);
         document.getElementById('peers').append(remote_media); // TODO: MAKE THIS REACT
         this.attachMediaStream(remote_media, e.stream);
       };
@@ -119,10 +118,10 @@ class VideoChat extends React.Component {
       }
 
       if (config.should_create_offer) {
-        console.log('Creating RTC offer to ', peer_id);
+        // console.log('Creating RTC offer to ', peer_id);
         peer_connection.createOffer(
           local_description => {
-            console.log('Local offer description is: ', local_description);
+            // console.log('Local offer description is: ', local_description);
             peer_connection.setLocalDescription(
               local_description,
               () => {
@@ -130,7 +129,7 @@ class VideoChat extends React.Component {
                   peer_id: peer_id,
                   session_description: local_description
                 });
-                console.log('Offer setLocalDescription succeeded');
+                // console.log('Offer setLocalDescription succeeded');
               },
               () => {
                 Alert('Offer setLocalDescription failed!');
@@ -145,22 +144,22 @@ class VideoChat extends React.Component {
     });
 
     signalingSocket.on('sessionDescription', config => {
-      console.log('Remote description received: ', config);
+      // console.log('Remote description received: ', config);
       const peer_id = config.peer_id;
       const peer = this.state.peers[peer_id];
       const remote_description = config.session_description;
-      console.log(config.session_description);
+      // console.log(config.session_description);
 
       const desc = new RTCSessionDescription(remote_description);
       peer.setRemoteDescription(
         desc,
         () => {
-          console.log('setRemoteDescription succeeded');
+          // console.log('setRemoteDescription succeeded');
           if (remote_description.type === 'offer') {
-            console.log('Creating answer');
+            // console.log('Creating answer');
             peer.createAnswer(
               local_description => {
-                console.log('Answer description is: ', local_description);
+                // console.log('Answer description is: ', local_description);
                 peer.setLocalDescription(
                   local_description,
                   () => {
@@ -168,7 +167,7 @@ class VideoChat extends React.Component {
                       peer_id: peer_id,
                       session_description: local_description
                     });
-                    console.log('Answer setLocalDescription succeeded');
+                    // console.log('Answer setLocalDescription succeeded');
                   },
                   () => {
                     Alert('Answer setLocalDescription failed!');
@@ -186,7 +185,7 @@ class VideoChat extends React.Component {
           console.log('setRemoteDescription error: ', error);
         }
       );
-      console.log('Description Object: ', desc);
+      // console.log('Description Object: ', desc);
     });
 
     signalingSocket.on('iceCandidate', config => {
@@ -196,7 +195,7 @@ class VideoChat extends React.Component {
     });
 
     signalingSocket.on('removePeer', config => {
-      console.log('Signaling server said to remove peer:', config);
+      // console.log('Signaling server said to remove peer:', config);
       const peer_id = config.peer_id;
       if (peer_id in this.state.peerMediaElements) {
         this.state.peerMediaElements[peer_id].remove();
@@ -217,7 +216,7 @@ class VideoChat extends React.Component {
   }
 
   attachMediaStream(element, stream) {
-    console.log('In attachMediaStream', stream);
+    // console.log('In attachMediaStream', stream);
     element.srcObject = stream;
   }
 
@@ -268,7 +267,6 @@ class VideoChat extends React.Component {
     if (!this.state.localMediaStream) {
       const DEFAULT_CHANNEL = 'videochat';
       this.setupLocalMedia(() => {
-        console.log(this.props.user);
         this.joinChatChannel(DEFAULT_CHANNEL, this.props.user);
       });
     }
@@ -281,11 +279,18 @@ class VideoChat extends React.Component {
   }
 
   render() {
+    const peerEls = [];
+    const { peerMediaElements } = this.state;
+    for (const el in peerMediaElements) {
+      peerEls.push(peerMediaElements[el]);
+    }
     return (
       <Container>
         {this.state.localMediaStream
           ? <LocalVideo key="test1" stream={this.state.localMediaStream} />
           : ''}
+        {/* peerEls ? peerEls.map(el => el) : '' */}
+        {/*<div id="peers" />*/}
         <div id="peers" />
       </Container>
     );
