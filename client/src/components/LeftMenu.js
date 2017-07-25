@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react'
+import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Label } from 'semantic-ui-react'
 
 import ChannelList from './ChannelList';
 import DirectMessageList from './DirectMessageList';
@@ -37,6 +37,7 @@ class LeftMenu extends Component {
         <Menu.Item >
           <Menu.Header>
             <Menu.Header>Text Channels</Menu.Header>
+            <Button size='tiny'>Add Channel</Button>
             <br />
             <ChannelList channels={channels} selectChannel={selectChannel} currentChannel={currentChannel}/>
           </Menu.Header>
