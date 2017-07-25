@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Segment, Button, Label, Sidebar, Menu, Container } from 'semantic-ui-react';
-import $ from 'jquery';
+import { Container } from 'semantic-ui-react';
 import LocalVideo from './LocalVideo';
 
 class VideoChat extends React.Component {
@@ -19,11 +18,7 @@ class VideoChat extends React.Component {
 
     this.startVideo = bind(this.startVideo);
     this.endVideo = bind(this.endVideo);
-    this.attachMediaStream = bind(this.attachMediaStream);
-    this.setLocalMediaStream = bind(this.setLocalMediaStream);
     this.setupLocalMedia = bind(this.setupLocalMedia);
-    this.joinChatChannel = bind(this.joinChatChannel);
-    this.partVideoChat = bind(this.partVideoChat);
   }
 
   componentDidMount() {
@@ -56,7 +51,9 @@ class VideoChat extends React.Component {
     signalingSocket.on('disconnect', () => {
       console.log('Disconnected from signaling server');
       for (const element in this.state.peerMediaElements) {
-        this.state.peerMediaElements[element].remove();
+        if (this.state.peerMediaElements[element]) {
+          this.state.peerMediaElements[element].remove();
+        }
       }
       for (const peer in this.state.peers) {
         this.state.peers[peer].close();
@@ -104,13 +101,21 @@ class VideoChat extends React.Component {
         remote_media.setAttribute('id', peer_id);
         remote_media.setAttribute('muted', 'false');
 
-        this.setState({
-          peerMediaElements: { ...this.state.peerMediaElements, [peer_id]: remote_media }
-        });
+        remote_media.srcObject = e.stream;
 
         console.log('REMOTE_MEDIA', remote_media);
+
+        this.setState({
+          peerMediaElements: {
+            ...this.state.peerMediaElements,
+            [peer_id]: React.createElement(remote_media.toString())
+          }
+        });
+        // this.setState({
+        //   peerMediaElements: { ...this.state.peerMediaElements, [peer_id]: remote_media }
+        // });
+
         document.getElementById('peers').append(remote_media); // TODO: MAKE THIS REACT
-        this.attachMediaStream(remote_media, e.stream);
       };
 
       if (this.state.localMediaStream) {
@@ -203,9 +208,8 @@ class VideoChat extends React.Component {
       if (peer_id in this.state.peers) {
         this.state.peers[peer_id].close();
       }
-
       this.setState({
-        peers: { ...this.state.peers, [peer_id]: null},
+        peers: { ...this.state.peers, [peer_id]: null },
         peerMediaElements: { ...this.state.peerMediaElements, [peer_id]: null }
       });
     });
@@ -215,30 +219,22 @@ class VideoChat extends React.Component {
     this.endVideo();
   }
 
-  attachMediaStream(element, stream) {
-    // console.log('In attachMediaStream', stream);
-    element.srcObject = stream;
-  }
-
-  setLocalMediaStream(stream) {
-    this.setState({
-      localMediaStream: stream
-    });
-  }
-
-  setupLocalMedia(callback, errorback) {
+  setupLocalMedia(cb, errorback) {
     navigator.getUserMedia =
       navigator.getUserMedia ||
       navigator.webkitGetUserMedia ||
       navigator.mozGetUserMedia ||
       navigator.msGetUserMedia;
+
     navigator.getUserMedia(
       { audio: 'true', video: 'true' },
-      stream => {
-        this.setLocalMediaStream(stream);
-        if (callback) {
-          callback();
-        }
+      localMediaStream => {
+        this.setState(
+          {
+            localMediaStream
+          },
+          () => cb()
+        );
       },
       () => {
         console.log('Access denied for audio/video');
@@ -249,32 +245,22 @@ class VideoChat extends React.Component {
     );
   }
 
-  joinChatChannel(channel, userdata) {
-    this.props.socket.emit('join', { channel, userdata });
-  }
-
-  partVideoChat(channel) {
-    this.props.socket.emit('part', channel);
-    for (let track of this.state.localMediaStream.getTracks()) {
-      track.stop();
-    }
-    this.setState({
-      localMediaStream: null
-    });
-  }
-
   startVideo() {
     if (!this.state.localMediaStream) {
-      const DEFAULT_CHANNEL = 'videochat';
+      const channel = 'videochat';
       this.setupLocalMedia(() => {
-        this.joinChatChannel(DEFAULT_CHANNEL, this.props.user);
+        this.props.socket.emit('join', { channel, userdata: this.props.user });
       });
     }
   }
 
   endVideo() {
     if (this.state.localMediaStream) {
-      this.partVideoChat('videochat');
+      this.props.socket.emit('part', 'videochat');
+      this.state.localMediaStream.getTracks().forEach(track => track.stop());
+      this.setState({
+        localMediaStream: null
+      });
     }
   }
 
@@ -284,13 +270,15 @@ class VideoChat extends React.Component {
     for (const el in peerMediaElements) {
       peerEls.push(peerMediaElements[el]);
     }
+    console.log('PPERELS:', peerEls[0]);
+
     return (
       <Container>
         {this.state.localMediaStream
           ? <LocalVideo key="test1" stream={this.state.localMediaStream} />
           : ''}
-        {/* peerEls ? peerEls.map(el => el) : '' */}
-        {/*<div id="peers" />*/}
+
+        {/*{peerEls[0]}*/}
         <div id="peers" />
       </Container>
     );
