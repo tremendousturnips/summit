@@ -15,9 +15,7 @@ class NavBar extends React.Component {
   }
 
   joinVideoChat() {
-    console.log('In NavBar joinVideoChat');
     this.props.toggleVideoStat();
-    console.log('this.props.toggleVideo', this.props.toggleVideo);
     this.setState(
       this.props.toggleVideo
         ? {

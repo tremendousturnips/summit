@@ -9,7 +9,6 @@ import Main from './components/Main';
 import rootReducer from './reducers';
 
 // const createStoreWithMiddleWare = applyMiddleware()(createStore);
-// console.log(createStoreWithMiddleWare);
 
 // Grab the state from a global variable injected into the server-generated HTML
 const initialState = {

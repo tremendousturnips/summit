@@ -1,7 +1,3 @@
-body {
-  color: royalblue;
-}
-
 #root {
   height: 100%;
   width: 100%;
@@ -30,22 +26,17 @@ form.ui.form {
   margin: 0 auto 2rem auto;
 }
 
-.remotes-videos > {
-   display: inline-block;
+.remotes-videos >  {
+  display: inline-block;
 }
 
-.vsc-initialized {
+.vsc-initialized,
+.local-video,
+#peers {
+  display: inline-block !important;
   margin-right: 2rem;
 }
-
-/* .local-video {
-  display: inline-block;
+/*
+.item.local-video {
+  padding: 0;
 } */
-
-.video-chat-bar * {
-  display: inline-block;
-}
-
-#peers {
-  display: inline-block;
-}

@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "scripts": {
     "dev-start": "nodemon server",
+    "dev-watch": "webpack-dev-server --hot",
+    "build": "webpack --watch",
     "start": "node ./server/index.js",
     "test": "NODE_ENV=test grunt test",
-    "build": "webpack --watch",
     "heroku-postbuild": "webpack -p --config ./webpack.config.babel.js --progress",
     "react-test": "jest",
     "react-test:watch": "jest --watch",
