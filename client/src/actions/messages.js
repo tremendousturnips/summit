@@ -29,16 +29,15 @@ export const sendMessage = message => ({
 export const postMessage = message => {
   return (dispatch, getState) => {
     dispatch(addMessage(message));
-    axios.post('/api/messages/', message).then(res => {
+    return axios.post('/api/messages/', message).then(res => {
       getState().socket.emit('send', res.data);
     });
   };
 };
 
 export const fetchMessages = (roomId, channelId) => {
-  return (dispatch, getState) => {
+  return (dispatch, getState) =>
     axios.get(`/api/rooms/${roomId}/channels/${channelId}/messages`).then(res => {
       dispatch(setMessages(res.data));
     });
-  };
 };
