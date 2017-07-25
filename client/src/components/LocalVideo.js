@@ -8,7 +8,6 @@ class LocalVideo extends Component {
       mute: true,
       muteText: 'Unmute'
     };
-
     this.toggleMute = this.toggleMute.bind(this);
   }
 
@@ -20,7 +19,7 @@ class LocalVideo extends Component {
   }
 
   componentDidMount() {
-    document.getElementById('localVideoStream').srcObject = this.props.stream;
+    document.getElementById('localVideoStream').srcObject = this.props.stream; // TODO - REACTIFY
   }
 
   render() {

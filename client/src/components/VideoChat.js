@@ -76,7 +76,7 @@ class VideoChat extends React.Component {
     });
 
     this.signalingSocket.on('addPeer', config => {
-      let peer_id = config.peer_id;
+      const peer_id = config.peer_id;
       if (that.state.peers[peer_id]) {
         console.log('Already connected to peer ', peer_id);
         return;
@@ -88,14 +88,14 @@ class VideoChat extends React.Component {
       );
 
       that.setState({
-        peers: { ...that.state.peers, peer_id: peer_connection }
+        peers: { ...that.state.peers, [peer_id]: peer_connection }
       });
 
       peer_connection.onicecandidate = e => {
         console.log('In onicecandicate');
         if (e.candidate) {
           signalingSocket.emit('relayICECandidate', {
-            peer_id: peer_id,
+            peer_id,
             ice_candidate: {
               sdpMLineIndex: e.candidate.sdpMLineIndex,
               candidate: e.candidate.candidate
@@ -105,15 +105,17 @@ class VideoChat extends React.Component {
       };
       peer_connection.onaddstream = e => {
         console.log('onAddStream', e);
-        let remote_media = document.createElement('video');
+        const remote_media = document.createElement('video');
         remote_media.setAttribute('autoPlay', '');
         remote_media.setAttribute('height', '100');
         remote_media.setAttribute('width', '100');
         remote_media.setAttribute('id', peer_id);
         remote_media.setAttribute('muted', 'false');
+
         that.setState({
-          peerMediaElements: { ...that.state.peerMediaElements, peer_id: remote_media }
+          peerMediaElements: { ...that.state.peerMediaElements, [peer_id]: remote_media }
         });
+
         document.getElementById('peers').append(remote_media); // TODO: MAKE THIS REACT
         attachMediaStream(remote_media, e.stream);
       };
@@ -156,7 +158,7 @@ class VideoChat extends React.Component {
       console.log(config.session_description);
 
       const desc = new RTCSessionDescription(remote_description);
-      const stuff = peer.setRemoteDescription(
+      peer.setRemoteDescription(
         desc,
         () => {
           console.log('setRemoteDescription succeeded');
@@ -203,18 +205,16 @@ class VideoChat extends React.Component {
       console.log('Signaling server said to remove peer:', config);
       const peer_id = config.peer_id;
       if (peer_id in that.state.peerMediaElements) {
-        // TODO: FIX THIS FOR STATE ARRAY
         that.state.peerMediaElements[peer_id].remove();
       }
       if (peer_id in that.state.peers) {
-        that.state.peers[peer].close();
+        that.state.peers[peer_id].close();
       }
+
       that.setState({
-        peers: { ...that.state.peers, peer_id: null },
-        peerMediaElements: { ...that.state.peerMediaElements, peer_id: null }
+        peers: { ...that.state.peers, [peer_id]: null},
+        peerMediaElements: { ...that.state.peerMediaElements, [peer_id]: null }
       });
-      // delete peers[peer_id];
-      // delete peerMediaElements[peer_id];
     });
   }
 
