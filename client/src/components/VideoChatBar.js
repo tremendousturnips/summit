@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Container, Label } from 'semantic-ui-react';
 
-import GroupChatContainer from '../containers/GroupChatContainer';
+import VideoChatContainer from '../containers/VideoChatContainer';
 
 class VideoChatBar extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class VideoChatBar extends Component {
           <Label>
             <Icon name="video" /> Video Chat
           </Label>
-          <GroupChatContainer />
+          <VideoChatContainer />
         </Container>
       : null;
   }
@@ -34,7 +34,7 @@ class VideoChatBar extends Component {
   //     ? <Menu icon="labeled" horizontal>
   //         <Menu.Item name="video chat" icon="video" />
   //         <Menu.Menu>
-  //           <GroupChatContainer />
+  //           <VideoChatContainer />
   //         </Menu.Menu>
   //       </Menu>
   //     : null;
