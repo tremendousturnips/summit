@@ -37,9 +37,7 @@ export const fetchChannels = roomId => {
         const channelList = getState().channels.map((channel) => {
           return dispatch(fetchMessages(1, channel.id)); //TODO: change this to get by current room
         })
-        console.log(channelList);
         if (channelList.length) {
-          console.log('is this a promise', channelList[0]);
           return Promise.all(channelList);
         }
       })
