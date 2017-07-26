@@ -14,8 +14,8 @@ class AddChannel extends Component {
   close = () => this.setState({ open: false });
 
   handleSubmit = (e) => {
-    console.log(this.state.channelName);
-    this.props.postChannel();
+    e.preventDefault();
+    this.props.postChannel({name: this.state.channelName});
   };
 
   handleChange = (e) => {
