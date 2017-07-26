@@ -10,8 +10,12 @@ module.exports = {
         res.status(503).send(err);
       });
   },
-  saveChannel: () => {
+  saveChannel: (req, res) => {
     //TODO: forge and save channel;
+    Channel.forge(req.body).save()
+      .then((channel)=> {
+        res.status(201).send(channel);
+      });
   },
   deleteChannel: () => {
     //TODO forge and destroy channel;
