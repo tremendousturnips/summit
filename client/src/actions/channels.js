@@ -8,7 +8,7 @@ export const setChannels = channels => ({
 });
 
 export const addChannel = channel => ({
-  //unused
+  //TODO: make action chain such that it POSTS to /api/rooms/:roomId:/channels
   type: ADD_CHANNEL,
   channel
 });
