@@ -15,8 +15,8 @@ const mapDispatchToProps = (dispatch) => ({
   fetchProfiles: (roomId) => {
     dispatch(fetchProfiles(roomId));
   },
-  addChannel: (channel) => {
-    dispatch(addChannel(channel));
+  postChannel: (channel) => {
+    dispatch(postChannel(channel));
   }
 });
 
