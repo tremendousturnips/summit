@@ -13,6 +13,16 @@ export const addChannel = channel => ({
   channel
 });
 
+export const postChannel = channel => {
+  return (dispatch, getState) => {
+    channel.room_id = 1; //REPLACE WITH getState().currentRoom.id when you implement rooms
+    return axios.post('/api/rooms/1/channels', channel)
+      .then((res)=> {
+        dispatch(addChannel(res.data));
+      })
+  }
+}
+
 export const selectChannel = channel => ({
   type: SELECT_CHANNEL,
   channel
