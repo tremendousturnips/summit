@@ -12,12 +12,8 @@ module.exports = {
   },
   saveChannel: (req, res) => {
     Channel.forge(req.body).save()
-      .then((channel)=> {
-        res.status(201).send(channel);
-      })
-      .catch((err) => {
-        res.status(503).send(err);
-      })
+      .then(channel => res.status(201).send(channel))
+      .catch(err => res.status(503).send(err));
   },
   destroyChannel: (req, res) => {
     let toDestroy = {id: req.params.channel_id};
@@ -32,8 +28,6 @@ module.exports = {
             });
         }
       })
-      .catch((err) => {
-        res.status(503).send(err);
-      })
+      .catch(err => res.status(503).send(err));
   }
 };
