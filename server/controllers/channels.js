@@ -11,22 +11,29 @@ module.exports = {
       });
   },
   saveChannel: (req, res) => {
-    //TODO: forge and save channel;
     Channel.forge(req.body).save()
       .then((channel)=> {
         res.status(201).send(channel);
-      });
+      })
+      .catch((err) => {
+        res.status(503).send(err);
+      })
   },
   destroyChannel: (req, res) => {
-    //TODO forge and destroy channel;
     let toDestroy = {id: req.params.channel_id};
     Channel.forge(toDestroy).fetch()
       .then( channel => {
         if (!channel) {
-          throw channel;
+          res.status(404).send({message: 'Resource not found. Could not destroy', channel: toDestroy});
+        } else {
+          return channel.destroy()
+            .then(() => {
+              res.status(200).send({message: 'Channel destroyed', channel: toDestroy});
+            });
         }
-        res.status(200).send(toDestroy);
-        return channel.destroy();
+      })
+      .catch((err) => {
+        res.status(503).send(err);
       })
   }
 };
