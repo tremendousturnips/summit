@@ -33,11 +33,12 @@ class LeftMenu extends Component {
           <Image src={user.image} size='tiny' shape='circular' centered />
           <p />
           <Menu.Header>{user.first}</Menu.Header>
-          <a href="/logout">Log Out</a>
+           <a href="/logout">Log Out</a>
         </Menu.Item>
         <Menu.Item >
           <Menu.Header>
             <Menu.Header>Text Channels</Menu.Header>
+            <br />
             <AddChannel/>
             <br />
             <ChannelList channels={channels} selectChannel={selectChannel} currentChannel={currentChannel}/>

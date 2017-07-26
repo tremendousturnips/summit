@@ -9,5 +9,11 @@ module.exports = {
         console.log('ERROR fetching channels for room_id', req.params.id, ':', err);
         res.status(503).send(err);
       });
+  },
+  saveChannel: () => {
+    //TODO: forge and save channel;
+  },
+  deleteChannel: () => {
+    //TODO forge and destroy channel;
   }
 };

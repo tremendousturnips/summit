@@ -1,31 +1,32 @@
 import React, {Component} from 'react';
-import { Button, Modal } from 'semantic-ui-react'
+import { Button, Modal, Form } from 'semantic-ui-react'
 
 class AddChannel extends Component {
   state = { open: false }
 
-  show = (size) => () => this.setState({ size, open: true })
+  show = () => this.setState({ open: true })
   close = () => this.setState({ open: false })
 
   render() {
-    const { open, size } = this.state
+    const { open } = this.state
 
     return (
       <div>
-        <Button onClick={this.show('mini')}>Mini</Button>
+        <Button onClick={this.show} size='mini'>Add Channel</Button>
 
-        <Modal size={size} open={open} onClose={this.close}>
+        <Modal size='mini' open={open} onClose={this.close} closeIcon='close'>
           <Modal.Header>
-            Delete Your Account
+            Create Text Channel
           </Modal.Header>
           <Modal.Content>
-            <p>Are you sure you want to delete your account</p>
+            <Form>
+              <Form.Field>
+                <Form.Input placeholder='Channel name' label='Channel Name'/>
+              </Form.Field>
+            </Form>
           </Modal.Content>
           <Modal.Actions>
-            <Button negative>
-              No
-            </Button>
-            <Button positive icon='checkmark' labelPosition='right' content='Yes' />
+            <Button positive icon='checkmark' labelPosition='right' content='Create' />
           </Modal.Actions>
         </Modal>
       </div>
