@@ -12,4 +12,7 @@ router.route('/:id/channels/:channel_id').delete(ChannelController.destroyChanne
 
 router.route('/:id/channels/:channel_id/messages').get(MessageController.getChannelMessages);
 
+router.route('/').post(RoomController.saveRoom);
+
+router.route('/').delete(RoomController.destroyRoom);
 module.exports = router;
