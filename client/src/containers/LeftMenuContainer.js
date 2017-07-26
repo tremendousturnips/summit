@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import LeftMenu from '../components/LeftMenu';
-import { fetchChannels, setChannels, selectChannel } from '../actions/channels';
+import { fetchChannels, setChannels, selectChannel, addChannel } from '../actions/channels';
 import { fetchProfiles } from '../actions/profiles';
 
 const mapStateToProps = ({ user, channels, socket, currentChannel }) => ({ user, channels, socket, currentChannel });
@@ -14,6 +14,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   fetchProfiles: (roomId) => {
     dispatch(fetchProfiles(roomId));
+  },
+  addChannel: (channel) => {
+    dispatch(addChannel(channel));
   }
 });
 
