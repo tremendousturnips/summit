@@ -8,6 +8,8 @@ router.route('/:id/channels').get(ChannelController.getAll);
 
 router.route('/:id/channels').post(ChannelController.saveChannel);
 
+router.route('/:id/channels/:channel_id').delete(ChannelController.destroyChannel);
+
 router.route('/:id/channels/:channel_id/messages').get(MessageController.getChannelMessages);
 
 module.exports = router;

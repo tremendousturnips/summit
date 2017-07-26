@@ -17,7 +17,16 @@ module.exports = {
         res.status(201).send(channel);
       });
   },
-  deleteChannel: () => {
+  destroyChannel: (req, res) => {
     //TODO forge and destroy channel;
+    let toDestroy = {id: req.params.channel_id};
+    Channel.forge(toDestroy).fetch()
+      .then( channel => {
+        if (!channel) {
+          throw channel;
+        }
+        res.status(200).send(toDestroy);
+        return channel.destroy();
+      })
   }
 };
