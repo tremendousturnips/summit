@@ -1,21 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'semantic-ui-react';
-import LocalVideo from './LocalVideo';
+import VideoBox from './VideoBox';
 
 class VideoChat extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       localMediaStream: null,
       peers: {},
-      peerMediaElements: {},
+      peerMediaStreams: {},
       mute: true
     };
-
     const bind = fn => fn.bind(this);
-
     this.startVideo = bind(this.startVideo);
     this.endVideo = bind(this.endVideo);
     this.setupLocalMedia = bind(this.setupLocalMedia);
@@ -23,6 +20,7 @@ class VideoChat extends React.Component {
 
   componentDidMount() {
     this.startVideo();
+
     const ICE_SERVERS = [
       { url: 'stun:global.stun.twilio.com:3478?transport=udp' },
       {
@@ -44,24 +42,14 @@ class VideoChat extends React.Component {
 
     const signalingSocket = this.props.socket;
 
+    console.log('SOCKET:', signalingSocket);
+
     signalingSocket.on('connect', () => {
       console.log('Connected to signaling server');
     });
 
     signalingSocket.on('disconnect', () => {
       console.log('Disconnected from signaling server');
-      for (const element in this.state.peerMediaElements) {
-        if (this.state.peerMediaElements[element]) {
-          this.state.peerMediaElements[element].remove();
-        }
-      }
-      for (const peer in this.state.peers) {
-        this.state.peers[peer].close();
-      }
-      this.setState({
-        peers: {},
-        peerMediaElements: {}
-      });
     });
 
     signalingSocket.on('addPeer', config => {
@@ -81,7 +69,6 @@ class VideoChat extends React.Component {
       });
 
       peer_connection.onicecandidate = e => {
-        // console.log('In onicecandicate');
         if (e.candidate) {
           signalingSocket.emit('relayICECandidate', {
             peer_id,
@@ -92,30 +79,17 @@ class VideoChat extends React.Component {
           });
         }
       };
+
       peer_connection.onaddstream = e => {
-        // console.log('onAddStream', e);
-        const remote_media = document.createElement('video');
-        remote_media.setAttribute('autoPlay', '');
-        remote_media.setAttribute('height', '100');
-        remote_media.setAttribute('width', '100');
-        remote_media.setAttribute('id', peer_id);
-        remote_media.setAttribute('muted', 'false');
-
-        remote_media.srcObject = e.stream;
-
-        console.log('REMOTE_MEDIA', remote_media);
-
         this.setState({
-          peerMediaElements: {
-            ...this.state.peerMediaElements,
-            [peer_id]: React.createElement(remote_media.toString())
+          peerMediaStreams: {
+            ...this.state.peerMediaStreams,
+            [peer_id]: {
+              id: peer_id,
+              stream: e.stream
+            }
           }
         });
-        // this.setState({
-        //   peerMediaElements: { ...this.state.peerMediaElements, [peer_id]: remote_media }
-        // });
-
-        document.getElementById('peers').append(remote_media); // TODO: MAKE THIS REACT
       };
 
       if (this.state.localMediaStream) {
@@ -123,21 +97,18 @@ class VideoChat extends React.Component {
       }
 
       if (config.should_create_offer) {
-        // console.log('Creating RTC offer to ', peer_id);
         peer_connection.createOffer(
-          local_description => {
-            // console.log('Local offer description is: ', local_description);
+          session_description => {
             peer_connection.setLocalDescription(
-              local_description,
+              session_description,
               () => {
                 signalingSocket.emit('relaySessionDescription', {
-                  peer_id: peer_id,
-                  session_description: local_description
+                  peer_id,
+                  session_description
                 });
-                // console.log('Offer setLocalDescription succeeded');
               },
               () => {
-                Alert('Offer setLocalDescription failed!');
+                console.log('Offer setLocalDescription failed!');
               }
             );
           },
@@ -149,33 +120,28 @@ class VideoChat extends React.Component {
     });
 
     signalingSocket.on('sessionDescription', config => {
-      // console.log('Remote description received: ', config);
+      console.log('Remote description received: ', config);
       const peer_id = config.peer_id;
       const peer = this.state.peers[peer_id];
       const remote_description = config.session_description;
-      // console.log(config.session_description);
 
       const desc = new RTCSessionDescription(remote_description);
       peer.setRemoteDescription(
         desc,
         () => {
-          // console.log('setRemoteDescription succeeded');
           if (remote_description.type === 'offer') {
-            // console.log('Creating answer');
             peer.createAnswer(
-              local_description => {
-                // console.log('Answer description is: ', local_description);
+              session_description => {
                 peer.setLocalDescription(
-                  local_description,
+                  session_description,
                   () => {
                     signalingSocket.emit('relaySessionDescription', {
-                      peer_id: peer_id,
-                      session_description: local_description
+                      peer_id,
+                      session_description
                     });
-                    // console.log('Answer setLocalDescription succeeded');
                   },
                   () => {
-                    Alert('Answer setLocalDescription failed!');
+                    alert('Answer setLocalDescription failed!');
                   }
                 );
               },
@@ -187,10 +153,9 @@ class VideoChat extends React.Component {
           }
         },
         error => {
-          console.log('setRemoteDescription error: ', error);
+          console.log('setRemoteDescription error:', error);
         }
       );
-      // console.log('Description Object: ', desc);
     });
 
     signalingSocket.on('iceCandidate', config => {
@@ -200,17 +165,14 @@ class VideoChat extends React.Component {
     });
 
     signalingSocket.on('removePeer', config => {
-      // console.log('Signaling server said to remove peer:', config);
+      console.log('Signaling server said to remove peer:', config);
       const peer_id = config.peer_id;
-      if (peer_id in this.state.peerMediaElements) {
-        this.state.peerMediaElements[peer_id].remove();
-      }
-      if (peer_id in this.state.peers) {
+      if (peer_id in this.state.peers) { // HERE'S SOMETHING
         this.state.peers[peer_id].close();
       }
       this.setState({
-        peers: { ...this.state.peers, [peer_id]: null },
-        peerMediaElements: { ...this.state.peerMediaElements, [peer_id]: null }
+        peers: { ...this.state.peers, [peer_id]: null }, // HERE'S SOMETHING
+        peerMediaStreams: { ...this.state.peerMediaStreams, [peer_id]: null }
       });
     });
   }
@@ -258,28 +220,17 @@ class VideoChat extends React.Component {
     if (this.state.localMediaStream) {
       this.props.socket.emit('part', 'videochat');
       this.state.localMediaStream.getTracks().forEach(track => track.stop());
-      this.setState({
-        localMediaStream: null
-      });
     }
   }
 
   render() {
-    const peerEls = [];
-    const { peerMediaElements } = this.state;
-    for (const el in peerMediaElements) {
-      peerEls.push(peerMediaElements[el]);
-    }
-    console.log('PPERELS:', peerEls[0]);
-
+    const peerStreams = Object.values(this.state.peerMediaStreams).filter(stream => !!stream);
     return (
       <Container>
         {this.state.localMediaStream
-          ? <LocalVideo key="test1" stream={this.state.localMediaStream} />
+          ? <VideoBox id="localMediaStream" stream={this.state.localMediaStream} />
           : ''}
-
-        {/*{peerEls[0]}*/}
-        <div id="peers" />
+        {peerStreams.map(stream => <VideoBox key={stream.id} id={stream.id} stream={stream.stream} />)}
       </Container>
     );
   }
