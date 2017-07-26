@@ -3,6 +3,7 @@ import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Label } from 'sema
 
 import ChannelList from './ChannelList';
 import DirectMessageList from './DirectMessageList';
+import AddChannel from './AddChannel';
 
 class LeftMenu extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class LeftMenu extends Component {
         <Menu.Item >
           <Menu.Header>
             <Menu.Header>Text Channels</Menu.Header>
-            <Button size='tiny'>Add Channel</Button>
+            <AddChannel/>
             <br />
             <ChannelList channels={channels} selectChannel={selectChannel} currentChannel={currentChannel}/>
           </Menu.Header>
