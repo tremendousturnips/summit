@@ -41,7 +41,6 @@ const server = app.listen(PORT, () => {
   console.log(`Summit Server listening on port ${PORT}!`);
 });
 
-
 const io = require('socket.io').listen(server);
 const roomVideoSockets = {};
 
@@ -58,17 +57,6 @@ io.on('connection', socket => {
     socket.leave(channelId);
   });
   // DO NOT TOUCH
-  // const videoSockets = {};
-
-  // videoSockets[socket.id] = socket;
-
-  // socket.on('leaveVideo', () => {
-  //   for (const peerSocketId in roomVideoSockets[room]) {
-  //     socket.emit('part', room);
-  //   }
-  //   delete videoSockets[socket.id];
-  //   console.log(`${socket.id} disconnected`);
-  // });
 
   socket.on('part', room => {
     if (!roomVideoSockets[room][socket.id]) {
@@ -93,7 +81,6 @@ io.on('connection', socket => {
     }
 
     for (const peerSocketId in roomVideoSockets[room]) {
-      console.log('HALLO');
       roomVideoSockets[room][peerSocketId].emit('addPeer', {
         peer_id: socket.id,
         should_create_offer: false
