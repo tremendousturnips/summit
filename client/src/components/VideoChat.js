@@ -8,14 +8,15 @@ class VideoChat extends React.Component {
     super(props);
     this.state = {
       localMediaStream: null,
-      peers: {},
+      peerConnections: {},
       peerMediaStreams: {},
-      mute: true
+      mute: true, // CHECK NECESSITY
+      room: 'default' // CHANGE THIS TO USER'S ROOM
     };
     const bind = fn => fn.bind(this);
     this.startVideo = bind(this.startVideo);
     this.endVideo = bind(this.endVideo);
-    this.setupLocalMedia = bind(this.setupLocalMedia);
+    // this.setupLocalMedia = bind(this.setupLocalMedia);
   }
 
   componentDidMount() {
@@ -39,22 +40,14 @@ class VideoChat extends React.Component {
         credential: 'Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8='
       }
     ];
+    const { socket } = this.props;
+    const { peerConnections, peerMediaStreams, localMediaStream, room } = this.state;
 
-    const signalingSocket = this.props.socket;
+    socket.on('addPeer', req => {
+      console.log('ADDING PEER :D');
+      const { peer_id, should_create_offer } = req;
 
-    console.log('SOCKET:', signalingSocket);
-
-    signalingSocket.on('connect', () => {
-      console.log('Connected to signaling server');
-    });
-
-    signalingSocket.on('disconnect', () => {
-      console.log('Disconnected from signaling server');
-    });
-
-    signalingSocket.on('addPeer', config => {
-      const peer_id = config.peer_id;
-      if (this.state.peers[peer_id]) {
+      if (peerConnections[peer_id]) {
         console.log('Already connected to peer ', peer_id);
         return;
       }
@@ -65,12 +58,14 @@ class VideoChat extends React.Component {
       );
 
       this.setState({
-        peers: { ...this.state.peers, [peer_id]: peer_connection }
+        peerConnections: { ...peerConnections, [peer_id]: peer_connection }
       });
 
       peer_connection.onicecandidate = e => {
+        console.log('E.CANDIDATE:', e.candidate);
         if (e.candidate) {
-          signalingSocket.emit('relayICECandidate', {
+          socket.emit('relayICECandidate', {
+            room,
             peer_id,
             ice_candidate: {
               sdpMLineIndex: e.candidate.sdpMLineIndex,
@@ -83,7 +78,7 @@ class VideoChat extends React.Component {
       peer_connection.onaddstream = e => {
         this.setState({
           peerMediaStreams: {
-            ...this.state.peerMediaStreams,
+            ...peerMediaStreams,
             [peer_id]: {
               id: peer_id,
               stream: e.stream
@@ -92,17 +87,18 @@ class VideoChat extends React.Component {
         });
       };
 
-      if (this.state.localMediaStream) {
-        peer_connection.addStream(this.state.localMediaStream);
+      if (localMediaStream) {
+        peer_connection.addStream(localMediaStream);
       }
 
-      if (config.should_create_offer) {
+      if (should_create_offer) {
         peer_connection.createOffer(
           session_description => {
             peer_connection.setLocalDescription(
               session_description,
               () => {
-                signalingSocket.emit('relaySessionDescription', {
+                socket.emit('relaySessionDescription', {
+                  room,
                   peer_id,
                   session_description
                 });
@@ -119,23 +115,32 @@ class VideoChat extends React.Component {
       }
     });
 
-    signalingSocket.on('sessionDescription', config => {
-      console.log('Remote description received: ', config);
-      const peer_id = config.peer_id;
-      const peer = this.state.peers[peer_id];
-      const remote_description = config.session_description;
+    socket.on('removePeer', peer_id => {
+      if (peerConnections[peer_id]) {
+        peerConnections[peer_id].close(); // HERE'S SOMETHING
+        this.setState({
+          peerConnections: { ...peerConnections, [peer_id]: null }, // HERE'S SOMETHING
+          peerMediaStreams: { ...peerMediaStreams, [peer_id]: null }
+        });
+      }
+    });
 
-      const desc = new RTCSessionDescription(remote_description);
-      peer.setRemoteDescription(
-        desc,
+    socket.on('sessionDescription', req => {
+      const { peer_id, session_description } = req;
+      const peerConnection = peerConnections[peer_id];
+      const description = new RTCSessionDescription(session_description);
+
+      peerConnection.setRemoteDescription(
+        description,
         () => {
-          if (remote_description.type === 'offer') {
-            peer.createAnswer(
+          if (session_description.type === 'offer') {
+            peerConnection.createAnswer(
               session_description => {
-                peer.setLocalDescription(
+                peerConnection.setLocalDescription(
                   session_description,
                   () => {
-                    signalingSocket.emit('relaySessionDescription', {
+                    socket.emit('relaySessionDescription', {
+                      room,
                       peer_id,
                       session_description
                     });
@@ -147,7 +152,7 @@ class VideoChat extends React.Component {
               },
               error => {
                 console.log('Error creating answer: ', error);
-                console.log(peer);
+                console.log(peerConnection);
               }
             );
           }
@@ -158,22 +163,10 @@ class VideoChat extends React.Component {
       );
     });
 
-    signalingSocket.on('iceCandidate', config => {
-      const peer = this.state.peers[config.peer_id];
-      const ice_candidate = config.ice_candidate;
-      peer.addIceCandidate(new RTCIceCandidate(ice_candidate));
-    });
-
-    signalingSocket.on('removePeer', config => {
-      console.log('Signaling server said to remove peer:', config);
-      const peer_id = config.peer_id;
-      if (peer_id in this.state.peers) { // HERE'S SOMETHING
-        this.state.peers[peer_id].close();
-      }
-      this.setState({
-        peers: { ...this.state.peers, [peer_id]: null }, // HERE'S SOMETHING
-        peerMediaStreams: { ...this.state.peerMediaStreams, [peer_id]: null }
-      });
+    socket.on('iceCandidate', req => {
+      const { peer_id, ice_candidate } = req;
+      const peerConnection = peerConnections[peer_id];
+      peerConnection.addIceCandidate(new RTCIceCandidate(ice_candidate));
     });
   }
 
@@ -181,44 +174,57 @@ class VideoChat extends React.Component {
     this.endVideo();
   }
 
-  setupLocalMedia(cb, errorback) {
-    navigator.getUserMedia =
-      navigator.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia ||
-      navigator.msGetUserMedia;
+  // setupLocalMedia(cb, errorback) {
+  //   navigator.getUserMedia =
+  //     navigator.getUserMedia ||
+  //     navigator.webkitGetUserMedia ||
+  //     navigator.mozGetUserMedia ||
+  //     navigator.msGetUserMedia;
 
-    navigator.getUserMedia(
-      { audio: 'true', video: 'true' },
-      localMediaStream => {
+  //   navigator.getUserMedia(
+  //     { audio: true, video: true },
+  //     localMediaStream => {
+  //       this.setState(
+  //         {
+  //           localMediaStream
+  //         },
+  //         () => cb()
+  //       );
+  //     },
+  //     () => {
+  //       console.log('Access denied for audio/video');
+  //       if (errorback) {
+  //         errorback();
+  //       }
+  //     }
+  //   );
+  // }
+
+  startVideo() {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true, video: true })
+      .then(localMediaStream => {
         this.setState(
           {
             localMediaStream
           },
-          () => cb()
+          () => localMediaStream
         );
-      },
-      () => {
-        console.log('Access denied for audio/video');
-        if (errorback) {
-          errorback();
-        }
-      }
-    );
-  }
-
-  startVideo() {
-    if (!this.state.localMediaStream) {
-      const channel = 'videochat';
-      this.setupLocalMedia(() => {
-        this.props.socket.emit('join', { channel, userdata: this.props.user });
+      })
+      .then(localMediaStream => this.props.socket.emit('joinVideo', this.state.room))
+      .catch(err => {
+        err.name === 'PermissionDeniedError'
+          ? alert('Access denied for audio/video')
+          : console.log('ERROR getting localMediaStream:', err);
       });
-    }
+    // this.setupLocalMedia(() => {
+    //   this.props.socket.emit('joinVideo', this.state.room);
+    // });
   }
 
   endVideo() {
     if (this.state.localMediaStream) {
-      this.props.socket.emit('part', 'videochat');
+      this.props.socket.emit('part', this.state.room);
       this.state.localMediaStream.getTracks().forEach(track => track.stop());
     }
   }
@@ -230,7 +236,9 @@ class VideoChat extends React.Component {
         {this.state.localMediaStream
           ? <VideoBox id="localMediaStream" stream={this.state.localMediaStream} />
           : ''}
-        {peerStreams.map(stream => <VideoBox key={stream.id} id={stream.id} stream={stream.stream} />)}
+        {peerStreams.map(stream =>
+          <VideoBox key={stream.id} id={stream.id} stream={stream.stream} />
+        )}
       </Container>
     );
   }
