@@ -3,5 +3,6 @@ module.exports = {
   RoomController: require('./rooms'),
   ChannelController: require('./channels'),
   MessageController: require('./messages'),
-  RoleController: require('./roles')
+  RoleController: require('./roles'),
+  FriendsController: require('./friends')
 };

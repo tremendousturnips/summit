@@ -22,3 +22,14 @@ export const ADD_ROOM = 'ADD_ROOM';
 // video
 export const TOGGLE_VIDEO_STAT = 'TOGGLE_VIDEO_STAT';
 
+// Show Friend List
+export const SHOW_FRIEND_LIST_STAT = 'SHOW_FRIEND_LIST_STAT';
+
+//friends
+export const FETCH_FRIENDS = 'FETCH_FRIENDS';
+export const ADD_FRIEND = 'ADD_FRIEND';
+export const DEL_FRIEND = 'DEL_FRIEND';
+export const SET_FRIENDS = 'SET_FRIENDS';
+export const ADD_TO_FRIEND_LIST = 'ADD_TO_FRIEND_LIST';
+export const DEL_FROM_FRIEND_LIST = 'DEL_FROM_FRIEND_LIST';
+

@@ -12,6 +12,7 @@ class NavBar extends React.Component {
     };
 
     this.joinVideoChat = this.joinVideoChat.bind(this);
+    this.handleFriends = this.handleFriends.bind(this);
   }
 
   joinVideoChat() {
@@ -31,12 +32,16 @@ class NavBar extends React.Component {
     );
   }
 
+  handleFriends() {
+    this.props.showFriendListStat();
+  }
+
   render() {
     return (
       <Menu id="nav-bar" pointing>
         <Menu.Item name="home" />
         <Menu.Item name="messages" />
-        <Menu.Item name="friends" />
+        <Menu.Item name="friends" onClick={this.handleFriends} />
         <Menu.Menu position="right">
           <Menu.Item
             name={this.state.videoName}
