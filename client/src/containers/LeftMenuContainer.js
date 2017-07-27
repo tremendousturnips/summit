@@ -18,12 +18,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
   postChannel: (channel) => {
     dispatch(postChannel(channel));
-  },
-  postRoom: (roomId) => {
-    dispatch(postRoom(room));
-  },
-  fetchRooms: () => {
-    dispatch(fetchRooms());
   }
 });
 
