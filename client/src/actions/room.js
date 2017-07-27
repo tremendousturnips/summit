@@ -16,3 +16,20 @@ export const postRoom = room => {
       })
   }
 }
+
+export const setRooms = rooms => ({
+  type: SET_ROOMS,
+  rooms
+});
+
+export const fetchRooms = profile => {
+  return (dispatch, getStore) => {
+    return axios.get(`/api/profiles/${getStore().user.id}/rooms`)
+      .then((res)=>{
+        dispatch(setRooms(res.data));
+      })
+      .catch( err => {
+        console.log(err);
+      });
+  }
+}

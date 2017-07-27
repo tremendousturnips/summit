@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Label } from 'semantic-ui-react'
+import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Label, Dropdown } from 'semantic-ui-react'
 
 import ChannelList from './ChannelList';
 import DirectMessageList from './DirectMessageList';
@@ -29,24 +29,23 @@ class LeftMenu extends Component {
     const { visible } = this.state;
     const { channels, selectChannel, user, currentChannel, postChannel} = this.props;
     return (
-      <Sidebar as={Menu} animation='push' width='thin' visible={visible} icon='labeled' vertical fixed="left">
-        <Menu.Item name='mail' onClick={this.handleClick.bind(this)}>
+      <Sidebar as={Menu} animation='push' visible={visible} icon='labeled' vertical fixed="left">
+        <Menu.Item onClick={this.handleClick.bind(this)}>
           <Image src={user.image} size='tiny' shape='circular' centered />
           <p />
           <Menu.Header>{user.first}</Menu.Header>
            <a href="/logout">Log Out</a>
         </Menu.Item>
         <Menu.Item>
+          <Menu.Header>Current Room</Menu.Header>
           <RoomDropdown/>
         </Menu.Item>
         <Menu.Item >
-          <Menu.Header>
-            <Menu.Header>Text Channels</Menu.Header>
-            <br />
-            <AddChannel postChannel={postChannel}/>
-            <br />
-            <ChannelList channels={channels} selectChannel={selectChannel} currentChannel={currentChannel}/>
-          </Menu.Header>
+          <Menu.Header>Text Channels</Menu.Header>
+          <br />
+          <AddChannel postChannel={postChannel}/>
+          <br />
+          <ChannelList channels={channels} selectChannel={selectChannel} currentChannel={currentChannel}/>
         </Menu.Item>
         <Menu.Item>
           <Menu.Header>
