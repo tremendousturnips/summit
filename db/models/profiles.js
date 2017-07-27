@@ -10,6 +10,9 @@ const Profile = db.Model.extend({
   },
   roles: function() {
     return this.hasMany('Role');
+  },
+  friends: function() {
+    return this.belongsToMany('Friends','user2','friend_id', 'id')
   }
 });
 
