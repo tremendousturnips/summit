@@ -51,7 +51,7 @@
     "redux": "^3.7.2",
     "redux-mock-store": "^1.2.3",
     "redux-thunk": "^2.2.0",
-    "semantic-ui-react": "^0.71.0",
+    "semantic-ui-react": "^0.71.2",
     "simplewebrtc": "^3.0.1",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",

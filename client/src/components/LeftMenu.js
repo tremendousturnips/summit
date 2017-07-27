@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react'
+import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Label } from 'semantic-ui-react'
 
 import ChannelList from './ChannelList';
 import DirectMessageList from './DirectMessageList';
+import AddChannel from './AddChannel';
 
 class LeftMenu extends Component {
   constructor(props) {
@@ -25,20 +26,22 @@ class LeftMenu extends Component {
 
   render() {
     const { visible } = this.state;
-    const { channels, selectChannel, user } = this.props;
+    const { channels, selectChannel, user, currentChannel, postChannel} = this.props;
     return (
       <Sidebar as={Menu} animation='push' width='thin' visible={visible} icon='labeled' vertical fixed="left">
         <Menu.Item name='mail' onClick={this.handleClick.bind(this)}>
           <Image src={user.image} size='tiny' shape='circular' centered />
           <p />
           <Menu.Header>{user.first}</Menu.Header>
-          <a href="/logout">Log Out</a>
+           <a href="/logout">Log Out</a>
         </Menu.Item>
         <Menu.Item >
           <Menu.Header>
             <Menu.Header>Text Channels</Menu.Header>
             <br />
-            <ChannelList channels={channels} selectChannel={selectChannel}/>
+            <AddChannel postChannel={postChannel}/>
+            <br />
+            <ChannelList channels={channels} selectChannel={selectChannel} currentChannel={currentChannel}/>
           </Menu.Header>
         </Menu.Item>
         <Menu.Item>

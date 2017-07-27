@@ -44,12 +44,12 @@ io.on('connection', socket => {
   socket.on('send', message => {
     socket.to(message.channel_id).emit('message', message);
   });
-  socket.on('subscribe', roomid => {
-    console.log('subscribed to namespace:', roomid);
-    socket.join(roomid);
+  socket.on('subscribe', channelId => {
+    console.log('subscribed to namespace:', channelId);
+    socket.join(channelId);
   });
-  socket.on('unsubscribe', roomId => {
-    socket.leave(roomId);
+  socket.on('unsubscribe', channelId => {
+    socket.leave(channelId);
   });
 });
 

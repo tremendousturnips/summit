@@ -22,7 +22,7 @@ module.exports = {
     Role.forge({
       room_id: parseInt(room_id),
       user_id: parseInt(user_id),
-      privilege_level: privilege_level
+      privilege_level
     })
       .save()
       .then(role => {
