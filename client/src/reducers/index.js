@@ -9,10 +9,12 @@ import currentRoom from './currentRoom';
 import toggleVideo from './toggleVideo';
 import showFriendList from './showFriendList';
 import friends from './friends';
+import rooms from './rooms';
 
 const rootReducer = combineReducers({
   user,
   socket,
+  rooms,
   messages,
   channels,
   currentChannel,

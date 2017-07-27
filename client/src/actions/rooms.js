@@ -1,3 +1,7 @@
+import { SELECT_ROOM, ADD_ROOM, SET_ROOMS } from './actionTypes';
+import axios from 'axios';
+
+
 export const selectRoom = room => ({
   type: SELECT_ROOM,
   room
@@ -22,10 +26,11 @@ export const setRooms = rooms => ({
   rooms
 });
 
-export const fetchRooms = profile => {
+export const fetchRooms = () => {
   return (dispatch, getStore) => {
     return axios.get(`/api/profiles/${getStore().user.id}/rooms`)
       .then((res)=>{
+        console.log(res.data);
         dispatch(setRooms(res.data));
       })
       .catch( err => {

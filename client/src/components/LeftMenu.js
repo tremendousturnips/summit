@@ -16,6 +16,7 @@ class LeftMenu extends Component {
   }
 
   componentDidMount() {
+    this.props.fetchRooms();
     this.props.fetchChannels(1);
     this.props.fetchProfiles(1);
   }
