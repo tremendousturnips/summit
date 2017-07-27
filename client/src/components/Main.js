@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {Grid, Sidebar} from 'semantic-ui-react';
 
-import LeftMenu from './LeftMenu';
-import NavBar from '../containers/NavBarContainer';
+import NavBarContainer from '../containers/NavBarContainer';
 import MessageContainer from '../containers/MessageContainer';
 import InputContainer from '../containers/InputContainer';
 import LeftMenuContainer from '../containers/LeftMenuContainer';
