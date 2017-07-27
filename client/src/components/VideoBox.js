@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Label, Segment } from 'semantic-ui-react';
 
-class LocalVideo extends Component {
+class VideoBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,6 +11,10 @@ class LocalVideo extends Component {
     this.toggleMute = this.toggleMute.bind(this);
   }
 
+  componentDidMount() {
+    document.getElementById(this.props.id).srcObject = this.props.stream; // TODO - REACTIFY
+  }
+
   toggleMute() {
     this.setState({
       muteText: this.state.mute ? 'Mute' : 'Unmute',
@@ -18,18 +22,14 @@ class LocalVideo extends Component {
     });
   }
 
-  componentDidMount() {
-    document.getElementById('localVideoStream').srcObject = this.props.stream; // TODO - REACTIFY
-  }
-
   render() {
+    // const video = <video autoPlay height="100" width="100" id={this.props.id} muted={this.state.mute} />;
+    // video.srcObject = this.props.stream;
     return (
       <div>
-        <video autoPlay height="100" width="100" id="localVideoStream" muted={this.state.mute} />
+        <video autoPlay height="100" width="100" id={this.props.id} muted={this.state.mute} />
         <br />
         <Button
-          height="2"
-          width="2"
           toggle
           active={this.state.mute}
           onClick={this.toggleMute}
@@ -42,4 +42,4 @@ class LocalVideo extends Component {
   }
 }
 
-export default LocalVideo;
+export default VideoBox;

@@ -18,29 +18,34 @@ const config = {
       url: 'stun:global.stun.twilio.com:3478?transport=udp'
     }
   ],
-  "turnservers": [   
-    {"url":"turn:global.turn.twilio.com:3478?transport=udp",
-        "username":"7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13",
-        "credential":"Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8="},
-        {"url":"turn:global.turn.twilio.com:3478?transport=tcp",
-        "username":"7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13",
-        "credential":"Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8="},
-        {"url":"turn:global.turn.twilio.com:443?transport=tcp",
-        "username":"7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13",
-        "credential":"Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8="}
+  turnservers: [
+    {
+      url: 'turn:global.turn.twilio.com:3478?transport=udp',
+      username: '7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13',
+      credential: 'Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8='
+    },
+    {
+      url: 'turn:global.turn.twilio.com:3478?transport=tcp',
+      username: '7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13',
+      credential: 'Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8='
+    },
+    {
+      url: 'turn:global.turn.twilio.com:443?transport=tcp',
+      username: '7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13',
+      credential: 'Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8='
+    }
   ]
 };
 
 const server = app.listen(PORT, () => {
-  console.log('Example app listening on port ' + PORT + '!');
+  console.log(`Summit Server listening on port ${PORT}!`);
 });
 
 const io = require('socket.io').listen(server);
-
-let channels = {};
-let sockets = {};
+const roomVideoSockets = {};
 
 io.on('connection', socket => {
+  // DO NOT TOUCH
   socket.on('send', message => {
     socket.to(message.channel_id).emit('message', message);
   });
@@ -51,85 +56,59 @@ io.on('connection', socket => {
   socket.on('unsubscribe', channelId => {
     socket.leave(channelId);
   });
-});
+  // DO NOT TOUCH
 
-io.sockets.on('connection', function(socket) {
-  socket.channels = {};
-  sockets[socket.id] = socket;
-
-  console.log('[' + socket.id + '] connection accepted');
-  socket.on('disconnect', function() {
-    for (var channel in socket.channels) {
-      part(channel);
-    }
-    console.log('[' + socket.id + '] disconnected');
-    delete sockets[socket.id];
-  });
-
-  socket.on('join', function(config) {
-    console.log('[' + socket.id + '] join ', config);
-    var channel = config.channel;
-    var userdata = config.userdata;
-
-    if (channel in socket.channels) {
-      console.log('[' + socket.id + '] ERROR: already joined ', channel);
+  socket.on('part', room => {
+    if (!roomVideoSockets[room][socket.id]) {
+      console.log(`ERROR: ${socket.id} not in room ${room}`);
       return;
     }
 
-    if (!(channel in channels)) {
-      channels[channel] = {};
-    }
+    delete roomVideoSockets[room][socket.id];
 
-    for (var id in channels[channel]) {
-      channels[channel][id].emit('addPeer', { peer_id: socket.id, should_create_offer: false });
-      socket.emit('addPeer', { peer_id: id, should_create_offer: true });
+    for (const peerSocketId in roomVideoSockets[room]) {
+      roomVideoSockets[room][peerSocketId].emit('removePeer', socket.id);
+      socket.emit('removePeer', peerSocketId); // necessary ??? - isn't socket destroyed?
     }
-
-    channels[channel][socket.id] = socket;
-    socket.channels[channel] = channel;
   });
 
-  function part(channel) {
-    console.log('[' + socket.id + '] part ');
-
-    if (!(channel in socket.channels)) {
-      console.log('[' + socket.id + '] ERROR: not in ', channel);
+  socket.on('joinVideo', room => {
+    if (!roomVideoSockets[room]) {
+      roomVideoSockets[room] = {};
+    } else if (roomVideoSockets[room][socket.id]) {
+      console.log(`${socket.id} already in room!`);
       return;
     }
 
-    delete socket.channels[channel];
-    delete channels[channel][socket.id];
-
-    for (var id in channels[channel]) {
-      channels[channel][id].emit('removePeer', { peer_id: socket.id });
-      socket.emit('removePeer', { peer_id: id });
-    }
-  }
-
-  socket.on('part', part);
-
-  socket.on('relayICECandidate', function(config) {
-    let peer_id = config.peer_id;
-    let ice_candidate = config.ice_candidate;
-    console.log('[' + socket.id + '] relaying ICE candidate to [' + peer_id + '] ', ice_candidate);
-
-    if (sockets[peer_id]) {
-      sockets[peer_id].emit('iceCandidate', { peer_id: socket.id, ice_candidate: ice_candidate });
-    }
-  });
-
-  socket.on('relaySessionDescription', function(config) {
-    let peer_id = config.peer_id;
-    let session_description = config.session_description;
-    console.log(
-      '[' + socket.id + '] relaying session description to [' + peer_id + '] ',
-      session_description
-    );
-
-    if (sockets[peer_id]) {
-      sockets[peer_id].emit('sessionDescription', {
+    for (const peerSocketId in roomVideoSockets[room]) {
+      roomVideoSockets[room][peerSocketId].emit('addPeer', {
         peer_id: socket.id,
-        session_description: session_description
+        should_create_offer: false
+      });
+      socket.emit('addPeer', { peer_id: peerSocketId, should_create_offer: true });
+    }
+
+    roomVideoSockets[room][socket.id] = socket;
+  });
+
+  socket.on('relayICECandidate', req => {
+    const { room, peer_id, ice_candidate } = req;
+
+    if (roomVideoSockets[room][peer_id]) {
+      roomVideoSockets[room][peer_id].emit('iceCandidate', {
+        peer_id: socket.id,
+        ice_candidate
+      });
+    }
+  });
+
+  socket.on('relaySessionDescription', req => {
+    const { room, peer_id, session_description } = req;
+
+    if (roomVideoSockets[room][peer_id]) {
+      roomVideoSockets[room][peer_id].emit('sessionDescription', {
+        peer_id: socket.id,
+        session_description
       });
     }
   });

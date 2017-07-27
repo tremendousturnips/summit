@@ -5,7 +5,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import io from 'socket.io-client';
 
-import MainContainer from './containers/MainContainer';
+import Main from './components/Main';
 import rootReducer from './reducers';
 
 // const createStoreWithMiddleWare = applyMiddleware()(createStore);
@@ -29,7 +29,7 @@ const enhancer = composeEnhancers(
 const store = createStore(rootReducer, initialState, enhancer);
 ReactDOM.render(
   <Provider store={store}>
-    <MainContainer />
+    <Main />
   </Provider>,
   document.getElementById('root')
 );
