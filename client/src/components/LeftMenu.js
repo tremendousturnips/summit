@@ -4,6 +4,7 @@ import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Label } from 'sema
 import ChannelList from './ChannelList';
 import DirectMessageList from './DirectMessageList';
 import AddChannel from './AddChannel';
+import RoomDropdown from './RoomDropdown';
 
 class LeftMenu extends Component {
   constructor(props) {
@@ -34,6 +35,9 @@ class LeftMenu extends Component {
           <p />
           <Menu.Header>{user.first}</Menu.Header>
            <a href="/logout">Log Out</a>
+        </Menu.Item>
+        <Menu.Item>
+          <RoomDropdown/>
         </Menu.Item>
         <Menu.Item >
           <Menu.Header>
