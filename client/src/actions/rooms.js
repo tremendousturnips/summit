@@ -1,11 +1,19 @@
-import { SELECT_ROOM, ADD_ROOM, SET_ROOMS } from './actionTypes';
 import axios from 'axios';
+import { SELECT_ROOM, ADD_ROOM, SET_ROOMS } from './actionTypes';
+import { fetchChannels } from './channels';
 
 
 export const selectRoom = room => ({
   type: SELECT_ROOM,
   room
 });
+
+export const changeRoom = roomId => {
+  return (dispatch) => {
+    dispatch(selectRoom({id: roomId}));
+    dispatch(fetchChannels(roomId));
+  }
+}
 
 export const addRoom = room => ({
   type: ADD_ROOM,
@@ -30,8 +38,10 @@ export const fetchRooms = () => {
   return (dispatch, getStore) => {
     return axios.get(`/api/profiles/${getStore().user.id}/rooms`)
       .then((res)=>{
-        console.log(res.data);
         dispatch(setRooms(res.data));
+      })
+      .then(() => {
+
       })
       .catch( err => {
         console.log(err);
