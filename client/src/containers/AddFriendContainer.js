@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import FriendListItem from '../components/FriendListItem';
+import AddFriend from '../components/AddFriend';
 //import { getVideo } from '../actions/toggleVideo';
 
-const mapStateToProps = ({ profiles }) => ({ profiles });
+const mapStateToProps = ({ profiles, friends }) => ({ profiles, friends });
 
 const mapDispatchToProps = (dispatch) => ({
 //   getVideo: (videoStat) => {
@@ -10,4 +10,4 @@ const mapDispatchToProps = (dispatch) => ({
 //   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FriendListItem);
+export default connect(mapStateToProps, mapDispatchToProps)(AddFriend);

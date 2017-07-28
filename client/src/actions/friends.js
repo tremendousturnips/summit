@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_FRIENDS, ADD_FRIEND, DEL_FRIEND, SET_FRIENDS, DEL_FROM_FRIEND_LIST } from './actionTypes';
+import { FETCH_FRIENDS, ADD_FRIEND, DEL_FRIEND, SET_FRIENDS, DEL_FROM_FRIEND_LIST, ADD_TO_FRIEND_LIST } from './actionTypes';
 
 export const fetchFriends = userId => {
   return (dispatch) => {
@@ -17,6 +17,7 @@ export const setFriends = friends => ({
 });
 
 export const addFriend = (userId, friendId) => {
+  console.log('In friends action add Friend', userId, friendId)
   return (dispatch) => {
       axios
         .post(`/api/profiles/${userId}/friends/${friendId}`)

@@ -3,7 +3,7 @@ import FriendListMenu from '../components/FriendListMenu';
 import { showFriendListStat } from '../actions/showFriendList';
 import { fetchFriends, delFriend, addFriend } from '../actions/friends';
 
-const mapStateToProps = ({ showFriendList, user, friends }) => ({ showFriendList, user, friends });
+const mapStateToProps = ({ showFriendList, user, friends, profiles }) => ({ showFriendList, user, friends, profiles });
 
 const mapDispatchToProps = (dispatch) => ({
   showFriendListStat: () => {
@@ -15,8 +15,8 @@ const mapDispatchToProps = (dispatch) => ({
   delFriend: (userId, friendId, index) => {
     dispatch(delFriend(userId, friendId, index));
   },
-  addFriend: (userId, friendId) => {
-    dispatch(addFriend(userId, friendId));
+  addFriend: (userId, friendId, index) => {
+    dispatch(addFriend(userId, friendId, index));
   }
 });
 

@@ -7,9 +7,8 @@ const friends = (state = [], action) => {
   case ADD_TO_FRIEND_LIST:
     return [...state, action.friend];
   case DEL_FROM_FRIEND_LIST:
-    console.log('action.key', action.key)
-    delete state[action.key];
-    return state;  
+    state.splice(action.key, 1);
+    return [...state];  
   default:
     return state;
   }

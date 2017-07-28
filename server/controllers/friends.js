@@ -33,6 +33,7 @@ module.exports = {
     Friends.forge({ user_id: req.params.id, friend_id: req.params.friendId })
       .save()
       .then(result => {
+        console.log('In friendController.create', result)
         res.status(201).send(result);
       })
       .catch(err => {
