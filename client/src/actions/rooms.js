@@ -11,7 +11,6 @@ export const selectRoom = room => ({
 export const changeRoom = roomId => {
   return (dispatch) => {
     dispatch(selectRoom({id: roomId}));
-    dispatch(fetchChannels(roomId));
   }
 }
 
@@ -40,8 +39,10 @@ export const fetchRooms = () => {
       .then((res)=>{
         dispatch(setRooms(res.data));
       })
-      .then(() => {
-
+      .then(()=>{
+        for (let roomKey in getStore().rooms) {
+          dispatch(fetchChannels(roomKey));
+        }
       })
       .catch( err => {
         console.log(err);
