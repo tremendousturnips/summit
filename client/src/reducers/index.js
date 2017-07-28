@@ -10,6 +10,7 @@ import toggleVideo from './toggleVideo';
 import showFriendList from './showFriendList';
 import friends from './friends';
 import rooms from './rooms';
+import channelsByRoom from './channelsByRoom';
 
 const rootReducer = combineReducers({
   user,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   rooms,
   messages,
   channels,
+  channelsByRoom,
   currentChannel,
   profiles,
   currentRoom,

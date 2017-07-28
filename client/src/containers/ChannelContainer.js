@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import ChannelList from '../components/ChannelList';
 import { selectChannel, postChannel } from '../actions/channels';
 
-const mapStateToProps = ({channels, currentChannel}) => ({channels, currentChannel})
+const mapStateToProps = ({channels, currentChannel, currentRoom, channelsByRoom}) => ({channels, currentChannel})
 
 const mapDispatchToProps = (dispatch) => ({
   selectChannel: (channelId) => {

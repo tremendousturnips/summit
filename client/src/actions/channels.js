@@ -2,9 +2,10 @@ import axios from 'axios';
 import { SET_CHANNELS, ADD_CHANNEL, SELECT_CHANNEL } from './actionTypes';
 import { fetchMessages } from './messages';
 
-export const setChannels = channels => ({
+export const setChannels = (channels, roomId) => ({
   type: SET_CHANNELS,
-  channels
+  channels,
+  roomId
 });
 
 export const addChannel = channel => ({
@@ -40,14 +41,11 @@ export const fetchChannels = roomId => {
 
     return axios.get(`/api/rooms/${roomId}/channels`)
       .then(res => {
-        dispatch(setChannels(res.data));
+        dispatch(setChannels(res.data, roomId));
       })
       .then(() => {
-        const channelList = getState().channels.map((channel) => {
-          return dispatch(fetchMessages(roomId, channel.id));
-        })
-        if (channelList.length) {
-          return Promise.all(channelList);
+        for(let channelKey in getState().channels) {
+          dispatch(fetchMessages(roomId, channelKey));
         }
       })
       .then(() => {
