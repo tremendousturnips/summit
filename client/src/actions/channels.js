@@ -49,7 +49,7 @@ export const fetchChannels = roomId => {
         }
       })
       .then(() => {
-        return joinChannels(getState().channels, getState().socket);
+        // return joinChannels(getState().channels, getState().socket);
       });
   };
 };
