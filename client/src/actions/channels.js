@@ -8,18 +8,17 @@ export const setChannels = channels => ({
 });
 
 export const addChannel = channel => ({
-  //TODO: make action chain such that it POSTS to /api/rooms/:roomId:/channels
   type: ADD_CHANNEL,
   channel
 });
 
 export const postChannel = channel => {
   return (dispatch, getState) => {
-    channel.room_id = 1; //REPLACE WITH getState().currentRoom.id when you implement rooms
-    return axios.post('/api/rooms/1/channels', channel) //DO THE SAME FOR THIS LINE AS WELL
+    channel.room_id = getState().currentRoom.id;
+    return axios.post(`/api/rooms/${channel.room_id}/channels`, channel)
       .then((res)=> {
         dispatch(addChannel(res.data));
-      })
+      });
   }
 }
 
@@ -45,7 +44,7 @@ export const fetchChannels = roomId => {
       })
       .then(() => {
         const channelList = getState().channels.map((channel) => {
-          return dispatch(fetchMessages(1, channel.id)); //TODO: change this to get by current room
+          return dispatch(fetchMessages(roomId, channel.id));
         })
         if (channelList.length) {
           return Promise.all(channelList);

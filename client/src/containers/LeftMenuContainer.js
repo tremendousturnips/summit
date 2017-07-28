@@ -4,20 +4,11 @@ import { fetchChannels, setChannels, selectChannel, addChannel, postChannel, pos
 import { fetchProfiles } from '../actions/profiles';
 import {fetchRooms } from '../actions/rooms';
 
-const mapStateToProps = ({ user, channels, socket, currentChannel }) => ({ user, channels, socket, currentChannel });
+const mapStateToProps = ({ user }) => ({ user });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchChannels: (roomId) => {
-    dispatch(fetchChannels(roomId));
-  },
-  selectChannel: (channelId) => {
-    dispatch(selectChannel(channelId));
-  },
   fetchProfiles: (roomId) => {
     dispatch(fetchProfiles(roomId));
-  },
-  postChannel: (channel) => {
-    dispatch(postChannel(channel));
   }
 });
 

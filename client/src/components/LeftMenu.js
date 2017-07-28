@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Label, Dropdown } from 'semantic-ui-react'
 
-import ChannelList from './ChannelList';
+// import ChannelList from './ChannelList';
 import DirectMessageList from './DirectMessageList';
-import AddChannel from './AddChannel';
-import RoomDropdown from './RoomDropdown';
+// import AddChannel from './AddChannel';
+import RoomContainer from '../containers/RoomContainer';
+import ChannelContainer from '../containers/ChannelContainer';
 
 class LeftMenu extends Component {
   constructor(props) {
@@ -16,8 +17,7 @@ class LeftMenu extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchRooms();
-    this.props.fetchChannels(1);
+    // this.props.fetchChannels(1);
     this.props.fetchProfiles(1);
   }
 
@@ -28,7 +28,7 @@ class LeftMenu extends Component {
 
   render() {
     const { visible } = this.state;
-    const { channels, selectChannel, user, currentChannel, postChannel} = this.props;
+    const { user } = this.props;
     return (
       <Sidebar as={Menu} animation='push' visible={visible} icon='labeled' vertical fixed="left">
         <Menu.Item onClick={this.handleClick.bind(this)}>
@@ -39,14 +39,11 @@ class LeftMenu extends Component {
         </Menu.Item>
         <Menu.Item>
           <Menu.Header>Current Room</Menu.Header>
-          <RoomDropdown/>
+          <RoomContainer/>
         </Menu.Item>
         <Menu.Item >
           <Menu.Header>Text Channels</Menu.Header>
-          <br />
-          <AddChannel postChannel={postChannel}/>
-          <br />
-          <ChannelList channels={channels} selectChannel={selectChannel} currentChannel={currentChannel}/>
+          <ChannelContainer />
         </Menu.Item>
         <Menu.Item>
           <Menu.Header>
