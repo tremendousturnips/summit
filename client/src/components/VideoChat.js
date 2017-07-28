@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'semantic-ui-react';
 import VideoBox from './VideoBox';
+import ICE_SERVERS from '../../../config/ice_servers';
 
 class VideoChat extends React.Component {
   constructor(props) {
@@ -10,7 +11,6 @@ class VideoChat extends React.Component {
       localMediaStream: null,
       peerConnections: {},
       peerMediaStreams: {},
-      mute: true, // CHECK NECESSITY
       room: 'default' // CHANGE THIS TO USER'S ROOM
     };
     const bind = fn => fn.bind(this);
@@ -22,24 +22,6 @@ class VideoChat extends React.Component {
   componentDidMount() {
     this.startVideo();
 
-    const ICE_SERVERS = [
-      { url: 'stun:global.stun.twilio.com:3478?transport=udp' },
-      {
-        url: 'turn:global.turn.twilio.com:3478?transport=udp',
-        username: '7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13',
-        credential: 'Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8='
-      },
-      {
-        url: 'turn:global.turn.twilio.com:3478?transport=tcp',
-        username: '7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13',
-        credential: 'Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8='
-      },
-      {
-        url: 'turn:global.turn.twilio.com:443?transport=tcp',
-        username: '7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13',
-        credential: 'Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8='
-      }
-    ];
     const { socket } = this.props;
 
     socket.on('addPeer', req => {
@@ -114,7 +96,7 @@ class VideoChat extends React.Component {
 
     socket.on('removePeer', peer_id => {
       if (this.state.peerConnections[peer_id]) {
-        // this.state.peerConnections[peer_id].close(); // HERE'S SOMETHING
+        this.state.peerConnections[peer_id].close(); // HERE'S SOMETHING
         this.setState({
           peerConnections: { ...this.state.peerConnections, [peer_id]: null }, // HERE'S SOMETHING
           peerMediaStreams: { ...this.state.peerMediaStreams, [peer_id]: null }
@@ -128,17 +110,17 @@ class VideoChat extends React.Component {
       const description = new RTCSessionDescription(session_description);
 
       // peerConnection // TODO - FIX THIS PROMISE CHAIN
-      //   .setRemoteDescription(description)
+      //   .setRemoteDescription(session_description)
       //   .then(() => {
       //     if (session_description.type === 'offer') {
       //       return peerConnection.createAnswer();
       //     }
       //   })
-      //   .then(session_description => peerConnection.setLocalDescription(session_description))
+      //   .then(answer => peerConnection.setLocalDescription(answer))
       //   .catch(err => {
       //     console.log('Error creating answer:', err);
       //   })
-      //   .then(() => {
+      //   .then(session_description => {
       //     socket.emit('relaySessionDescription', {
       //       room: this.state.room,
       //       peer_id,
@@ -215,8 +197,15 @@ class VideoChat extends React.Component {
   // }
 
   startVideo() {
+    const options = {
+      audio: true,
+      video: {
+        width: { exact: 352 },
+        height: { exact: 240 }
+      }
+    };
     navigator.mediaDevices
-      .getUserMedia({ audio: true, video: true })
+      .getUserMedia(options)
       .then(localMediaStream => {
         this.setState(
           {
@@ -236,7 +225,7 @@ class VideoChat extends React.Component {
 
   endVideo() {
     if (this.state.localMediaStream) {
-      this.props.socket.emit('part', this.state.room);
+      this.props.socket.emit('leaveVideo', this.state.room);
       this.state.localMediaStream.getTracks().forEach(track => track.stop());
     }
   }
