@@ -3,7 +3,6 @@ import { SET_CHANNELS, ADD_CHANNEL } from '../actions/actionTypes';
 const channelsByRoom = (state = {0: []}, action) => {
   switch (action.type) {
   case SET_CHANNELS:
-    console.log(action.roomId);
     return { 
       ...state, 
       [action.roomId]: action.channels.map(channel => {
