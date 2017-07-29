@@ -35,7 +35,7 @@ class AddChannel extends Component {
       <div>
         <Button onClick={this.show} size='mini'>Add Channel</Button>
 
-        <Modal size='mini' open={open} onClose={this.close} closeIcon='close' >
+        <Modal size='mini' open={open} onClose={this.close} closeIcon='close' dimmer='blurring'>
           <Modal.Header>
             Create Text Channel
           </Modal.Header>
