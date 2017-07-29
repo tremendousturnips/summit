@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {Grid, Sidebar} from 'semantic-ui-react';
 
-import LeftMenu from './LeftMenu';
-import NavBar from '../containers/NavBarContainer';
+import NavBarContainer from '../containers/NavBarContainer';
 import MessageContainer from '../containers/MessageContainer';
 import InputContainer from '../containers/InputContainer';
 import LeftMenuContainer from '../containers/LeftMenuContainer';
@@ -18,7 +17,7 @@ const Main = () => (
           </Grid.Column>
           <Grid.Column width={12} >
             <Grid.Row>
-              <NavBar />
+              <NavBarContainer/>
               <VideoChatBarContainer />
             </Grid.Row>
             <Grid.Row>

@@ -2,57 +2,53 @@ import axios from 'axios';
 import { SET_CHANNELS, ADD_CHANNEL, SELECT_CHANNEL } from './actionTypes';
 import { fetchMessages } from './messages';
 
-export const setChannels = channels => ({
+export const setChannels = (channels, roomId) => ({
   type: SET_CHANNELS,
-  channels
+  channels,
+  roomId
 });
 
 export const addChannel = channel => ({
-  //TODO: make action chain such that it POSTS to /api/rooms/:roomId:/channels
   type: ADD_CHANNEL,
   channel
 });
 
 export const postChannel = channel => {
   return (dispatch, getState) => {
-    channel.room_id = 1; //REPLACE WITH getState().currentRoom.id when you implement rooms
-    return axios.post('/api/rooms/1/channels', channel) //DO THE SAME FOR THIS LINE AS WELL
+    channel.room_id = getState().currentRoom.id;
+    return axios.post(`/api/rooms/${channel.room_id}/channels`, channel)
       .then((res)=> {
-        dispatch(addChannel(res.data));
-      })
+        Promise.all([
+          dispatch(addChannel(res.data)),
+          joinChannel(res.data.id, getState().socket)
+        ]);
+      });
   }
 }
 
 export const selectChannel = channel => ({
   type: SELECT_CHANNEL,
   channel
-});
+})
 
-// export const changeChannel = channel => {};
-
-export const joinChannels = (channels, socket) => {
-  channels.forEach(channel => {
-    socket.emit('subscribe', channel.id);
-  });
+export const joinChannel = (channelId, socket) => {
+  socket.emit('subscribe', channelId);
 };
 
 export const fetchChannels = roomId => {
   return (dispatch, getState) => {
-
+    const socket = getState().socket;
     return axios.get(`/api/rooms/${roomId}/channels`)
       .then(res => {
-        dispatch(setChannels(res.data));
+        dispatch(setChannels(res.data, roomId));
       })
       .then(() => {
-        const channelList = getState().channels.map((channel) => {
-          return dispatch(fetchMessages(1, channel.id)); //TODO: change this to get by current room
-        })
-        if (channelList.length) {
-          return Promise.all(channelList);
+        for(let channelKey in getState().channels) {
+          Promise.all([
+            dispatch(fetchMessages(roomId, channelKey)),
+            joinChannel(channelKey, socket)
+          ]);
         }
       })
-      .then(() => {
-        return joinChannels(getState().channels, getState().socket);
-      });
   };
 };

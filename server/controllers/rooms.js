@@ -33,10 +33,4 @@ module.exports = {
       })
       .catch(err => res.status(503).send(err));
   }
-  // getMessages: (req, res) => {
-  //   const room_id = req.params.id;
-  //   Channel.fetch({ room_id }).fetch({ withRelated: ['messages'] }).then(messages => {
-  //     console.log('MESSAGES:', messages);
-  //   });
-  // }
 };

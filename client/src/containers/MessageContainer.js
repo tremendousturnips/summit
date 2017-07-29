@@ -14,9 +14,6 @@ const mapStateToProps = ({ messages, socket, currentChannel, profiles}) => {
 const mapDispatchToProps = dispatch => ({
   addMessage: message => {
     dispatch(addMessage(message));
-  },
-  fetchMessages: (roomId, channelId) => {
-    dispatch(fetchMessages(roomId, channelId));
   }
 });
 

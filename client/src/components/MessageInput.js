@@ -29,9 +29,10 @@ class MessageInput extends Component {
     this.setState({text: e.target.value})
   }
   render() {
+    const {currentChannel} = this.props;
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Input fluid action={{ icon: 'send' }} size='medium' placeholder='Enter Message...' value={this.state.text} onChange={this.handleChange}/>
+      <Form onSubmit={this.handleSubmit} >
+        <Form.Input fluid action={{ icon: 'send' }} size='medium' placeholder='Enter Message...' value={this.state.text} onChange={this.handleChange} disabled={!currentChannel.hasOwnProperty("id")}/>
       </Form>
     )
   }
