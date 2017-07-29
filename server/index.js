@@ -49,6 +49,16 @@ io.on('connection', socket => {
   socket.on('send', message => {
     socket.to(message.channel_id).emit('message', message);
   });
+  socket.on('join room', roomId => {
+    console.log('joined room');
+    socket.join(`/room/${roomId}`);
+  });
+  socket.on('leave room', roomId => {
+    socket.leave(`/room/${roomId}`);
+  });
+  socket.on('post channel', channel => {
+    io.to(`/room/${channel.room_id}`).emit('add channel', channel);
+  });
   socket.on('subscribe', channelId => {
     console.log('subscribed to namespace:', channelId);
     socket.join(channelId);

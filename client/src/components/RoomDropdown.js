@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Dropdown, Modal, Form } from 'semantic-ui-react'
+import RoomSearch from './RoomSearch';
 
 const options = [
   {key: 'Room',
@@ -26,7 +27,10 @@ class RoomDropdown extends Component {
   render() {
     return (
       <div>
-        <Dropdown placeholder='Select a Room' onChange={this.handleChange} fluid selection options={this.props.rooms || options}/>
+         {/* <RoomSearch />  */}
+         {/* <br/>  */}
+         
+        <Dropdown placeholder='Your Rooms' onChange={this.handleChange} fluid selection options={this.props.rooms || options}/>
       </div>
     );
   }

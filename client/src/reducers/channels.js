@@ -3,7 +3,7 @@ import { SET_CHANNELS, ADD_CHANNEL } from '../actions/actionTypes';
 const channels = (state = { }, action) => {
   switch (action.type) {
   case SET_CHANNELS:
-    const channelNormal = {};
+    const channelNormal = {...state};
     action.channels.forEach(channel => {
       channelNormal[channel.id] = channel;
     });

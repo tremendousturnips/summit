@@ -33,15 +33,24 @@ export const setRooms = rooms => ({
   rooms
 });
 
+export const joinRoom = (roomId, socket) => {
+  socket.emit('join room', roomId);
+};
+
 export const fetchRooms = () => {
   return (dispatch, getStore) => {
+    
     return axios.get(`/api/profiles/${getStore().user.id}/rooms`)
       .then((res)=>{
         dispatch(setRooms(res.data));
       })
       .then(()=>{
-        for (let roomKey in getStore().rooms) {
-          dispatch(fetchChannels(roomKey));
+        const {rooms, socket} = getStore();
+        for (let roomId in rooms) {
+          Promise.all([
+            dispatch(fetchChannels(roomId)),
+            joinRoom(roomId, socket)
+          ])
         }
       })
       .catch( err => {
