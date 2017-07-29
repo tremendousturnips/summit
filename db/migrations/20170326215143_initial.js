@@ -31,6 +31,7 @@ exports.up = (knex, Promise) => {
 
     knex.schema.createTableIfNotExists('friends', t => {
       t.increments('id').unsigned().primary();
+      t.string('status').nullable();
       t.integer('user_id').references('id').inTable('profiles').notNull().onDelete('cascade');
       t.integer('friend_id').references('id').inTable('profiles').notNull().onDelete('cascade');
     }),
