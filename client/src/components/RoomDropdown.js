@@ -24,7 +24,6 @@ class RoomDropdown extends Component {
   }
 
   render() {
-    //TODO: find out when and why this is rendering multiple times?
     return (
       <div>
         <Dropdown placeholder='Select a Room' onChange={this.handleChange} fluid selection options={this.props.rooms || options}/>
