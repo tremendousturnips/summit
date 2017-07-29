@@ -17,6 +17,8 @@ router.route('/:id/friends/:friendId').delete(FriendsController.deleteOne);
 
 router.route('/:id/friends/:friendId').post(FriendsController.create);
 
+router.route('/:id/friends/:friendId/status/:status').put(FriendsController.update);
+
 router.route('/:id/directs/:to_user_id/messages').get(MessageController.getDirectMessages);
 
 module.exports = router;

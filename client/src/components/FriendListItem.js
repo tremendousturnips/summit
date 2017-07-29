@@ -1,16 +1,27 @@
 import React, { Component } from 'react'
-import { List, Image } from 'semantic-ui-react'
+import { List, Image, Icon } from 'semantic-ui-react'
 
 class FriendListItem extends Component {
     constructor(props) {
       super (props)
 
       if (!this.props.profiles[this.props.friend.friend_id]) {
-        
+        this.props.getProfile(this.props.friend.friend_id)
       }
 
       this.actionFriend = this.actionFriend.bind(this)
+      this.status = this.status.bind(this)
 
+    }
+
+    status () {
+      if (this.props.friend.status === 'Accepted') {
+        return <a onClick={this.removeFriend}>Remove</a>
+      } else if (this.props.friend.status === 'Pending') {
+        return <a onClick={this.acceptFriend}>Accept</a>
+      } else {
+        return <span>Waiting Approval</span>
+      }
     }
 
     actionFriend () {
@@ -20,17 +31,18 @@ class FriendListItem extends Component {
     }
 
     componentWillMount() {
-      console.log('in friendlistitem',this.props.friend)
 
     }
 
     render () {
       return (
         <List.Item>
-          <Image avatar src={this.props.profiles[this.props.friend.friend_id].image} alt='p' />
-          <List.Content>
-             <List.Header>{this.props.profiles[this.props.friend.friend_id].display}</List.Header> 
-             <a onClick={this.actionFriend}>{this.props.actionType}</a>
+          <List.Content floated='right'>
+            {this.status()}
+          </List.Content>
+          <List.Content floated='left' verticalAlign='middle'>
+            <Image avatar src={this.props.profiles[this.props.friend.friend_id].image} alt='p' />
+            {this.props.profiles[this.props.friend.friend_id].display} 
           </List.Content>
         </List.Item>
       );

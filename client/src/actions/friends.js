@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_FRIENDS, ADD_FRIEND, DEL_FRIEND, SET_FRIENDS, DEL_FROM_FRIEND_LIST, ADD_TO_FRIEND_LIST } from './actionTypes';
+import { FETCH_FRIENDS, ADD_FRIEND, DEL_FRIEND, SET_FRIENDS, DEL_FROM_FRIEND_LIST, ADD_TO_FRIEND_LIST, UPDATE_TO_FRIEND_LIST } from './actionTypes';
 
 export const fetchFriends = userId => {
   return (dispatch) => {
@@ -17,12 +17,13 @@ export const setFriends = friends => ({
 });
 
 export const addFriend = (userId, friendId) => {
-  console.log('In friends action add Friend', userId, friendId)
   return (dispatch) => {
       axios
         .post(`/api/profiles/${userId}/friends/${friendId}`)
         .then(res => {
-            dispatch(addToFriendList(res.data));
+            if (res.status === '201') {
+              dispatch(addToFriendList(res.data));
+            }
         })
   };
 };
@@ -37,8 +38,7 @@ export const delFriend = (userId, friendId, key) => {
       return axios
         .delete(`/api/profiles/${userId}/friends/${friendId}`)
         .then(res => {
-          console.log('key', key);
-          dispatch(delFromFriendList(key));
+          dispatch(delFromFriendList(friendId));
         })
   };
 };
@@ -46,4 +46,22 @@ export const delFriend = (userId, friendId, key) => {
 export const delFromFriendList = key => ({
   type: DEL_FROM_FRIEND_LIST,
   key
+});
+
+export const updateFriend = (userId, friendId, status) => {
+  return (dispatch) => {
+      axios
+        .put(`/api/profiles/${userId}/friends/${friendId}/status/${status}`)
+        .then(res => {
+            if (res.status === '201') {
+              dispatch(updateToFriendList(friendId, status));
+            }
+        })
+  };
+};
+
+export const updateToFriendList = (key, status) => ({
+  type: UPDATE_TO_FRIEND_LIST,
+  key,
+  status
 });
