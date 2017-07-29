@@ -15,6 +15,9 @@ export const SET_SOCKET = 'SET_SOCKET';
 // user
 export const SET_USER = 'SET_USER';
 
+//Profiles
+export const ADD_PROFILE = 'ADD_PROFILE';
+
 //rooms
 export const SELECT_ROOM = 'SELECT_ROOM';
 export const ADD_ROOM = 'ADD_ROOM';
@@ -33,4 +36,5 @@ export const DEL_FRIEND = 'DEL_FRIEND';
 export const SET_FRIENDS = 'SET_FRIENDS';
 export const ADD_TO_FRIEND_LIST = 'ADD_TO_FRIEND_LIST';
 export const DEL_FROM_FRIEND_LIST = 'DEL_FROM_FRIEND_LIST';
+export const UPDATE_TO_FRIEND_LIST = 'UPDATE_TO_FRIEND_LIST';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {Icon, Menu, Sidebar, List, Button, Modal, Input, Label} from 'semantic-ui-react';
 
 import FriendListItemContainer from '../containers/FriendListItemContainer'
-import AddFriendContainer from '../containers/AddFriendContainer'
+import AddFriendItemContainer from '../containers/AddFriendItemContainer'
 
 class FriendListMenu extends React.Component {
     constructor(props) {
@@ -18,7 +18,6 @@ class FriendListMenu extends React.Component {
     }
     
     componentWillMount() {
-      console.log('In FriendListMenu component will mount')
       this.props.fetchFriends(this.props.user.id)
     }
 
@@ -33,7 +32,6 @@ class FriendListMenu extends React.Component {
     }
 
     handleAddFriend() {
-      console.log('In handleAddFriend', this.props.profiles)
       this.toggleShowModal()
     }
 
@@ -53,7 +51,7 @@ class FriendListMenu extends React.Component {
             Friends
           </Menu.Item>
           <Menu.Item>
-              <List animated verticalAlign='middle'>
+              <List verticalAlign='middle'>
                 {this.props.friends.map((friend, index) => <FriendListItemContainer 
                                                             friend={friend}
                                                             actionType='Remove' 
@@ -61,7 +59,7 @@ class FriendListMenu extends React.Component {
                                                             index={index} 
                                                             key={index}/>)}
               </List>                                              
-          </Menu.Item>  
+          </Menu.Item> 
           <Menu.Item name='addFriend'>
             <Button.Group labeled >
               <Button compact icon='add user' color='red' content='Add' onClick={this.handleAddFriend} inverted/>
@@ -81,17 +79,12 @@ class FriendListMenu extends React.Component {
               <List animated verticalAlign='middle'>
                 {Object.keys(this.props.profiles).filter((objectKey) => {
                   return this.props.friends.map((friend) => {
-                      if(friend.user_id === objectKey) {
-                        return false
-                      }
-                      return true
-                    })
+                      return (friend.friend_id === objectKey || friend.user_id === objectKey) 
+                  })
                   }).map((objectKey, index) => {
-                    return <FriendListItemContainer friend={this.props.profiles[objectKey]}
-                                          actionType='Add' 
+                    return <AddFriendItemContainer actionType='Add' 
                                           actionFunc={this.props.addFriend}
-                                          userId={this.props.user.id}
-                                          index={index} 
+                                          index={objectKey} 
                                           key={index}
                             />
                   })}

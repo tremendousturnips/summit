@@ -33,7 +33,7 @@ module.exports = {
         if (!profile) {
           throw profile;
         }
-        res.status(200).send(profile);
+        console.log('In ProfileController',profile.toJSON())
       })
       .error(err => {
         res.status(500).send(err);
