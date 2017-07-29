@@ -34,7 +34,6 @@ io.on('connection', socket => {
     io.to(`/room/${channel.room_id}`).emit('add channel', channel);
   });
   socket.on('subscribe', channelId => {
-    console.log('subscribed to namespace:', channelId);
     socket.join(channelId);
   });
   socket.on('unsubscribe', channelId => {
@@ -42,7 +41,6 @@ io.on('connection', socket => {
   });
 
   // Video
-
   socket.on('joinVideo', room => {
     if (!roomVideoSockets[room]) {
       roomVideoSockets[room] = {};
@@ -71,10 +69,10 @@ io.on('connection', socket => {
     delete roomVideoSockets[room][socket.id];
 
     for (const peerSocketId in roomVideoSockets[room]) {
-      // roomVideoSockets[room][peerSocketId].emit('removePeer', socket.id);
-      socket /*.to(roomVideoSockets[room])*/
-        .emit('removePeer', socket.id); // necessary ??? - isn't socket destroyed?
+      socket.emit('removePeer', peerSocketId);
+      roomVideoSockets[room][peerSocketId].emit('removePeer', socket.id);
     }
+    socket.emit('removePeer', socket.id);
   });
 
   socket.on('relayICECandidate', req => {
