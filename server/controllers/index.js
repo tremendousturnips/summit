@@ -4,5 +4,6 @@ module.exports = {
   ChannelController: require('./channels'),
   MessageController: require('./messages'),
   RoleController: require('./roles'),
-  FriendsController: require('./friends')
+  FriendsController: require('./friends'),
+  DirectController: require('./directs')
 };

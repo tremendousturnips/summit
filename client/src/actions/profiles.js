@@ -27,4 +27,5 @@ export const getProfile = (userId) => {
       dispatch(addProfile(res));
     })
   }
-}
+};
+

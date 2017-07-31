@@ -7,6 +7,9 @@ const Message = db.Model.extend({
   },
   channel: function() {
     return this.belongsTo('Channel');
+  },
+  direct: function() {
+    return this.belongsToMany('Direct', 'messages', 'channel_id', 'channel_id').through('Channel', 'id', '');
   }
 });
 

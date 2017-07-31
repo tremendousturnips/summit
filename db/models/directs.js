@@ -2,11 +2,14 @@ const db = require('../');
 
 const Direct = db.Model.extend({
   tableName: 'directs',
-  toUser: function() {
-    return this.belongsTo('User');
-  },
   message: function() {
-    return this.belongsTo('Message');
+    return this.hasMany('Message', 'directs', 'channel_id', 'channel_id').through('Channel', 'channel_id', 'id');
+  },
+  channel: function() {
+    return this.belongsToMany('Channel', 'directs', 'channel_id','id')
+  },
+  user: function() {
+    return this.belongsToMany('Profiles');
   }
 });
 

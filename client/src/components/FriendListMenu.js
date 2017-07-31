@@ -52,12 +52,13 @@ class FriendListMenu extends React.Component {
           </Menu.Item>
           <Menu.Item>
               <List verticalAlign='middle'>
-                {this.props.friends.map((friend, index) => <FriendListItemContainer 
-                                                            friend={friend}
+                {Object.keys(this.props.friends).map((objectKey) => { 
+                                                          return <FriendListItemContainer 
+                                                            friend={this.props.friends[objectKey]}
                                                             actionType='Remove' 
                                                             actionFunc={this.props.delFriend}
-                                                            index={index} 
-                                                            key={index}/>)}
+                                                            index={objectKey} 
+                                                            key={objectKey}/>})}
               </List>                                              
           </Menu.Item> 
           <Menu.Item name='addFriend'>
@@ -77,11 +78,12 @@ class FriendListMenu extends React.Component {
             </Modal.Header>  
             <Modal.Content scrolling>
               <List animated verticalAlign='middle'>
-                {Object.keys(this.props.profiles).filter((objectKey) => {
-                  return this.props.friends.map((friend) => {
-                      return (friend.friend_id === objectKey || friend.user_id === objectKey) 
-                  })
-                  }).map((objectKey, index) => {
+                {Object.keys(this.props.profiles)
+                 //  .filter((objectKey) => {
+                 // return this.props.friends.forEach((friend) => {
+                 //     return (friend.friend_id === objectKey || friend.user_id === objectKey) 
+                 // })}) 
+                  .map((objectKey, index) => {
                     return <AddFriendItemContainer actionType='Add' 
                                           actionFunc={this.props.addFriend}
                                           index={objectKey} 

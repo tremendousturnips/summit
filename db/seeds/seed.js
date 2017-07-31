@@ -54,7 +54,7 @@ exports.seed = function(knex, Promise) {
         { user_id: 1, friend_id: 2, status:'Accepted' },
         { user_id: 2, friend_id: 1, status:'Accepted'},
         { user_id: 3, friend_id: 1, status:'Accepted'},
-        { user_id: 1, friend_id: 3, status:s'Accepted'}
+        { user_id: 1, friend_id: 3, status:'Accepted'}
       ]);
     })
     .then(() => {
@@ -74,7 +74,9 @@ exports.seed = function(knex, Promise) {
         { name: 'channel3-inRoom2', room_id: 2 },
         { name: 'channel1-inRoom3', room_id: 3 },
         { name: 'channel2-inRoom3', room_id: 3 },
-        { name: 'channel3-inRoom3', room_id: 3 }
+        { name: 'channel3-inRoom3', room_id: 3 },
+        { name: 'user1-user2' },
+        { name: 'user1-user3' }
       ]);
     })
     .then(() => {
@@ -91,16 +93,14 @@ exports.seed = function(knex, Promise) {
         { text: 'message2-inChannel1', user_id: 1, channel_id: 1 },
         { text: 'message3-inChannel1', user_id: 1, channel_id: 1 },
         { text: 'message2', user_id: 2, channel_id: 2 },
-        { text: 'message1-fromUserId3', user_id: 3 },
-        { text: 'message2-fromUserId3', user_id: 3 },
-        { text: 'message2-fromUserId2', user_id: 2 }
+        { text: 'message1-fromUserId3', user_id: 1, channel_id: 10 },
+        { text: 'message2-fromUserId3', user_id: 1, channel_id: 11  }
       ]);
     })
     .then(() => {
       return knex('directs').insert([
-        { to_user_id: 2, message_id: 5 },
-        { to_user_id: 2, message_id: 6 },
-        { to_user_id: 3, message_id: 7 }
+        { user_id:1, to_user_id: 2, channel_id: 10 },
+        { user_id:1, to_user_id: 3, channel_id: 11 }
       ]);
     });
   // return Promise.all(tableDeletes)

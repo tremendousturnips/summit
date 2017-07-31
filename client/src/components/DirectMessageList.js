@@ -1,15 +1,11 @@
 import React, { Component } from 'react'
 import { Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react'
-let dmList = [
-  'DUDE 1',
-  'DUDE 2',
-  'DUDE 3'
-]
+
 const DirectMessageList = (props) => (
   <Menu vertical fluid>
-    {dmList.map((channel, index) => (
-      <Menu.Item key={index}>{channel}</Menu.Item>)
-    )}
+    {Object.keys(this.props.directs).map((friendId) => {
+      <DirectMessageItem friend={this.props.profiles[friendId]} key={friendId} />
+    })}
   </Menu>
 );
 

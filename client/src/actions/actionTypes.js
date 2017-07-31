@@ -38,3 +38,7 @@ export const ADD_TO_FRIEND_LIST = 'ADD_TO_FRIEND_LIST';
 export const DEL_FROM_FRIEND_LIST = 'DEL_FROM_FRIEND_LIST';
 export const UPDATE_TO_FRIEND_LIST = 'UPDATE_TO_FRIEND_LIST';
 
+//Directs
+export const SET_DIRECTS = 'SET_DIRECTS';
+export const ADD_DIRECT = 'ADD_DIRECT';
+

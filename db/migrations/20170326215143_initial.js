@@ -45,7 +45,7 @@ exports.up = (knex, Promise) => {
     knex.schema.createTableIfNotExists('channels', t => {
       t.increments('id').unsigned().primary();
       t.string('name').notNull();
-      t.integer('room_id').references('id').inTable('rooms').notNull().onDelete('cascade');
+      t.integer('room_id').references('id').inTable('rooms').nullable().onDelete('cascade');
     }),
 
     knex.schema.createTableIfNotExists('roles', t => {
@@ -58,7 +58,8 @@ exports.up = (knex, Promise) => {
     knex.schema.createTableIfNotExists('directs', t => {
       t.increments('id').unsigned().primary();
       t.integer('to_user_id').references('id').inTable('profiles').notNull().onDelete('cascade');
-      t.integer('message_id').references('id').inTable('messages').notNull().onDelete('cascade');
+      t.integer('user_id').references('id').inTable('profiles').notNull().onDelete('cascade');
+      t.integer('channel_id').references('id').inTable('channels').notNull().onDelete('cascade');
     })
   ]);
 };
