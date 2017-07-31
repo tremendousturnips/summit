@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react'
+import { List } from 'semantic-ui-react'
+import DirectMessageItemContainer from '../containers/DirectMessageItemContainer';
 
 const DirectMessageList = (props) => (
-  <Menu vertical fluid>
-    {Object.keys(this.props.directs).map((friendId) => {
-      <DirectMessageItem friend={this.props.profiles[friendId]} key={friendId} />
+  <List animated verticalAlign='middle'>
+    {Object.keys(props.directs).map((friend, index) => {
+      return <DirectMessageItemContainer friend={props.directs[friend].to_user_id} key={index} index={props.directs[friend].channel_id}/>
     })}
-  </Menu>
+  </List>
 );
 
 export default DirectMessageList;

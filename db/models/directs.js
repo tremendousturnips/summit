@@ -6,7 +6,7 @@ const Direct = db.Model.extend({
     return this.hasMany('Message', 'directs', 'channel_id', 'channel_id').through('Channel', 'channel_id', 'id');
   },
   channel: function() {
-    return this.belongsToMany('Channel', 'directs', 'channel_id','id')
+    return this.belongsToMany('Channel', 'directs', 'channel_id', 'id')
   },
   user: function() {
     return this.belongsToMany('Profiles');

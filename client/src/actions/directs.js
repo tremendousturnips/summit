@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { SET_DIRECTS, ADD_DIRECT } from './actionTypes';
+import { setMessages } from './messages';
+import { setChannels, subscribeChannel } from './channels';
 
 export const setDirects = directs => ({
   type: 'SET_DIRECTS',
@@ -24,10 +26,26 @@ export const addDirectChannel = (userId, friendId) => {
 };
 
 export const fetchDirects = (userId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const socket = getState().socket;
     return axios(`/api/profiles/${userId}/directs`)
-      .then( (res) => {
+      .then((res) => {
         dispatch(setDirects(res.data));
+      })
+      .then(() => {
+        const directs = getState().directs
+        for (let key in directs) {
+          var channel = [{
+            id: directs[key].channel_id,
+            name: '',
+            room_id: 'direct'
+          }]
+          dispatch(setChannels(channel, 'direct'))
+          subscribeChannel(directs[key].channel_id, socket)
+          for (let message in directs.messages) {
+            dispatch(setMessages(message));
+          }
+        }
       })
   }
 };

@@ -1,12 +1,16 @@
 import { connect } from 'react-redux';
-import FriendListItem from '../components/DirectMessageItem';
+import DirectMessageItem from '../components/DirectMessageItem';
 import { getProfile } from '../actions/profiles';
+import { selectChannel } from '../actions/channels';
 
-const mapStateToProps = ({ profiles, directs }) => ({ profiles, directs });
+const mapStateToProps = ({ profiles, directs, channels }) => ({ profiles, directs, channels });
 
 const mapDispatchToProps = (dispatch) => ({
   getProfile: (userId) => {
     dispatch(getProfile(userId));
+  },
+  selectChannel: (channel) => {
+    dispatch(selectChannel(channel));
   }
 });
 

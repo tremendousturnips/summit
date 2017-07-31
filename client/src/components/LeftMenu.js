@@ -20,12 +20,13 @@ class LeftMenu extends Component {
   }
 
   componentWillMount() {
+    this.props.fetchProfiles(1);
     this.props.fetchDirects(this.props.user.id);
   }
 
   componentDidMount() {
     // this.props.fetchChannels(1);
-    this.props.fetchProfiles(1);
+    //this.props.fetchProfiles(1);
 
   }
 

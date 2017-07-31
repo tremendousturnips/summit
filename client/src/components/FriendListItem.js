@@ -40,7 +40,9 @@ class FriendListItem extends Component {
     messageFriend() {
       if (this.props.directs[this.props.friend.friend_id]) {
         //Direct Message exists
-        this.props.setChannel(this.props.direct[this.props.friend.friend_id].channel_id)
+        console.log('In friendlistitem', this.props.directs[this.props.friend.friend_id].channel_id)
+        this.props.selectChannel(this.props.channels[this.props.directs[this.props.friend.friend_id].channel_id])
+        //this.props.setChannel(this.props.direct[this.props.friend.friend_id].channel_id)
       } else {
         this.props.addDirectChannel(this.props.friend.user_id, this.props.friend.friend_id)
       }

@@ -1,41 +1,45 @@
 import React, { Component } from 'react'
-import { Menu, Image } from 'semantic-ui-react'
+import { Menu, Image, List } from 'semantic-ui-react';
 
 class DirectMessageItem extends Component {
     constructor(props) {
       super (props)
 
-      this.actionFriend = this.actionFriend.bind(this)
+      if (!this.props.profiles[this.props.friend]) {
+        this.props.getProfile(this.props.friend)
+      }
 
-    }
+      this.sendMessage = this.sendMessage.bind(this)
 
-    actionFriend () {
-      let userId = this.props.user.id
-      let friendId = this.props.index
-      this.props.actionFunc(userId, friendId, this.props.index)
     }
 
     componentWillMount() {
-      //console.log('in friendlistitem before mount',this.props.profiles)
+      //console.log('in Direct Message Item before mount', this.props.channels) 
 
     }
 
     componentDidMount() {
-      //console.log('in friendlistitem after mount',this.props.profiles)
+      console.log('in directmessageitem after mount',this.props.channels)
 
+    }
+
+    sendMessage () {
+      this.props.selectChannel(this.props.channels[this.props.index])
     }
 
     render () {
       return (
-        <Menu.Item>
-          <Image avatar src={this.props.profiles[this.props.index].image} alt='p' />
+        <List.Item>
+          <Image avatar src={this.props.profiles[this.props.friend].image} alt='p' />
           <List.Content>
-             <List.Header>{this.props.profiles[this.props.index].display}</List.Header> 
-             <a onClick={this.actionFriend}>{this.props.actionType}</a>
+             <List.Header> 
+              <a onClick={this.sendMessage}>{this.props.profiles[this.props.friend].display}
+              </a>
+            </List.Header>  
           </List.Content>
-        </Menu.Item>
+        </List.Item>
       );
     }
-}
+};
 
-export default DirectMesageItem;
+export default DirectMessageItem;

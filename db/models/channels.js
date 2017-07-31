@@ -9,7 +9,7 @@ const Channel = db.Model.extend({
     return this.belongsTo('Room');
   },
   directs: function() {
-    return this.hasMany('Directs');
+    return this.belongsToMany('directs', 'channels', 'id', 'channel_id');
   }
 });
 
