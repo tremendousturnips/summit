@@ -9,7 +9,6 @@ class VideoChat extends React.Component {
     super(props);
     this.state = {
       localMediaStream: null,
-      peerConnections: {},
       peerMediaStreams: {},
       room: 'default' // CHANGE THIS TO USER'S ROOM
     };
@@ -17,6 +16,8 @@ class VideoChat extends React.Component {
 
   componentDidMount() {
     const { socket } = this.props;
+    const peerConnections = {};
+
     console.log('SOCKET ID', socket.id);
 
     const mediaOptions = {
@@ -51,7 +52,7 @@ class VideoChat extends React.Component {
     socket.on('addPeer', req => {
       const { peer_id, should_create_offer } = req;
 
-      if (this.state.peerConnections[peer_id]) {
+      if (peerConnections[peer_id]) {
         console.log('Already connected to peer ', peer_id);
         return;
       }
@@ -61,9 +62,7 @@ class VideoChat extends React.Component {
         { optional: [{ DtlsSrtpKeyAgreement: true }] }
       );
 
-      this.setState({
-        peerConnections: { ...this.state.peerConnections, [peer_id]: peer_connection }
-      });
+      peerConnections[peer_id] = peer_connection;
 
       peer_connection.onicecandidate = e => {
         console.log('ONICECANDIDATE FIRED');
@@ -112,10 +111,10 @@ class VideoChat extends React.Component {
 
     socket.on('removePeer', peer_id => {
       console.log('Removing peer', peer_id);
-      if (this.state.peerConnections[peer_id]) {
-        this.state.peerConnections[peer_id].close(); // HERE'S SOMETHING
+      if (peerConnections[peer_id]) {
+        peerConnections[peer_id].close(); // HERE'S SOMETHING
+        delete peerConnections[peer_id];
         this.setState({
-          peerConnections: { ...this.state.peerConnections, [peer_id]: null },
           peerMediaStreams: { ...this.state.peerMediaStreams, [peer_id]: null }
         });
       }
@@ -123,7 +122,7 @@ class VideoChat extends React.Component {
 
     socket.on('sessionDescription', req => {
       const { peer_id, session_description } = req;
-      const peerConnection = this.state.peerConnections[peer_id];
+      const peerConnection = peerConnections[peer_id];
 
       peerConnection
         .setRemoteDescription(session_description)
@@ -147,7 +146,7 @@ class VideoChat extends React.Component {
     socket.on('iceCandidate', req => {
       console.log('ICECANDIDATE');
       const { peer_id, ice_candidate } = req;
-      const peerConnection = this.state.peerConnections[peer_id];
+      const peerConnection = peerConnections[peer_id];
       peerConnection.addIceCandidate(new RTCIceCandidate(ice_candidate));
     });
   }
@@ -160,11 +159,12 @@ class VideoChat extends React.Component {
   }
 
   render() {
+    const { localMediaStream } = this.state;
     const peerStreams = Object.values(this.state.peerMediaStreams).filter(stream => !!stream);
     return (
       <Container>
-        {this.state.localMediaStream
-          ? <VideoBox id="localMediaStream" stream={this.state.localMediaStream} />
+        {localMediaStream
+          ? <VideoBox id="localMediaStream" stream={localMediaStream} />
           : ''}
         {peerStreams.map(stream =>
           <VideoBox key={stream.id} id={stream.id} stream={stream.stream} />
