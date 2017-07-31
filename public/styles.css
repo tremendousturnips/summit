@@ -21,6 +21,10 @@
   box-shadow: none;
 }
 
+ i.add.circle.icon {
+  float: right;
+} 
+
 form.ui.form {
   width: 100%;
   margin: 0 auto 2rem auto;

@@ -18,20 +18,27 @@ export const postChannel = channel => {
     channel.room_id = getState().currentRoom.id;
     return axios.post(`/api/rooms/${channel.room_id}/channels`, channel)
       .then((res)=> {
-        Promise.all([
-          dispatch(addChannel(res.data)),
-          joinChannel(res.data.id, getState().socket)
-        ]);
+        console.log(res);
+        getState().socket.emit('post channel', res.data);
       });
   }
 }
+
+export const receiveChannel = channel => {
+  return (dispatch, getState) => {
+    return Promise.all([
+      dispatch(addChannel(channel)),
+      subscribeChannel(channel.id, getState().socket)
+    ]);
+  };
+};
 
 export const selectChannel = channel => ({
   type: SELECT_CHANNEL,
   channel
 })
 
-export const joinChannel = (channelId, socket) => {
+export const subscribeChannel = (channelId, socket) => {
   socket.emit('subscribe', channelId);
 };
 
@@ -46,7 +53,7 @@ export const fetchChannels = roomId => {
         for(let channelKey in getState().channels) {
           Promise.all([
             dispatch(fetchMessages(roomId, channelKey)),
-            joinChannel(channelKey, socket)
+            subscribeChannel(channelKey, socket)
           ]);
         }
       })

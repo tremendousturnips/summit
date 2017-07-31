@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import { Button, Modal, Form } from 'semantic-ui-react'
 
-class AddChannel extends Component {
+class AddRoom extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      channelName: ''
+      roomName: '',
+      description: ''
     }
   }
 
@@ -15,9 +16,10 @@ class AddChannel extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.postChannel({name: this.state.channelName});
+    this.props.postRoom({name: this.state.roomName, description: this.state.description});
     this.setState({
-      channelName: '',
+      roomName: '',
+      description: '',
       open: false
     });
   };
@@ -25,32 +27,35 @@ class AddChannel extends Component {
   handleChange = (e) => {
     e.preventDefault();
     this.setState({
-      channelName: e.target.value
+      [e.target.name]: e.target.value
     });
   }
   render() {
-    const { open } = this.state
+    const { open } = this.state;
 
     return (
       <div>
-        <Button onClick={this.show} size='mini'>Add Channel</Button>
+        <Button onClick={this.show} size='mini'>Create Room</Button>
 
         <Modal size='mini' open={open} onClose={this.close} closeIcon='close' dimmer='blurring'>
           <Modal.Header>
-            Create Text Channel
+            Create a New Room
           </Modal.Header>
           <Modal.Content>
             <Form onSubmit={this.handleSubmit}>
               <Form.Field>
-                <Form.Input placeholder='Channel name' label='Channel Name' onChange={this.handleChange}/>
+                <Form.Input name='roomName' placeholder='Room name' label='Room Name' onChange={this.handleChange}/>
+              </Form.Field>
+              <Form.Field>
+                <Form.Input name='description' placeholder='Description' label='Description' onChange={this.handleChange}/>
               </Form.Field>
               <Button positive icon='checkmark' labelPosition='right' content='Create' />
             </Form>
           </Modal.Content>
         </Modal>
       </div>
-    )
+    );
   }
 }
 
-export default AddChannel;
+export default AddRoom;
