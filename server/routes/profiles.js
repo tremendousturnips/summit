@@ -19,10 +19,13 @@ router.route('/:id/friends/:friendId').post(FriendsController.create);
 
 router.route('/:id/friends/:friendId/status/:status').put(FriendsController.update);
 
+<<<<<<< HEAD
 router.route('/:id/directs').get(DirectController.getDirects);
 
 router.route('/:id/directs/:friendId').post(DirectController.create);
 
+=======
+>>>>>>> b731baa4db5c361b099a1759604196d90a574ea7
 router.route('/:id/directs/:to_user_id/messages').get(MessageController.getDirectMessages);
 
 module.exports = router;

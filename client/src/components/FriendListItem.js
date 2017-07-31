@@ -31,6 +31,16 @@ class FriendListItem extends Component {
       } 
     }
 
+    status () {
+      if (this.props.friend.status === 'Accepted') {
+        return <a onClick={this.removeFriend}>Remove</a>
+      } else if (this.props.friend.status === 'Pending') {
+        return <a onClick={this.acceptFriend}>Accept</a>
+      } else {
+        return <span>Waiting Approval</span>
+      }
+    }
+
     actionFriend () {
       let userId = this.props.friend.user_id || this.props.userId
       let friendId = this.props.friend.friend_id || this.props.friend.id
