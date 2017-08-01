@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { ADD_PROFILE } from './actionTypes';
+
 export const setProfiles = profiles => ({
   type: 'SET_PROFILES',
   profiles
@@ -16,4 +18,14 @@ export const fetchProfiles = (roomId) => {
         dispatch(setProfiles(res.data));
       })
   }
-}
+};
+
+export const getProfile = (userId) => {
+  return (dispatch) => {
+    return axios (`/api/profiles/${userId}`)
+    .then((res) => {
+      dispatch(addProfile(res));
+    })
+  }
+};
+

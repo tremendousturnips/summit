@@ -6,6 +6,7 @@ import DirectMessageList from './DirectMessageList';
 // import AddChannel from './AddChannel';
 import RoomContainer from '../containers/RoomContainer';
 import ChannelContainer from '../containers/ChannelContainer';
+import DirectMessageListContainer from '../containers/DirectMessageListContainer';
 
 class LeftMenu extends Component {
   constructor(props) {
@@ -14,16 +15,34 @@ class LeftMenu extends Component {
     this.state = {
       visible: true,
     };
+
+    this.getDirectMessage = this.getDirectMessage.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.fetchProfiles(1);
+    this.props.fetchDirects(this.props.user.id);
   }
 
   componentDidMount() {
     // this.props.fetchChannels(1);
-    this.props.fetchProfiles(1);
+    //this.props.fetchProfiles(1);
+
   }
 
   handleClick(e) {
     console.log('click on profile');
     // do things to the state of the app inherited as props
+  }
+
+  getDirectMessage() {
+    console.log('In LeftMenu getDirectMessage', this.props.directs )
+    if (this.props.directs && Object.keys(this.props.directs).length !== 0) {
+      return <DirectMessageListContainer />
+    } else {
+      return <p>Start conversations...</p>
+    }
+
   }
 
   render() {
@@ -49,7 +68,7 @@ class LeftMenu extends Component {
           <Menu.Header>
             <Menu.Header>Direct Messages</Menu.Header>
             <br />
-            <DirectMessageList/>
+            {this.getDirectMessage()} 
           </Menu.Header>
         </Menu.Item>
       </Sidebar>

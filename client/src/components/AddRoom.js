@@ -37,7 +37,7 @@ class AddRoom extends Component {
       <div>
         <Button onClick={this.show} size='mini'>Create Room</Button>
 
-        <Modal size='mini' open={open} onClose={this.close} closeIcon='close' dimmer='blurring'>
+        <Modal size='small' open={open} onClose={this.close} closeIcon='close' dimmer='blurring'>
           <Modal.Header>
             Create a New Room
           </Modal.Header>
