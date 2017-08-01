@@ -3,6 +3,11 @@
   width: 100%;
 }
 
+.container {
+  height: 100vh;
+  width: 100vw;
+}
+
 #nav-bar {
   margin-top: 1rem;
 }
@@ -21,9 +26,9 @@
   box-shadow: none;
 }
 
- i.add.circle.icon {
+i.add.circle.icon {
   float: right;
-} 
+}
 
 form.ui.form {
   width: 100%;

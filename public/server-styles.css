@@ -1,0 +1,53 @@
+.header-title {
+  font-size: 3rem;
+}
+
+.ejs-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('assets/scott-yoon-alaska-sunset.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.container {
+  background: rgba(37, 140, 53, 0.6);
+  text-align: center;
+  color: #eaf0f7;
+  width: 30rem;
+  padding: 2rem 4rem;
+  border-radius: 3%;
+  margin-bottom: 12vh;
+}
+
+.container .form-group {
+  margin-bottom: 1rem;
+}
+
+.container .form-group label {
+  display: block;
+}
+
+.container .form-group input {
+  color: black;
+}
+
+.container a {
+  color: #83dbe2;
+}
+
+.container button {
+  border: none;
+  color: black;
+  margin-bottom: 1rem;
+}
+
+.delineator {
+  margin: 1rem 0;
+}
+
+.oauth {
+  margin-bottom: 2rem;
+}
