@@ -25,11 +25,11 @@ class RoomDropdown extends Component {
   }
 
   render() {
-    const { postRoom } = this.props;
+    const { postRoom, joinRoom } = this.props;
     return (
       <div style={{width: '180px'}}>
         {/* TODO: Make the search actually work */}
-        <RoomSearch />
+        <RoomSearch joinRoom={joinRoom}/>
         <br/> 
         <Dropdown placeholder='Your Rooms' onChange={this.handleChange} fluid selection options={this.props.rooms || options}/>
         <br/>
