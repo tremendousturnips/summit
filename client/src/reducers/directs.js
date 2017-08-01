@@ -12,7 +12,7 @@ const directs = (state = {}, action) => {
     //state[action.direct.to_user_id] = action.direct
     return {...state, [action.direct.to_user_id]: action.direct };   
   default:
-    return {...state};
+    return state;
   }
 };
 
