@@ -9,9 +9,8 @@ const directs = (state = {}, action) => {
     });
     return directsNormal; 
   case ADD_DIRECT:
-    console.log('In ADD_DIRECT', action.direct)
-    state[action.direct.to_user_id] = action.direct
-    return {...state};   
+    //state[action.direct.to_user_id] = action.direct
+    return {...state, [action.direct.to_user_id]: action.direct };   
   default:
     return {...state};
   }
