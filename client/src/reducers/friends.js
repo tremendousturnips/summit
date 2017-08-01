@@ -10,13 +10,13 @@ const friends = (state = [], action) => {
     return friendsNormal;
   case ADD_TO_FRIEND_LIST:
     state[action.friend.friend_id] = action.friend;
-    return state
+    return {...state};
   case DEL_FROM_FRIEND_LIST:
     delete state[action.key]
-    return state;  
+    return {...state};  
   case UPDATE_TO_FRIEND_LIST:
     state[action.key].status = status
-    return state;  
+    return {...state};  
   default:
     return state;
   }

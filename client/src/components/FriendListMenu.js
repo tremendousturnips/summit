@@ -35,6 +35,9 @@ class FriendListMenu extends React.Component {
       this.toggleShowModal()
     }
 
+    componentDidMount() {
+    }
+
     render() {
         return (  
         <Sidebar
@@ -51,7 +54,7 @@ class FriendListMenu extends React.Component {
             Friends
           </Menu.Item>
           <Menu.Item>
-              <List verticalAlign='middle'>
+              <List relaxed='very' verticalAlign='top'>
                 {Object.keys(this.props.friends).map((objectKey) => { 
                                                           return <FriendListItemContainer 
                                                             friend={this.props.friends[objectKey]}
@@ -79,10 +82,19 @@ class FriendListMenu extends React.Component {
             <Modal.Content scrolling>
               <List animated verticalAlign='middle'>
                 {Object.keys(this.props.profiles)
-                 //  .filter((objectKey) => {
-                 // return this.props.friends.forEach((friend) => {
-                 //     return (friend.friend_id === objectKey || friend.user_id === objectKey) 
-                 // })}) 
+                  .filter((objectKey) => {
+                    let r = true
+                    if (parseInt(objectKey)  === this.props.user.id) {
+                      r = false 
+                    } else {
+                      for (var key in this.props.friends) {
+                        if (objectKey === key) {
+                          r = false
+                        }
+                      }
+                    }
+                    return r
+                  })  
                   .map((objectKey, index) => {
                     return <AddFriendItemContainer actionType='Add' 
                                           actionFunc={this.props.addFriend}

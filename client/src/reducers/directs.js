@@ -10,7 +10,7 @@ const directs = (state = {}, action) => {
     return directsNormal; 
   case ADD_DIRECT:
     state[action.direct.to_user_id] = action.direct
-    return state   
+    return {...state}   
   default:
     return state;
   }

@@ -4,7 +4,7 @@ import { getProfile } from '../actions/profiles';
 import { selectChannel } from '../actions/channels';
 import { addDirectChannel } from '../actions/directs';
  
-const mapStateToProps = ({ profiles, channels, directs }) => ({ profiles, channels, directs });
+const mapStateToProps = ({ friends, profiles, channels, directs }) => ({ friends, profiles, channels, directs });
 
 const mapDispatchToProps = (dispatch) => ({
   getProfile: (userId) => {
