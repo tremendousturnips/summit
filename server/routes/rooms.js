@@ -16,5 +16,5 @@ router.route('/').post(RoomController.saveRoom);
 
 router.route('/:room_id').delete(RoomController.destroyRoom);
 
-router.route('/').get(RoomController.searchRoom);
+router.route('/search').get(RoomController.searchRoom);
 module.exports = router;

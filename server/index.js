@@ -24,7 +24,7 @@ io.on('connection', socket => {
     socket.to(message.channel_id).emit('message', message);
   });
   socket.on('join room', roomId => {
-    console.log('joined room');
+    console.log('joined room', roomId);
     socket.join(`/room/${roomId}`);
   });
   socket.on('leave room', roomId => {
