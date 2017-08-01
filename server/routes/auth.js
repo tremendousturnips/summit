@@ -10,20 +10,20 @@ router.route('/')
 
 router.route('/login')
   .get((req, res) => {
-    res.render('login.ejs', { message: req.flash('loginMessage') });
+    res.render('login.ejs', { message: req.flash('Sorry, there was an error accessing the login page :/') });
   })
   .post(passport.authenticate('local-login', {
-    successRedirect: '/profile',
+    successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
   }));
 
 router.route('/signup')
   .get((req, res) => {
-    res.render('signup.ejs', { message: req.flash('signupMessage') });
+    res.render('signup.ejs', { message: req.flash('Sorry, there was an error signing up :/') });
   })
   .post(passport.authenticate('local-signup', {
-    successRedirect: '/profile',
+    successRedirect: '/',
     failureRedirect: '/signup',
     failureFlash: true
   }));
@@ -46,7 +46,7 @@ router.get('/auth/google', passport.authenticate('google', {
 }));
 
 router.get('/auth/google/callback', passport.authenticate('google', {
-  successRedirect: '/profile',
+  successRedirect: '/',
   failureRedirect: '/login'
 }));
 
@@ -55,16 +55,9 @@ router.get('/auth/facebook', passport.authenticate('facebook', {
 }));
 
 router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-  successRedirect: '/profile',
+  successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
-}));
-
-router.get('/auth/twitter', passport.authenticate('twitter'));
-
-router.get('/auth/twitter/callback', passport.authenticate('twitter', {
-  successRedirect: '/profile',
-  failureRedirect: '/login'
 }));
 
 module.exports = router;

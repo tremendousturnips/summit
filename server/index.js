@@ -75,24 +75,22 @@ io.on('connection', socket => {
     socket.emit('removePeer', socket.id);
   });
 
-  socket.on('relayICECandidate', req => {
-    const { room, peer_id, ice_candidate } = req;
-
-    if (roomVideoSockets[room][peer_id]) {
-      roomVideoSockets[room][peer_id].emit('iceCandidate', {
-        peer_id: socket.id,
-        ice_candidate
-      });
-    }
-  });
-
   socket.on('relaySessionDescription', req => {
     const { room, peer_id, session_description } = req;
-
     if (roomVideoSockets[room][peer_id]) {
       roomVideoSockets[room][peer_id].emit('sessionDescription', {
         peer_id: socket.id,
         session_description
+      });
+    }
+  });
+
+  socket.on('relayICECandidate', req => {
+    const { room, peer_id, ice_candidate } = req;
+    if (roomVideoSockets[room][peer_id]) {
+      roomVideoSockets[room][peer_id].emit('iceCandidate', {
+        peer_id: socket.id,
+        ice_candidate
       });
     }
   });

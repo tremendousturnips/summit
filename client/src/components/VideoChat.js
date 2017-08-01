@@ -18,7 +18,7 @@ class VideoChat extends React.Component {
     const { socket } = this.props;
     const peerConnections = {};
 
-    console.log('SOCKET ID', socket.id);
+    console.log('Socket ID:', socket.id);
 
     const mediaOptions = {
       audio: true,
@@ -51,6 +51,8 @@ class VideoChat extends React.Component {
 
     socket.on('addPeer', req => {
       const { peer_id, should_create_offer } = req;
+      const { room, peerMediaStreams, localMediaStream } = this.state;
+      console.log('Adding peer', peer_id);
 
       if (peerConnections[peer_id]) {
         console.log('Already connected to peer ', peer_id);
@@ -65,14 +67,15 @@ class VideoChat extends React.Component {
       peerConnections[peer_id] = peer_connection;
 
       peer_connection.onicecandidate = e => {
-        console.log('ONICECANDIDATE FIRED');
         if (e.candidate) {
+          console.log('onicecandidate fired for', e.candidate);
+          const { candidate, sdpMLineIndex } = e.candidate;
           socket.emit('relayICECandidate', {
-            room: this.state.room,
+            room,
             peer_id,
             ice_candidate: {
-              sdpMLineIndex: e.candidate.sdpMLineIndex,
-              candidate: e.candidate.candidate
+              candidate,
+              sdpMLineIndex
             }
           });
         }
@@ -81,7 +84,7 @@ class VideoChat extends React.Component {
       peer_connection.onaddstream = e => {
         this.setState({
           peerMediaStreams: {
-            ...this.state.peerMediaStreams,
+            ...peerMediaStreams,
             [peer_id]: {
               id: peer_id,
               stream: e.stream
@@ -90,17 +93,17 @@ class VideoChat extends React.Component {
         });
       };
 
-      if (this.state.localMediaStream) {
-        peer_connection.addStream(this.state.localMediaStream);
+      if (localMediaStream) {
+        peer_connection.addStream(localMediaStream);
       }
 
       if (should_create_offer) {
         peer_connection
-          .createOffer()
+          .createOffer() // { iceRestart: true } option probably unnecessary
           .then(offer => peer_connection.setLocalDescription(offer))
           .then(() =>
             socket.emit('relaySessionDescription', {
-              room: this.state.room,
+              room,
               peer_id,
               session_description: peer_connection.localDescription
             })
@@ -113,6 +116,7 @@ class VideoChat extends React.Component {
       console.log('Removing peer', peer_id);
       if (peerConnections[peer_id]) {
         peerConnections[peer_id].close(); // HERE'S SOMETHING
+        // this.state.peerMediaStreams[peer_id].getTracks().forEach(track => track.stop());
         delete peerConnections[peer_id];
         this.setState({
           peerMediaStreams: { ...this.state.peerMediaStreams, [peer_id]: null }
@@ -123,6 +127,8 @@ class VideoChat extends React.Component {
     socket.on('sessionDescription', req => {
       const { peer_id, session_description } = req;
       const peerConnection = peerConnections[peer_id];
+
+      console.log('sessionsdescription received from', peer_id);
 
       peerConnection
         .setRemoteDescription(session_description)
@@ -144,28 +150,27 @@ class VideoChat extends React.Component {
     });
 
     socket.on('iceCandidate', req => {
-      console.log('ICECANDIDATE');
       const { peer_id, ice_candidate } = req;
+      console.log('icecandidate', peer_id);
       const peerConnection = peerConnections[peer_id];
       peerConnection.addIceCandidate(new RTCIceCandidate(ice_candidate));
     });
   }
 
   componentWillUnmount() {
-    if (this.state.localMediaStream) {
-      this.props.socket.emit('leaveVideo', this.state.room);
-      this.state.localMediaStream.getTracks().forEach(track => track.stop());
+    const { localMediaStream, room } = this.state;
+    if (localMediaStream) {
+      this.props.socket.emit('leaveVideo', room);
+      localMediaStream.getTracks().forEach(track => track.stop());
     }
   }
 
   render() {
-    const { localMediaStream } = this.state;
-    const peerStreams = Object.values(this.state.peerMediaStreams).filter(stream => !!stream);
+    const { localMediaStream, peerMediaStreams } = this.state;
+    const peerStreams = Object.values(peerMediaStreams).filter(stream => !!stream);
     return (
       <Container>
-        {localMediaStream
-          ? <VideoBox id="localMediaStream" stream={localMediaStream} />
-          : ''}
+        {localMediaStream ? <VideoBox id="localMediaStream" stream={localMediaStream} /> : ''}
         {peerStreams.map(stream =>
           <VideoBox key={stream.id} id={stream.id} stream={stream.stream} />
         )}
