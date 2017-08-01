@@ -15,10 +15,11 @@ const friends = (state = [], action) => {
     delete state[action.key]
     return {...state};  
   case UPDATE_TO_FRIEND_LIST:
-    state[action.key].status = status
+    console.log(state, action.key)
+    state[action.key].status = action.status
     return {...state};  
   default:
-    return state;
+    return {...state};
   }
 };
 

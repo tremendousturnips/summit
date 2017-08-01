@@ -58,8 +58,6 @@ class FriendListMenu extends React.Component {
                 {Object.keys(this.props.friends).map((objectKey) => { 
                                                           return <FriendListItemContainer 
                                                             friend={this.props.friends[objectKey]}
-                                                            actionType='Remove' 
-                                                            actionFunc={this.props.delFriend}
                                                             index={objectKey} 
                                                             key={objectKey}/>})}
               </List>                                              
@@ -96,9 +94,7 @@ class FriendListMenu extends React.Component {
                     return r
                   })  
                   .map((objectKey, index) => {
-                    return <AddFriendItemContainer actionType='Add' 
-                                          actionFunc={this.props.addFriend}
-                                          index={objectKey} 
+                    return <AddFriendItemContainer index={objectKey} 
                                           key={index}
                             />
                   })}

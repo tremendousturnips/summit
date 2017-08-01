@@ -53,7 +53,7 @@ export const delFromFriendList = key => ({
 
 export const updateFriend = (userId, friendId, status) => {
   return (dispatch) => {
-      axios
+      return axios
         .put(`/api/profiles/${userId}/friends/${friendId}/status/${status}`)
         .then(res => {
             if (res.status === 201) {

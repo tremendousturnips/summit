@@ -56,7 +56,7 @@ module.exports = {
     let senderStatus
     if (req.params.status === 'Denied') {
       senderStatus = 'Blocked'
-    } else if (req.params.status === 'Approved'){
+    } else if (req.params.status === 'Accepted'){
       senderStatus = 'Accepted'
     } 
     Friends.forge({ user_id: req.params.id, friend_id: req.params.friendId, status: req.params.status })
