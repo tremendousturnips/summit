@@ -19,8 +19,6 @@ class DirectMessageItem extends Component {
     }
 
     componentDidMount() {
-      console.log('in directmessageitem after mount',this.props.channels)
-
     }
 
     sendMessage () {

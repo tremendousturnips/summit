@@ -54,11 +54,7 @@ exports.seed = function(knex, Promise) {
         { user_id: 1, friend_id: 2, status:'Accepted' },
         { user_id: 2, friend_id: 1, status:'Accepted'},
         { user_id: 3, friend_id: 1, status:'Accepted'},
-<<<<<<< HEAD
         { user_id: 1, friend_id: 3, status:'Accepted'}
-=======
-        { user_id: 1, friend_id: 3, status:s'Accepted'}
->>>>>>> b731baa4db5c361b099a1759604196d90a574ea7
       ]);
     })
     .then(() => {

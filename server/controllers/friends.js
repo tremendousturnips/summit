@@ -56,7 +56,7 @@ module.exports = {
     let senderStatus
     if (req.params.status === 'Denied') {
       senderStatus = 'Blocked'
-    } else if (req.params.status === 'Approved'){
+    } else if (req.params.status === 'Accepted'){
       senderStatus = 'Accepted'
     } 
     Friends.forge({ user_id: req.params.id, friend_id: req.params.friendId, status: req.params.status })
@@ -78,13 +78,18 @@ module.exports = {
   },
 
   deleteOne: (req, res) => {
-    console.log('In friends deleteOne', req.params.id, req.params.friendId);
-    Friends.where({ user_id: req.params.id, friend_id: req.params.friendId }).fetch()
-      .then(friend => {
-        if (!friend) {
-          throw friend;
+    Friends.forge()
+      .query((qb) => {
+        qb.where({ user_id: req.params.id, friend_id: req.params.friendId }).orWhere({ user_id: req.params.friendId, friend_id: req.params.id })
+      })
+      .fetchAll()
+      .then(friends => {
+        if (!friends) {
+          throw friends;
         }
-        return friend.destroy();
+        return friends.map((friend) => {
+          friend.destroy();
+        })
       })
       .then(() => {
         res.sendStatus(200);
@@ -92,7 +97,8 @@ module.exports = {
       .error(err => {
         res.status(503).send(err);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log('Err in delete friends', err)
         res.sendStatus(404);
       });
   }

@@ -6,13 +6,22 @@ class AddFriendItem extends Component {
       super (props)
 
       this.actionFriend = this.actionFriend.bind(this)
+      this.action = this.action.bind(this)
 
     }
 
     actionFriend () {
       let userId = this.props.user.id
       let friendId = this.props.index
-      this.props.actionFunc(userId, friendId, this.props.index)
+      this.props.addFriend(userId, friendId)
+    }
+
+    action () {
+      if (this.props.friends[this.props.index]) {
+        return 'Added'
+      } else {
+        return <a onClick={this.actionFriend}>Add</a>
+      }
     }
 
     componentWillMount() {
@@ -31,7 +40,7 @@ class AddFriendItem extends Component {
           <Image avatar src={this.props.profiles[this.props.index].image} alt='p' />
           <List.Content>
              <List.Header>{this.props.profiles[this.props.index].display}</List.Header> 
-             <a onClick={this.actionFriend}>{this.props.actionType}</a>
+             {this.action()}
           </List.Content>
         </List.Item>
       );

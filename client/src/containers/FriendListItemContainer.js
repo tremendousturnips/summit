@@ -3,8 +3,9 @@ import FriendListItem from '../components/FriendListItem';
 import { getProfile } from '../actions/profiles';
 import { selectChannel } from '../actions/channels';
 import { addDirectChannel } from '../actions/directs';
+import { updateFriend, delFriend } from '../actions/friends';
  
-const mapStateToProps = ({ profiles, channels, directs }) => ({ profiles, channels, directs });
+const mapStateToProps = ({ friends, profiles, channels, directs }) => ({ friends, profiles, channels, directs });
 
 const mapDispatchToProps = (dispatch) => ({
   getProfile: (userId) => {
@@ -15,6 +16,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   addDirectChannel: (userId, friendId) => {
     dispatch(addDirectChannel(userId, friendId));
+  },
+  updateFriend: (userId, friendId, status) => {
+    dispatch(updateFriend(userId, friendId, status));
+  },
+  delFriend: (userId, friendId) => {
+    dispatch(delFriend(userId, friendId));
   }
 });
 

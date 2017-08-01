@@ -14,12 +14,20 @@ export const addDirect = direct => ({
 });
 
 export const addDirectChannel = (userId, friendId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
       return axios
         .post(`/api/profiles/${userId}/directs/${friendId}`)
         .then(res => {
-            if (res.status === '201') {
+            if (res.status === 201) {
+              const socket = getState().socket;
               dispatch(addDirect(res.data));
+              var channel = [{
+                id: res.data.channel_id,
+                name: '',
+                room_id: 'direct'
+              }]
+              dispatch(setChannels(channel, 'direct'))
+              subscribeChannel(res.data.channel_id, socket)
             }
         })
   } 

@@ -31,12 +31,10 @@ class LeftMenu extends Component {
   }
 
   handleClick(e) {
-    console.log('click on profile');
     // do things to the state of the app inherited as props
   }
 
   getDirectMessage() {
-    console.log('In LeftMenu getDirectMessage', this.props.directs )
     if (this.props.directs && Object.keys(this.props.directs).length !== 0) {
       return <DirectMessageListContainer />
     } else {

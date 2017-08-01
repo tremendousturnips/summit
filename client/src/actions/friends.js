@@ -18,10 +18,12 @@ export const setFriends = friends => ({
 
 export const addFriend = (userId, friendId) => {
   return (dispatch) => {
-      axios
+      return axios
         .post(`/api/profiles/${userId}/friends/${friendId}`)
         .then(res => {
-            if (res.status === '201') {
+            console.log('res.data', res.data, res.status)
+            if (res.status === 201) {
+              console.log('res.data', res.data)
               dispatch(addToFriendList(res.data));
             }
         })
@@ -38,6 +40,7 @@ export const delFriend = (userId, friendId, key) => {
       return axios
         .delete(`/api/profiles/${userId}/friends/${friendId}`)
         .then(res => {
+          console.log('In friends action', friendId)
           dispatch(delFromFriendList(friendId));
         })
   };
@@ -50,10 +53,10 @@ export const delFromFriendList = key => ({
 
 export const updateFriend = (userId, friendId, status) => {
   return (dispatch) => {
-      axios
+      return axios
         .put(`/api/profiles/${userId}/friends/${friendId}/status/${status}`)
         .then(res => {
-            if (res.status === '201') {
+            if (res.status === 201) {
               dispatch(updateToFriendList(friendId, status));
             }
         })
