@@ -35,7 +35,7 @@ module.exports = {
   },
   searchRoom: (req, res) => {
     console.log(req.query);
-    Room.query('where', 'name', '~', req.query.q).fetch()
+    Room.query('where', 'name', '~', req.query.q).fetchAll()
       .then((search) =>{
         res.status(200).json(search);
       })
