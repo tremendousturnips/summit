@@ -23,10 +23,12 @@ export const postRoom = room => {
   return (dispatch, getState) => {
     return axios.post(`/api/rooms/`, room)
       .then((res) => {
+        console.log(res.data);
         Promise.all([
           axios.post(`/api/roles`, {room_id: res.data.id, user_id: getState().user.id, privilege_level: 'admin'}),
           dispatch(addRoom(res.data)),
-          // dispatch(postChannel({name: 'General', room_id: res.data.id}))
+          joinRoom(res.data.id, getState().socket),
+          dispatch(postChannel({name: 'General', room_id: res.data.id}))
         ]);
       })
       

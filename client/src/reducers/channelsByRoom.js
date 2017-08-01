@@ -10,9 +10,10 @@ const channelsByRoom = (state = {0: []}, action) => {
       })
     };
   case ADD_CHANNEL:
+    const channels = state[action.channel.room_id] || [];
     return {
       ...state,
-      [action.channel.room_id]: state[action.channel.room_id].concat(action.channel.id)
+      [action.channel.room_id]: channels.concat(action.channel.id)
     };
   default:
     return state;

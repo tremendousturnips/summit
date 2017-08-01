@@ -15,7 +15,7 @@ export const addChannel = channel => ({
 
 export const postChannel = channel => {
   return (dispatch, getState) => {
-    channel.room_id = getState().currentRoom.id;
+    channel.room_id = channel.room_id || getState().currentRoom.id;
     return axios.post(`/api/rooms/${channel.room_id}/channels`, channel)
       .then((res)=> {
         getState().socket.emit('post channel', res.data);
