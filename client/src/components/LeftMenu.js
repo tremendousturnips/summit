@@ -40,7 +40,6 @@ class LeftMenu extends Component {
     } else {
       return <p>Start conversations...</p>
     }
-
   }
 
   render() {
