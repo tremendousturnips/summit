@@ -19,7 +19,7 @@ const friends = (state = [], action) => {
     //state[action.key].status = action.status
     return {...state, [action.key]: { ...state[action.key], status: action.status} };  
   default:
-    return {...state};
+    return state;
   }
 };
 
