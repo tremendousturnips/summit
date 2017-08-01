@@ -40,14 +40,13 @@ class LeftMenu extends Component {
     } else {
       return <p>Start conversations...</p>
     }
-
   }
 
   render() {
     const { visible } = this.state;
     const { user } = this.props;
     return (
-      <Sidebar as={Menu} animation='push' visible={visible} icon='labeled' vertical fixed="left">
+      <Sidebar as={Menu} animation='push' visible={visible} icon='labeled' vertical fixed="left" color='blue' inverted>
         <Menu.Item onClick={this.handleClick.bind(this)}>
           <Image src={user.image} size='tiny' shape='circular' centered />
           <p />

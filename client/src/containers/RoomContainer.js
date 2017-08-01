@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import RoomDropdown from '../components/RoomDropdown';
-import { postRoom, fetchRooms, changeRoom } from '../actions/rooms';
+import { postRoom, fetchRooms, changeRoom, joinRoom } from '../actions/rooms';
 
 const mapStateToProps = ({user, currentRoom, rooms}) => {
   rooms = Object.keys(rooms).map( room => {
@@ -18,6 +18,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   changeRoom: (roomId) => {
     dispatch(changeRoom(roomId));
+  },
+  joinRoom: (room) => {
+    dispatch(joinRoom(room));
   }
 });
 

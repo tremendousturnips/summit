@@ -15,10 +15,9 @@ export const addChannel = channel => ({
 
 export const postChannel = channel => {
   return (dispatch, getState) => {
-    channel.room_id = getState().currentRoom.id;
+    channel.room_id = channel.room_id || getState().currentRoom.id;
     return axios.post(`/api/rooms/${channel.room_id}/channels`, channel)
       .then((res)=> {
-        console.log(res);
         getState().socket.emit('post channel', res.data);
       });
   }
@@ -48,14 +47,12 @@ export const fetchChannels = roomId => {
     return axios.get(`/api/rooms/${roomId}/channels`)
       .then(res => {
         dispatch(setChannels(res.data, roomId));
-      })
-      .then(() => {
-        for(let channelKey in getState().channels) {
+        res.data.forEach(channel => {
           Promise.all([
-            dispatch(fetchMessages(roomId, channelKey)),
-            subscribeChannel(channelKey, socket)
+            dispatch(fetchMessages(roomId, channel.id)),
+            subscribeChannel(channel.id, socket)
           ]);
-        }
+        })
       })
   };
 };

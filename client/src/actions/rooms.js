@@ -1,7 +1,12 @@
 import axios from 'axios';
 import { SELECT_ROOM, ADD_ROOM, SET_ROOMS } from './actionTypes';
-import { fetchChannels } from './channels';
+import { fetchChannels, postChannel } from './channels';
 
+//TODO: create action and corresponding socket event to send 
+  //profile data to new users who join a room
+
+
+//LITERALLY NO ERROR HANDLING ANYWHERE YO.
 
 export const selectRoom = room => ({
   type: SELECT_ROOM,
@@ -20,10 +25,16 @@ export const addRoom = room => ({
 });
 
 export const postRoom = room => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     return axios.post(`/api/rooms/`, room)
       .then((res) => {
-        dispatch(addRoom(res.data));
+        console.log(res.data);
+        Promise.all([
+          axios.post(`/api/roles`, {room_id: res.data.id, user_id: getState().user.id, privilege_level: 'admin'}),
+          dispatch(addRoom(res.data)),
+          subscribeRoom(res.data.id, getState().socket),
+          dispatch(postChannel({name: 'General', room_id: res.data.id}))
+        ]);
       })
   }
 }
@@ -33,9 +44,23 @@ export const setRooms = rooms => ({
   rooms
 });
 
-export const joinRoom = (roomId, socket) => {
+export const subscribeRoom = (roomId, socket) => {
   socket.emit('join room', roomId);
 };
+
+//TODO: refactor this action to be more reusable as is it very similar to postRoom and fetchRooms
+export const joinRoom = room => {
+  return (dispatch, getState) => {
+    if (!getState().rooms.hasOwnProperty(room.id)) {
+      Promise.all([
+        axios.post(`/api/roles`, {room_id: room.id, user_id: getState().user.id, privilege_level: 'guest'}),
+        dispatch(addRoom(room)),
+        subscribeRoom(room.id, getState().socket),
+        dispatch(fetchChannels(room.id))
+      ]);
+    }
+  }
+}
 
 export const fetchRooms = () => {
   return (dispatch, getStore) => {
@@ -49,7 +74,7 @@ export const fetchRooms = () => {
         for (let roomId in rooms) {
           Promise.all([
             dispatch(fetchChannels(roomId)),
-            joinRoom(roomId, socket)
+            subscribeRoom(roomId, socket)
           ])
         }
       })
