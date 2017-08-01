@@ -15,4 +15,6 @@ router.route('/:id/channels/:channel_id/messages').get(MessageController.getChan
 router.route('/').post(RoomController.saveRoom);
 
 router.route('/:room_id').delete(RoomController.destroyRoom);
+
+router.route('/').get(RoomController.searchRoom);
 module.exports = router;

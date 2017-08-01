@@ -32,5 +32,9 @@ module.exports = {
         }
       })
       .catch(err => res.status(503).send(err));
+  },
+  searchRoom: (req, res) => {
+    console.log(req.query);
+    res.sendStatus(200);
   }
 };
