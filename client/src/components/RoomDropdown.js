@@ -13,7 +13,6 @@ const options = [
 class RoomDropdown extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -28,7 +27,7 @@ class RoomDropdown extends Component {
   render() {
     const { postRoom } = this.props;
     return (
-      <div>
+      <div style={{width: '180px'}}>
         {/* TODO: Make the search actually work */}
         <RoomSearch />
         <br/> 

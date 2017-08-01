@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { SELECT_ROOM, ADD_ROOM, SET_ROOMS } from './actionTypes';
-import { fetchChannels } from './channels';
+import { fetchChannels, postChannel } from './channels';
 
 
 export const selectRoom = room => ({
@@ -20,11 +20,16 @@ export const addRoom = room => ({
 });
 
 export const postRoom = room => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     return axios.post(`/api/rooms/`, room)
       .then((res) => {
-        dispatch(addRoom(res.data));
+        Promise.all([
+          axios.post(`/api/roles`, {room_id: res.data.id, user_id: getState().user.id, privilege_level: 'admin'}),
+          dispatch(addRoom(res.data)),
+          // dispatch(postChannel({name: 'General', room_id: res.data.id}))
+        ]);
       })
+      
   }
 }
 
