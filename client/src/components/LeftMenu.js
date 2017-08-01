@@ -64,7 +64,7 @@ class LeftMenu extends Component {
           <Menu.Header>
             <Menu.Header>Direct Messages</Menu.Header>
             <br />
-            {this.getDirectMessage()} 
+            {this.getDirectMessage()}
           </Menu.Header>
         </Menu.Item>
       </Sidebar>

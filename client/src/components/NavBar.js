@@ -39,20 +39,14 @@ class NavBar extends React.Component {
   render() {
     return (
       <Menu id="nav-bar" pointing>
-        <Menu.Item name="home" />
-        <Menu.Item name="messages" />
         <Menu.Item name="friends" onClick={this.handleFriends} />
-        <Menu.Menu position="right">
-          <Menu.Item
-            name={this.state.videoName}
-            icon={this.state.videoIcon}
-            color={this.state.videoColor}
-            onClick={this.joinVideoChat}
-          />
-          <Menu.Item>
-            <Input icon="users" iconPosition="left" placeholder="Search users..." />
-          </Menu.Item>
-        </Menu.Menu>
+        <Menu.Item
+          name={this.state.videoName}
+          icon={this.state.videoIcon}
+          color={this.state.videoColor}
+          onClick={this.joinVideoChat}
+          position="right"
+        />
       </Menu>
     );
   }

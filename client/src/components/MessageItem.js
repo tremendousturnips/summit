@@ -3,7 +3,7 @@ import {Comment, Message, Icon, Segment, Image, Popup} from 'semantic-ui-react';
 import moment from 'moment';
 
 const MessageItem = (props) => (
-  <Comment>
+  <Comment className="message-list-item">
     <Comment.Avatar as='a' src={props.profile.image}/>
     <Comment.Content>
       <Comment.Author as='a'>{props.profile.display}</Comment.Author>

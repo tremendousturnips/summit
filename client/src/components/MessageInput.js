@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Form, Segment} from 'semantic-ui-react';
+import { Form, Segment } from 'semantic-ui-react';
 import axios from 'axios';
 
 class MessageInput extends Component {
@@ -30,16 +30,24 @@ class MessageInput extends Component {
 
   handleChange(e) {
     e.preventDefault();
-    this.setState({text: e.target.value})
+    this.setState({ text: e.target.value });
   }
-  
+
   render() {
-    const {currentChannel} = this.props;
+    const { currentChannel } = this.props;
     return (
-      <Form onSubmit={this.handleSubmit} >
-        <Form.Input fluid action={{ icon: 'send' }} size='medium' placeholder='Enter Message...' value={this.state.text} onChange={this.handleChange} disabled={!currentChannel.id}/>
+      <Form className="message-input" onSubmit={this.handleSubmit}>
+        <Form.Input
+          fluid
+          action={{ icon: 'send' }}
+          size="medium"
+          placeholder="Enter Message..."
+          value={this.state.text}
+          onChange={this.handleChange}
+          disabled={!currentChannel.id}
+        />
       </Form>
-    )
+    );
   }
 }
 

@@ -15,7 +15,7 @@ const Main = () => (
           <Grid.Column width={3}>
               <LeftMenuContainer/>
           </Grid.Column>
-          <Grid.Column width={12} >
+          <Grid.Column className="main-column" width={12} >
             <Grid.Row>
               <NavBarContainer/>
               <VideoChatBarContainer />

@@ -1,39 +1,38 @@
 #root {
-  height: 100%;
-  width: 100%;
-}
-
-.container {
   height: 100vh;
   width: 100vw;
 }
+
+/* .container {
+  height: 100vh;
+  width: 100vw;
+} */
 
 #nav-bar {
   margin-top: 1rem;
 }
 
-.ui.comments {
-  max-width: 100vw;
-  max-height: 60vh;
+ .message-list {
+  max-width: 100vw !important;
+  height: 75vh;
   overflow-y: scroll;
   margin: 2rem 1rem !important;
   border: .1rem solid #eee;
   border-radius: .3rem;
 }
 
-.ui.message.comment {
+.message-list-item {
   margin: .7rem !important;
   box-shadow: none;
 }
 
-i.add.circle.icon {
-  float: right;
+.left-sidebar {
+  /* width: 50rem; */
 }
 
-form.ui.form {
-  width: 100%;
-  margin: 0 auto 2rem auto;
-}
+/* i.add.circle.icon {
+   float: right;
+} */
 
 .remotes-videos >  {
   display: inline-block;
@@ -45,7 +44,3 @@ form.ui.form {
   display: inline-block !important;
   margin-right: 2rem;
 }
-/*
-.item.local-video {
-  padding: 0;
-} */
