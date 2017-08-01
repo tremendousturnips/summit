@@ -11,32 +11,6 @@ const {
   MessageController
 } = require('./controllers');
 
-const config = {
-  stunservers: [
-    {
-      //      "url": "stun:stun.l.google.com:19302"
-      url: 'stun:global.stun.twilio.com:3478?transport=udp'
-    }
-  ],
-  turnservers: [
-    {
-      url: 'turn:global.turn.twilio.com:3478?transport=udp',
-      username: '7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13',
-      credential: 'Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8='
-    },
-    {
-      url: 'turn:global.turn.twilio.com:3478?transport=tcp',
-      username: '7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13',
-      credential: 'Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8='
-    },
-    {
-      url: 'turn:global.turn.twilio.com:443?transport=tcp',
-      username: '7823fd6b34baece7e291276e43969bc5d8a7ce41ad78ba86b9ca8b7f9a7b2e13',
-      credential: 'Yc5kCs9eC5JOeps4mbmURNmUVjWdJof9N3MItd51zx8='
-    }
-  ]
-};
-
 const server = app.listen(PORT, () => {
   console.log(`Summit Server listening on port ${PORT}!`);
 });
@@ -45,7 +19,7 @@ const io = require('socket.io').listen(server);
 const roomVideoSockets = {};
 
 io.on('connection', socket => {
-  // DO NOT TOUCH
+  // Text
   socket.on('send', message => {
     socket.to(message.channel_id).emit('message', message);
   });
@@ -60,28 +34,13 @@ io.on('connection', socket => {
     io.to(`/room/${channel.room_id}`).emit('add channel', channel);
   });
   socket.on('subscribe', channelId => {
-    console.log('subscribed to namespace:', channelId);
     socket.join(channelId);
   });
   socket.on('unsubscribe', channelId => {
     socket.leave(channelId);
   });
-  // DO NOT TOUCH
 
-  socket.on('part', room => {
-    if (!roomVideoSockets[room][socket.id]) {
-      console.log(`ERROR: ${socket.id} not in room ${room}`);
-      return;
-    }
-
-    delete roomVideoSockets[room][socket.id];
-
-    for (const peerSocketId in roomVideoSockets[room]) {
-      roomVideoSockets[room][peerSocketId].emit('removePeer', socket.id);
-      socket.emit('removePeer', peerSocketId); // necessary ??? - isn't socket destroyed?
-    }
-  });
-
+  // Video
   socket.on('joinVideo', room => {
     if (!roomVideoSockets[room]) {
       roomVideoSockets[room] = {};
@@ -99,6 +58,21 @@ io.on('connection', socket => {
     }
 
     roomVideoSockets[room][socket.id] = socket;
+  });
+
+  socket.on('leaveVideo', room => {
+    if (!roomVideoSockets[room][socket.id]) {
+      console.log(`ERROR: ${socket.id} not in room ${room}`);
+      return;
+    }
+
+    delete roomVideoSockets[room][socket.id];
+
+    for (const peerSocketId in roomVideoSockets[room]) {
+      socket.emit('removePeer', peerSocketId);
+      roomVideoSockets[room][peerSocketId].emit('removePeer', socket.id);
+    }
+    socket.emit('removePeer', socket.id);
   });
 
   socket.on('relayICECandidate', req => {
