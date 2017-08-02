@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu, Image, List } from 'semantic-ui-react';
+import { Menu, Image, List, Label } from 'semantic-ui-react';
 
 class DirectMessageItem extends Component {
     constructor(props) {
@@ -10,15 +10,26 @@ class DirectMessageItem extends Component {
       }
 
       this.sendMessage = this.sendMessage.bind(this)
+      this.getMessageDiff = this.getMessageDiff.bind(this)
 
     }
 
     componentWillMount() {
-      //console.log('in Direct Message Item before mount', this.props.channels) 
-
+      //console.log('in Direct Message Item before mount', this.props.channels[this.props.index]) 
     }
 
     componentDidMount() {
+
+    }
+
+    getMessageDiff() {
+      if (Object.keys(this.props.channels).length > 0) {
+        if (Object.keys(this.props.messages).length > 0) {
+          
+          console.log(this.props.messages[0].created_at)
+        }
+        return this.props.channels[this.props.index].timeStamp
+      } 
     }
 
     sendMessage () {
@@ -31,7 +42,8 @@ class DirectMessageItem extends Component {
           <Image avatar src={this.props.profiles[this.props.friend].image} alt='p' />
           <List.Content>
              <List.Header> 
-              <a onClick={this.sendMessage}>{this.props.profiles[this.props.friend].display}
+              <a onClick={this.sendMessage}>{this.props.profiles[this.props.friend].display}  
+              <Label size='mini' color='red' floating>{this.getMessageDiff()}</Label>
               </a>
             </List.Header>  
           </List.Content>

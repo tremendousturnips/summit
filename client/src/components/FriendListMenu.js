@@ -3,6 +3,7 @@ import {Icon, Menu, Sidebar, List, Button, Modal, Input, Label} from 'semantic-u
 
 import FriendListItemContainer from '../containers/FriendListItemContainer'
 import AddFriendItemContainer from '../containers/AddFriendItemContainer'
+import AddFriendSearchContainer from '../containers/AddFriendSearchContainer'
 
 class FriendListMenu extends React.Component {
     constructor(props) {
@@ -74,9 +75,9 @@ class FriendListMenu extends React.Component {
             size='small' 
           >
             <Modal.Header>
-              <Input focus icon="users" iconPosition="left" placeholder="Search users..."  action='Search' />
+              <AddFriendSearchContainer />
               <Label corner='right' icon='window close' color='red' onClick={this.toggleShowModal} />
-            </Modal.Header>  
+            </Modal.Header>       
             <Modal.Content scrolling>
               <List animated verticalAlign='middle'>
                 {Object.keys(this.props.profiles)
