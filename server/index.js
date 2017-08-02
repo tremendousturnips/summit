@@ -40,6 +40,12 @@ io.on('connection', socket => {
     socket.leave(channelId);
   });
 
+  //Friends event
+  socket.on('friend update', friend => {
+    console.log('In friend update', friend)
+    io.emit('friend update', friend);
+  });
+
   // Video
   socket.on('joinVideo', room => {
     if (!roomVideoSockets[room]) {
