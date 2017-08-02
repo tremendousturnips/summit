@@ -5,7 +5,7 @@ import { selectChannel } from '../actions/channels';
 import { addDirectChannel } from '../actions/directs';
 import { updateFriend, delFriend } from '../actions/friends';
  
-const mapStateToProps = ({ friends, profiles, channels, directs }) => ({ friends, profiles, channels, directs });
+const mapStateToProps = ({ socket, friends, profiles, channels, directs }) => ({ socket, friends, profiles, channels, directs });
 
 const mapDispatchToProps = (dispatch) => ({
   getProfile: (userId) => {

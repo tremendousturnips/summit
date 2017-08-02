@@ -20,6 +20,28 @@ class FriendListMenu extends React.Component {
     
     componentWillMount() {
       this.props.fetchFriends(this.props.user.id)
+      this.props.socket.on('friend update', friend => {
+        console.log(friend)
+        if (this.props.user.id === parseInt(friend.friend_id)) {
+          console.log('Reached')
+          switch(friend.status) {
+            case 'Accepted':
+              this.props.updateFriend(friend.friend_id, friend.user_id, friend.status)
+              break;
+            case 'Denied':
+              this.props.updateFriend(friend.friend_id, friend.user_id, 'Blocked')
+              break;
+            case 'Pending':
+              this.props.updateFriend(friend.friend_id, friend.user_id, friend.status)
+              break;
+            case 'Removed':
+              this.props.updateFriend(friend.friend_id, friend.user_id, friend.status)
+              break;  
+            default:
+              break;  
+          }
+        };
+      });
     }
 
     toggleShowModal() {

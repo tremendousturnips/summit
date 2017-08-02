@@ -15,9 +15,13 @@ const friends = (state = [], action) => {
     delete newState[action.key]
     return newState;  
   case UPDATE_TO_FRIEND_LIST:
-    //console.log(state, action.key)
     //state[action.key].status = action.status
-    return {...state, [action.key]: { ...state[action.key], status: action.status} };  
+    const newStateUpdate = { ...state };
+    newStateUpdate[action.friendId] = newStateUpdate[action.friendId] || {user_id: action.userId,
+                                                    friend_id: action.friendId,
+                                                    status: action.status}
+    newStateUpdate[action.friendId].status = action.status
+    return newStateUpdate;  
   default:
     return state;
   }
