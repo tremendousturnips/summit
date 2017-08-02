@@ -14,6 +14,12 @@ class AddFriendItem extends Component {
       let userId = this.props.user.id
       let friendId = this.props.index
       this.props.addFriend(userId, friendId)
+      let friend = {
+        user_id: userId,
+        friend_id: friendId,
+        status: 'Pending'
+      };
+      this.props.socket.emit('friend update', friend )
     }
 
     action () {
