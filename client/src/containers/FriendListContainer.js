@@ -2,8 +2,11 @@ import { connect } from 'react-redux';
 import FriendList from '../components/FriendList';
 import { showFriendListStat } from '../actions/showFriendList';
 import { fetchFriends, delFriend, addFriend, updateFriend } from '../actions/friends';
+<<<<<<< HEAD
 import { addDirect } from '../actions/directs';
 import { subscribeChannel } from '../actions/channels';
+=======
+>>>>>>> friend request with socket.io
 
 const mapStateToProps = ({ socket, showFriendList, user, friends, profiles }) => 
                         ({ socket, showFriendList, user, friends, profiles });

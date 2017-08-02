@@ -34,7 +34,6 @@ module.exports = {
   },
 
   update: (req, res) => {
-
     if (req.params.status === 'Pending') {
       Friends.forge({ user_id: req.params.id, friend_id: req.params.friendId, status: req.params.status })
         .save()
