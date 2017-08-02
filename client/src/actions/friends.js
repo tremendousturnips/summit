@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { FETCH_FRIENDS, ADD_FRIEND, DEL_FRIEND, SET_FRIENDS, DEL_FROM_FRIEND_LIST, ADD_TO_FRIEND_LIST, UPDATE_TO_FRIEND_LIST } from './actionTypes';
+import { addProfile } from './profiles';
 
 export const fetchFriends = userId => {
   return (dispatch) => {
@@ -68,3 +69,24 @@ export const updateToFriendList = (key, status) => ({
   key,
   status
 });
+
+export const searchFriend = (userId, text) => {
+  return (dispatch) => {
+      return axios
+        .get(`/api/profiles/${userId}/friends/search/${text}`)
+        .then(res => {
+            console.log(res.data)
+            if (res.status === 200) {
+              for (let key in res.data) {
+                dispatch(addProfile(res.data[key]))
+              }
+            }
+        })
+  };
+};
+
+// export const updateToFriendList = (key, status) => ({
+//   type: UPDATE_TO_FRIEND_LIST,
+//   key,
+//   status
+// });
