@@ -1,5 +1,6 @@
 import React from 'react';
-import {Comment, Message, Icon, Segment, Image} from 'semantic-ui-react';
+import {Comment, Message, Icon, Segment, Image, Popup} from 'semantic-ui-react';
+import moment from 'moment';
 
 const MessageItem = (props) => (
   <Comment>
@@ -7,7 +8,8 @@ const MessageItem = (props) => (
     <Comment.Content>
       <Comment.Author as='a'>{props.profile.display}</Comment.Author>
       <Comment.Metadata>
-        <div>{props.message.created_at}</div>
+        <Popup trigger={<div>{moment(props.message.created_at).format('h:hh A')}</div>}
+        content={moment(props.message.created_at).format('LLL')} inverted size='mini'/>
       </Comment.Metadata>
       <Comment.Text>{props.message.text}</Comment.Text>
     </Comment.Content>
