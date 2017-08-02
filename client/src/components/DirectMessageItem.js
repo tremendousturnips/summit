@@ -28,8 +28,8 @@ class DirectMessageItem extends Component {
           console.log(this.props.messages[0].created_at)
           return this.props.channels[this.props.index].timeStamp
         }
-        return
       } 
+      return
     }
 
     sendMessage () {

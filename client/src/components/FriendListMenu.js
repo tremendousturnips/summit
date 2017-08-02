@@ -5,104 +5,6 @@ import FriendListItemContainer from '../containers/FriendListItemContainer';
 import AddFriendItemContainer from '../containers/AddFriendItemContainer';
 
 class FriendListMenu extends React.Component {
-<<<<<<< HEAD
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showModal: false
-    };
-
-    this.handleDone = this.handleDone.bind(this);
-    this.toggleShowModal = this.toggleShowModal.bind(this);
-  }
-
-  componentWillMount() {
-    const { user, fetchFriends } = this.props;
-    fetchFriends(user.id);
-  }
-
-  toggleShowModal() {
-    this.setState({
-      showModal: !this.state.showModal
-    });
-  }
-
-  handleDone() {
-    this.props.showFriendListStat();
-  }
-
-  render() {
-    return (
-      <Sidebar
-        as={Menu}
-        animation="overlay"
-        width="wide"
-        direction="right"
-        visible={this.props.showFriendList}
-        icon="labeled"
-        vertical
-      >
-        <Menu.Item name="home">
-          <Icon name="group" />
-          Friends
-        </Menu.Item>
-        <Menu.Item>
-          <List relaxed="very" verticalAlign="top">
-            {Object.keys(this.props.friends).map(objectKey => {
-              return (
-                <FriendListItemContainer
-                  friend={this.props.friends[objectKey]}
-                  index={objectKey}
-                  key={objectKey}
-                />
-              );
-            })}
-          </List>
-        </Menu.Item>
-        <Menu.Item name="addFriend">
-          <Button.Group labeled>
-            <Button
-              compact
-              icon="add user"
-              color="red"
-              content="Add"
-              onClick={this.toggleShowModal}
-              inverted
-            />
-            <Button
-              compact
-              icon="checkmark"
-              color="green"
-              content="Done"
-              onClick={this.handleDone}
-              inverted
-            />
-          </Button.Group>
-        </Menu.Item>
-        <Modal open={this.state.showModal} onClose={this.handleCloseModal} size="small">
-          <Modal.Header>
-            <Input
-              focus
-              icon="users"
-              iconPosition="left"
-              placeholder="Search users..."
-              action="Search"
-            />
-            <Label corner="right" icon="window close" color="red" onClick={this.toggleShowModal} />
-          </Modal.Header>
-          <Modal.Content scrolling>
-            <List animated verticalAlign="middle">
-              {Object.keys(this.props.profiles)
-                .filter(objectKey => {
-                  let r = true;
-                  if (parseInt(objectKey) === this.props.user.id) {
-                    r = false;
-                  } else {
-                    for (var key in this.props.friends) {
-                      if (objectKey === key) {
-                        r = false;
-=======
     constructor(props) {
         super(props)
 
@@ -138,19 +40,6 @@ class FriendListMenu extends React.Component {
               break;  
           }
         };
-      });
-      this.props.socket.on('Start direct message', (direct) => {
-        console.log('direct message', direct.to_user_id, this.props.user.id)
-        if (this.props.user.id === parseInt(direct.to_user_id)) {
-          let d = {
-            user_id: parseInt(direct.to_user_id),
-            to_user_id : direct.user_id,
-            id: direct.id || '',
-            channel_id: direct.channel_id
-          }
-          this.props.addDirect(d)
-          this.props.subscribeChannel(direct.channel_id, this.props.socket)
-        }
       });
     }
 
@@ -222,7 +111,6 @@ class FriendListMenu extends React.Component {
                         if (objectKey === key) {
                           r = false
                         }
->>>>>>> friend request with socket.io
                       }
                     }
                   }
