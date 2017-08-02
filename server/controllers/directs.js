@@ -8,7 +8,14 @@ module.exports = {
       })
       .fetchAll({ withRelated: ['message'] })
       .then(messages => {
-        res.status(200).send(messages.toJSON());
+        const m = messages.toJSON();
+        for (var key in m) {
+          if (m[key].to_user_id = req.params.id) {
+            m[key].to_user_id = m[key].user_id
+            m[key].user_id = req.params.id
+          }
+        }
+        res.status(200).send(m);
       })
       .catch(err => {
         console.log('err', err)
