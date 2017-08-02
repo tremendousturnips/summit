@@ -13,23 +13,26 @@ class RoomSearch extends Component {
   }
 
   debouncedSearch = debounce((e) => {
-    axios.get(`/api/rooms/search?q=${e.target.value}`)
-      .then((res)=> {
-        const rooms = res.data.map(room => {
-          return {title: room.name, id: room.id, description: room.description}
+    const query = e.target.value.trim();
+    if (query.length) {
+      this.setState({
+        isLoading: true
+      });
+      axios.get(`/api/rooms/search?q=${query}`)
+        .then((res)=> {
+          const rooms = res.data.map(room => {
+            return {title: room.name, id: room.id, description: room.description}
+          });
+          this.setState({
+            results: rooms,
+            isLoading: false
+          });
         });
-        this.setState({
-          results: rooms,
-          isLoading: false
-        })
-      })
+    }
   },200);
 
   handleChange = (e) => {
     e.persist();
-    this.setState({
-      isLoading: true
-    });
     this.debouncedSearch(e);
   };
 
