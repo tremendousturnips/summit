@@ -25,4 +25,6 @@ router.route('/:id/directs/:friendId').post(DirectController.create);
 
 router.route('/:id/directs/:to_user_id/messages').get(MessageController.getDirectMessages);
 
+router.route('/:id/friends/search/:text').get(FriendsController.search);
+
 module.exports = router;

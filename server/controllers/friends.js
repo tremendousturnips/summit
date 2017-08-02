@@ -101,5 +101,23 @@ module.exports = {
         console.log('Err in delete friends', err)
         res.sendStatus(404);
       });
+  },
+
+  search: (req, res) => {
+    const searchText = '%' + req.params.text + '%';
+    console.log(searchText)
+    Profile.forge()
+    .query((qb) => {
+      qb.where('first'.toLowerCase().trim(), 'LIKE', searchText).orWhere('last', 'LIKE', searchText).orWhere('display','LIKE', searchText)
+    })
+    .fetchAll()
+    .then(profiles => {
+      console.log(profiles.toJSON())
+      res.status(200).send(profiles.toJSON());
+    })
+    .catch(err => {
+      console.log('err', err)
+      res.status(503).send(err);
+    });
   }
 };
