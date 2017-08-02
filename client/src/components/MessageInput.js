@@ -16,15 +16,15 @@ class MessageInput extends Component {
     e.preventDefault();
     let message = {
       user_id: this.props.user.id,
-      text: this.state.text,
+      text: this.state.text.trim(),
       channel_id: this.props.currentChannel.id
     };
     if (message.text.length) {
       this.props.postMessage(message);
-      this.setState({
+    }
+    this.setState({
         text: ''
       });
-    }
   }
   handleChange(e) {
     e.preventDefault();
