@@ -29,7 +29,6 @@ export const sendMessage = message => ({
 
 export const postMessage = message => {
   return (dispatch, getState) => {
-    dispatch(addMessage(message));
     return axios.post('/api/messages/', message).then(res => {
       getState().socket.emit('send', res.data);
     });

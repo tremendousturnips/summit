@@ -21,7 +21,7 @@ const roomVideoSockets = {};
 io.on('connection', socket => {
   // Text
   socket.on('send', message => {
-    socket.to(message.channel_id).emit('message', message);
+    io.to(message.channel_id).emit('message', message);
   });
   socket.on('join room', roomId => {
     console.log('joined room', roomId);

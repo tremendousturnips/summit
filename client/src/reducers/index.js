@@ -13,6 +13,7 @@ import rooms from './rooms';
 import channelsByRoom from './channelsByRoom';
 import directs from './directs';
 import messagesByChannel from './messagesByChannel';
+import messages2 from './messages2';
 
 const rootReducer = combineReducers({
   user,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   rooms,
   profiles,
   messages,
+  messages2,
   messagesByChannel,
   channels,
   currentChannel,
