@@ -12,6 +12,7 @@ class MessageInput extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   handleSubmit(e) {
     e.preventDefault();
     let message = {
@@ -26,10 +27,12 @@ class MessageInput extends Component {
         text: ''
       });
   }
+
   handleChange(e) {
     e.preventDefault();
     this.setState({text: e.target.value})
   }
+  
   render() {
     const {currentChannel} = this.props;
     return (
