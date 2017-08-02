@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
 import { Comment } from 'semantic-ui-react';
 import MessageItem from './MessageItem';
 
@@ -10,13 +9,16 @@ class MessageList extends Component {
     const node = ReactDOM.findDOMNode(this.messagesEnd);
     node.scrollIntoView({ behavior: "smooth" });
   }
+
   componentDidMount() {
     const {socket, addMessage} = this.props;
     socket.on('message', addMessage);
   }
+
   componentDidUpdate() {
     this.scrollToBottom();
   }
+
   render () {
     const { messages, profiles } = this.props;
     return (
@@ -28,8 +30,6 @@ class MessageList extends Component {
     );
   }
 }
-MessageList.propTypes = {
-  messages: PropTypes.array.isRequired
-};
+
 
 export default MessageList;
