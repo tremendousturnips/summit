@@ -19,10 +19,12 @@ class MessageInput extends Component {
       text: this.state.text,
       channel_id: this.props.currentChannel.id
     };
-    this.props.postMessage(message);
-    this.setState({
-      text: ''
-    })
+    if (message.text.length) {
+      this.props.postMessage(message);
+      this.setState({
+        text: ''
+      });
+    }
   }
   handleChange(e) {
     e.preventDefault();
