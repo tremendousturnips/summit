@@ -53,21 +53,24 @@ export const delFromFriendList = key => ({
 });
 
 export const updateFriend = (userId, friendId, status) => {
+  console.log('In updateFriend')
   return (dispatch) => {
       return axios
         .put(`/api/profiles/${userId}/friends/${friendId}/status/${status}`)
         .then(res => {
             if (res.status === 201) {
-              dispatch(updateToFriendList(friendId, status));
+              console.log('In updateFriend', res.data, friendId, status)
+              dispatch(updateToFriendList(userId, friendId, status));
             }
         })
   };
 };
 
-export const updateToFriendList = (key, status) => ({
+export const updateToFriendList = (userId, friendId, status) => ({
   type: UPDATE_TO_FRIEND_LIST,
-  key,
-  status
+    userId, 
+    friendId, 
+    status
 });
 
 export const searchFriend = (userId, text) => {
