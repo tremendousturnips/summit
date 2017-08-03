@@ -17,8 +17,10 @@ class AddRoom extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const {roomName, description} = this.state;
-    if (roomName.trim().length) {
+    let {roomName, description} = this.state;
+    roomName = roomName.trim();
+    description = description.trim();
+    if (roomName.length) {
       this.props.postRoom({name: roomName, description});
       this.setState({
         roomName: '',
@@ -50,7 +52,6 @@ class AddRoom extends Component {
           <Modal.Header>
             Create a New Room
           </Modal.Header>
-          {console.log(error)}
           {error.length ?
           <Modal.Description>
             <Message negative content={error}/>

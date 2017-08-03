@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
-import { Button, Modal, Form } from 'semantic-ui-react'
+import { Button, Modal, Form, Message } from 'semantic-ui-react'
 
 class AddChannel extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      channelName: ''
+      channelName: '',
+      error: ''
     }
   }
 
@@ -15,11 +16,21 @@ class AddChannel extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.postChannel({name: this.state.channelName});
-    this.setState({
-      channelName: '',
-      open: false
-    });
+    const {postChannel} = this.props;
+    let {channelName, error} = this.state;
+    channelName = channelName.trim();
+    if (channelName.length) {
+      this.props.postChannel({name: channelName});
+      this.setState({
+        channelName: '',
+        error: '',
+        open: false
+      });
+    } else {
+      this.setState({
+        error: 'You must provide a channel name.'
+      })
+    }
   };
 
   handleChange = (e) => {
@@ -28,8 +39,9 @@ class AddChannel extends Component {
       channelName: e.target.value
     });
   }
+
   render() {
-    const { open } = this.state
+    const { open, error } = this.state;
 
     return (
       <div>
@@ -39,6 +51,11 @@ class AddChannel extends Component {
           <Modal.Header>
             Create Text Channel
           </Modal.Header>
+          {error.length ?
+          <Modal.Description>
+            <Message negative content={error}/>
+          </Modal.Description> :
+          <div></div>}
           <Modal.Content>
             <Form onSubmit={this.handleSubmit}>
               <Form.Field>
