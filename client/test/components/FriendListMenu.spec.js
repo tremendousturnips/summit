@@ -1,22 +1,22 @@
-jest.dontMock('../../src/components/FriendListMenu');
+jest.dontMock('../../src/components/FriendList');
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 //TestUtils = require('react-dom/test-utils');
 
-import FriendListMenu from '../../src/components/FriendListMenu';
+import FriendList from '../../src/components/FriendList';
 
-describe('FriendListMenu UI Component', function() {
+describe('FriendList UI Component', function() {
 
     let Component;
 
     beforeEach(function() {
-        Component = shallow (<FriendListMenu />);    
+        Component = shallow (<FriendList />);    
     });
 
-    it('Component FriendListMenu should exists', () => {
-        //var friendListMenu = TestUtils.renderIntoDocument(<FriendListMenu />);
-        //expect(TestUtils.isCompositeComponent(friendListMenu)).toBeTruthy();
+    it('Component FriendList should exists', () => {
+        //var FriendList = TestUtils.renderIntoDocument(<FriendList />);
+        //expect(TestUtils.isCompositeComponent(FriendList)).toBeTruthy();
         expect(Component.length).toBeTruthy();
     });
 

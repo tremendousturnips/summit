@@ -1,6 +1,8 @@
 import React from 'react';
 import { Menu, Input } from 'semantic-ui-react';
 
+import FriendListItemContainer from '../containers/FriendListContainer';
+
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
@@ -12,7 +14,7 @@ class NavBar extends React.Component {
     };
 
     this.joinVideoChat = this.joinVideoChat.bind(this);
-    this.handleFriends = this.handleFriends.bind(this);
+    // this.handleFriends = this.handleFriends.bind(this);
   }
 
   joinVideoChat() {
@@ -32,21 +34,22 @@ class NavBar extends React.Component {
     );
   }
 
-  handleFriends() {
-    this.props.showFriendListStat();
-  }
+  // handleFriends() {
+  //   this.props.showFriendListStat();
+  // }
 
   render() {
+    const { videoName, videoIcon, videoColor } = this.state;
     return (
       <Menu className="nav-bar" pointing>
+        <FriendListItemContainer />
         <Menu.Item
-          name={this.state.videoName}
-          icon={this.state.videoIcon}
-          color={this.state.videoColor}
+          name={videoName}
+          icon={videoIcon}
+          color={videoColor}
           onClick={this.joinVideoChat}
           position="right"
         />
-        <Menu.Item name="friends" icon="users" onClick={this.handleFriends} />
       </Menu>
     );
   }

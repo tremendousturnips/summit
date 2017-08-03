@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import FriendListMenu from '../components/FriendListMenu';
+import FriendList from '../components/FriendList';
 import { showFriendListStat } from '../actions/showFriendList';
 import { fetchFriends, delFriend, addFriend } from '../actions/friends';
 
@@ -20,4 +20,4 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FriendListMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(FriendList);

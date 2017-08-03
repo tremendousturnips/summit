@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 
 import { storeFake } from '../fakeData/storeFake';
 import FriendListContainer from '../../src/containers/FriendListContainer';
-import FriendListMenu from '../../src/components/FriendListMenu';
+import FriendList from '../../src/components/FriendList';
 
 describe('Testing FriendListContainer', () => {
     let Component;
@@ -20,7 +20,7 @@ describe('Testing FriendListContainer', () => {
         );
 
         Component = wrapper.find(FriendListContainer);
-        FriendListComponent = Component.find(FriendListMenu);
+        FriendListComponent = Component.find(FriendList);
     })
 
     it('Render correctly', () => {
