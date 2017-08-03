@@ -25,10 +25,10 @@ class DirectMessageItem extends Component {
     getMessageDiff() {
       if (Object.keys(this.props.channels).length > 0) {
         if (Object.keys(this.props.messages).length > 0) {
-          
           console.log(this.props.messages[0].created_at)
+          return this.props.channels[this.props.index].timeStamp
         }
-        return this.props.channels[this.props.index].timeStamp
+        return
       } 
     }
 
@@ -43,7 +43,7 @@ class DirectMessageItem extends Component {
           <List.Content>
              <List.Header> 
               <a onClick={this.sendMessage}>{this.props.profiles[this.props.friend].display}  
-              <Label size='mini' color='red' floating>{this.getMessageDiff()}</Label>
+              {/* <Label size='mini' color='red' floating>{this.getMessageDiff()}</Label> */}
               </a>
             </List.Header>  
           </List.Content>

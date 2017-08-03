@@ -2,6 +2,8 @@ import { connect } from 'react-redux';
 import FriendList from '../components/FriendList';
 import { showFriendListStat } from '../actions/showFriendList';
 import { fetchFriends, delFriend, addFriend, updateFriend } from '../actions/friends';
+import { addDirect } from '../actions/directs';
+import { subscribeChannel } from '../actions/channels';
 
 const mapStateToProps = ({ socket, showFriendList, user, friends, profiles }) => 
                         ({ socket, showFriendList, user, friends, profiles });
@@ -21,6 +23,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   updateFriend: (userId, friendId, status) => {
     dispatch(updateFriend(userId, friendId, status));
+  },
+  addDirect: (direct) => {
+    dispatch(addDirect(direct));
+  },
+  subscribeChannel: (channelId, s) => {
+    subscribeChannel(channelId, s);
   }
 });
 

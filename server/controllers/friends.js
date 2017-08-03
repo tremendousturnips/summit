@@ -34,24 +34,28 @@ module.exports = {
   },
 
   update: (req, res) => {
-    let outcome;
-    let senderStatus
-    if (req.params.status === 'Denied') {
-      senderStatus = 'Blocked'
-    } else if (req.params.status === 'Accepted'){
-      senderStatus = 'Accepted'
-    } 
-    Friends.forge({ user_id: req.params.id, friend_id: req.params.friendId, status: req.params.status })
-      .save()
-      .then(result => {
-        res.status(201).send(result);
-      })
-      .catch(err => {
-        if (err.constraint === 'Existing friend') {
-          return res.status(403);
-        }
-        res.status(500).send(err);
-      });
+
+    if (req.params.status === 'Pending') {
+      Friends.forge({ user_id: req.params.id, friend_id: req.params.friendId, status: req.params.status })
+        .save()
+        .then(result => {
+          res.status(201).send(result);
+        })
+    } else {
+      Friends
+        .where({ user_id: req.params.id, friend_id: req.params.friendId })
+        .save({status: req.params.status}, {patch: true})
+        .then(result => {
+          res.status(201).send(result);
+        })
+        .catch(err => {
+          if (err.constraint === 'Existing friend') {
+            return res.status(403);
+          }
+          console.log('Error in saving record', err )
+          res.status(500).send(err);
+        });
+    }
   },
 
   deleteOne: (req, res) => {
