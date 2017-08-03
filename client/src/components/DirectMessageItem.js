@@ -11,11 +11,12 @@ class DirectMessageItem extends Component {
 
       this.sendMessage = this.sendMessage.bind(this)
       this.getMessageDiff = this.getMessageDiff.bind(this)
+      this.loadProfile = this.loadProfile.bind(this);
 
     }
 
     componentWillMount() {
-      //console.log('in Direct Message Item before mount', this.props.channels[this.props.index]) 
+     // console.log('in Direct Message Item before mount', this.props.profiles, this.props.friend) 
     }
 
     componentDidMount() {
@@ -33,21 +34,30 @@ class DirectMessageItem extends Component {
     }
 
     sendMessage () {
+      console.log('channels, channel_id', this.props.channels, this.props.index)
       this.props.selectChannel(this.props.channels[this.props.index])
+    }
+
+    loadProfile() {
+      if (this.props.profiles[this.props.friend]) {
+        return <List.Item>
+            <Image avatar src={this.props.profiles[this.props.friend].image} alt='p' />
+            <List.Content>
+              <List.Header> 
+                <a onClick={this.sendMessage}>{this.props.profiles[this.props.friend].display}  
+                {/* <Label size='mini' color='red' floating>{this.getMessageDiff()}</Label> */}
+                </a>
+              </List.Header>  
+            </List.Content>
+          </List.Item>
+      } else {
+        return null
+      }
     }
 
     render () {
       return (
-        <List.Item>
-          <Image avatar src={this.props.profiles[this.props.friend].image} alt='p' />
-          <List.Content>
-             <List.Header> 
-              <a onClick={this.sendMessage}>{this.props.profiles[this.props.friend].display}  
-              {/* <Label size='mini' color='red' floating>{this.getMessageDiff()}</Label> */}
-              </a>
-            </List.Header>  
-          </List.Content>
-        </List.Item>
+        this.loadProfile()
       );
     }
 };
