@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Menu, Sidebar, List, Button, Modal, Input, Label } from 'semantic-ui-react';
+import { Icon, Menu, List, Button, Modal, Input, Label } from 'semantic-ui-react';
 
 import FriendListItemContainer from '../containers/FriendListItemContainer';
 import AddFriendItemContainer from '../containers/AddFriendItemContainer';
@@ -12,11 +12,9 @@ class FriendList extends React.Component {
       showModal: false
     }
 
-    this.handleDone = this.handleDone.bind(this)
-    this.handleAddFriend = this.handleAddFriend.bind(this)
-    this.toggleShowModal = this.toggleShowModal.bind(this)
+    this.toggleShowModal = this.toggleShowModal.bind(this);
   }
-    
+
   componentWillMount() {
     this.props.fetchFriends(this.props.user.id)
     this.props.socket.on('friend update', friend => {
@@ -33,9 +31,9 @@ class FriendList extends React.Component {
             break;
           case 'Removed':
             this.props.updateFriend(friend.friend_id, friend.user_id, friend.status)
-            break;  
+            break;
           default:
-            break;  
+            break;
         }
       };
     });
@@ -66,53 +64,31 @@ toggleShowModal() {
     })
   }
 
-  handleDone() {
-    this.props.showFriendListStat();
-  }
-
-  handleAddFriend() {
-    this.toggleShowModal()
-  }
-
-  componentDidMount() {
-  }
-
   render() {
+    const { friends } = this.props;
+    const friendItems = Object.keys(friends).map(objectKey =>
+      <FriendListItemContainer friend={friends[objectKey]} index={objectKey} key={objectKey} />
+    );
+
     return (
       <Modal trigger={<Menu.Item name="friends" icon="users" />}>
-        <Menu.Item name="home">
+        <Modal.Header name="home">
           <Icon name="group" />
           Friends
-        </Menu.Item>
-        <Menu.Item>
+        </Modal.Header>
+        <Modal.Content>
           <List relaxed="very" verticalAlign="top">
-            {Object.keys(this.props.friends).map(objectKey => {
-              return (
-                <FriendListItemContainer
-                  friend={this.props.friends[objectKey]}
-                  index={objectKey}
-                  key={objectKey}
-                />
-              );
-            })}
+            {friendItems}
           </List>
-        </Menu.Item>
+        </Modal.Content>
         <Menu.Item name="addFriend">
           <Button.Group labeled>
             <Button
               compact
               icon="add user"
-              color="red"
+              color="green"
               content="Add"
               onClick={this.toggleShowModal}
-              inverted
-            />
-            <Button
-              compact
-              icon="checkmark"
-              color="green"
-              content="Done"
-              onClick={this.handleDone}
               inverted
             />
           </Button.Group>

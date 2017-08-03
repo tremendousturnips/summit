@@ -4,15 +4,12 @@ import { showFriendListStat } from '../actions/showFriendList';
 import { fetchFriends, delFriend, addFriend, updateFriend } from '../actions/friends';
 import { addDirect } from '../actions/directs';
 import { addChannel, subscribeChannel } from '../actions/channels';
-import { setMessages } from '../actions/messages';  
- 
-const mapStateToProps = ({ socket, showFriendList, user, friends, profiles }) => 
+import { setMessages } from '../actions/messages';
+
+const mapStateToProps = ({ socket, showFriendList, user, friends, profiles }) =>
                         ({ socket, showFriendList, user, friends, profiles });
 
 const mapDispatchToProps = (dispatch) => ({
-  showFriendListStat: () => {
-    dispatch(showFriendListStat());
-  }, 
   fetchFriends: (userId) => {
     dispatch(fetchFriends(userId));
   },

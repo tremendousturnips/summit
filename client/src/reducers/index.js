@@ -7,7 +7,6 @@ import currentChannel from './currentChannel';
 import profiles from './profiles';
 import currentRoom from './currentRoom';
 import toggleVideo from './toggleVideo';
-import showFriendList from './showFriendList';
 import friends from './friends';
 import rooms from './rooms';
 import channelsByRoom from './channelsByRoom';
@@ -26,7 +25,6 @@ const rootReducer = combineReducers({
   currentRoom,
   channelsByRoom,
   toggleVideo,
-  showFriendList,
   directs,
   friends
 });

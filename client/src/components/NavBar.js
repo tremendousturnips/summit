@@ -14,7 +14,6 @@ class NavBar extends React.Component {
     };
 
     this.joinVideoChat = this.joinVideoChat.bind(this);
-    // this.handleFriends = this.handleFriends.bind(this);
   }
 
   joinVideoChat() {
@@ -33,10 +32,6 @@ class NavBar extends React.Component {
         }
     );
   }
-
-  // handleFriends() {
-  //   this.props.showFriendListStat();
-  // }
 
   render() {
     const { videoName, videoIcon, videoColor } = this.state;
