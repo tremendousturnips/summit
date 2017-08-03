@@ -15,6 +15,8 @@ class FriendListItem extends Component {
       this.messageFriend = this.messageFriend.bind(this)
       this.acceptFriend = this.acceptFriend.bind(this)
       this.denyFriend = this.denyFriend.bind(this)
+      this.loadFriend = this.loadFriend.bind(this)
+
     }
 
     status () {
@@ -37,21 +39,40 @@ class FriendListItem extends Component {
       let userId = this.props.friend.user_id 
       let friendId = this.props.friend.friend_id
       this.props.updateFriend(userId, friendId, 'Accepted')
+      let friend = {
+        user_id: userId,
+        friend_id: friendId,
+        status: 'Accepted'
+      };
+      this.props.socket.emit('friend update', friend )
     }
 
     denyFriend() {
       let userId = this.props.friend.user_id 
       let friendId = this.props.friend.friend_id
-      this.props.updateFriend(userId, friendId, 'Denied')  
+      this.props.updateFriend(userId, friendId, 'Denied') 
+      let friend = {
+        user_id: userId,
+        friend_id: friendId,
+        status: 'Denied'
+      };
+      this.props.socket.emit('friend update', friend ) 
     }
 
     removeFriend () {
       let userId = this.props.friend.user_id 
       let friendId = this.props.friend.friend_id
       this.props.delFriend(userId, friendId, this.props.index)
+      let friend = {
+        user_id: userId,
+        friend_id: friendId,
+        status: 'Removed'
+      };
+      this.props.socket.emit('friend update', friend, 'Removed')
     }
 
     messageFriend() {
+      console.log('In FriendListItem', this.props.friend.friend_id)
       if (this.props.directs[this.props.friend.friend_id]) {
         //Direct Message exists
         this.props.selectChannel(this.props.channels[this.props.directs[this.props.friend.friend_id].channel_id])
@@ -64,9 +85,9 @@ class FriendListItem extends Component {
 
     }
 
-    render () {
-      return (
-        <List.Item>
+    loadFriend() {
+      if (this.props.profiles[this.props.friend.friend_id]) {
+        return <List.Item>
           <List.Content floated='right'>
             {this.status()}
           </List.Content>
@@ -80,6 +101,15 @@ class FriendListItem extends Component {
             </List.Description> 
           </List.Content>    
         </List.Item>
+      } else {
+        return null
+      }
+              
+    }
+
+    render () {
+      return (
+        this.loadFriend()
       );
     }
 }

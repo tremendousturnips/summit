@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import DirectMessageList from '../components/DirectMessageList';
-//import { showFriendListStat } from '../actions/showFriendList';
 
-const mapStateToProps = ({ user, directs, profiles, messages }) => ({ user, directs, profiles, messages });
+const mapStateToProps = ({ directs }) => 
+                        ({ directs });
 
 const mapDispatchToProps = (dispatch) => ({
 

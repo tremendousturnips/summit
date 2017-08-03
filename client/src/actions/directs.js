@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { SET_DIRECTS, ADD_DIRECT } from './actionTypes';
 import { setMessages } from './messages';
-import { setChannels, subscribeChannel } from './channels';
+import { setChannels, subscribeChannel, selectChannel, addChannel } from './channels';
+import { addRoom } from './rooms';
 
 export const setDirects = directs => ({
   type: 'SET_DIRECTS',
@@ -15,21 +16,27 @@ export const addDirect = direct => ({
 
 export const addDirectChannel = (userId, friendId) => {
   return (dispatch, getState) => {
-      return axios
+      return Promise.all([
+        axios
         .post(`/api/profiles/${userId}/directs/${friendId}`)
         .then(res => {
             if (res.status === 201) {
               const socket = getState().socket;
+              console.log('res.data', res.data)
               dispatch(addDirect(res.data));
-              var channel = [{
+              var channel = {
                 id: res.data.channel_id,
                 name: '',
-                room_id: 'direct'
-              }]
-              dispatch(setChannels(channel, 'direct'))
+                room_id: 0
+              }
+              dispatch(addChannel(channel, 0))
               subscribeChannel(res.data.channel_id, socket)
+              dispatch(setMessages([], res.data.channel_id));
+              dispatch(selectChannel(channel));
+              socket.emit('Start direct message', res.data)
             }
         })
+      ]);    
   } 
 };
 
@@ -42,17 +49,20 @@ export const fetchDirects = (userId) => {
       })
       .then(() => {
         const directs = getState().directs
+        dispatch(addRoom({id: 0,
+                          name: 'direct', 
+                          description: 'Direct conversation room'}))
         for (let key in directs) {
-          var channel = [{
+          var channel = {
             id: directs[key].channel_id,
             name: '',
-            room_id: 'direct'
-          }]
-          dispatch(setChannels(channel, 'direct'))
-          subscribeChannel(directs[key].channel_id, socket)
-          for (let message in directs.messages) {
-            dispatch(setMessages(message));
+            room_id: 0
           }
+          dispatch(addChannel(channel, 0))
+          subscribeChannel(directs[key].channel_id, socket)
+          directs[key].message = directs[key].message || []
+          console.log('directs[key].messages', directs[key].message)
+          dispatch(setMessages(directs[key].message, directs[key].channel_id));
         }
       })
   }

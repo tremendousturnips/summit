@@ -42,6 +42,17 @@ io.on('connection', socket => {
     socket.leave(channelId);
   });
 
+  //Friends event
+  socket.on('friend update', friend => {
+    io.emit('friend update', friend)
+  });
+
+  //Direct Message event
+  socket.on('Start direct message', direct => {
+    console.log('direct', direct)
+    io.emit('Start direct message', direct)
+  });
+
   // Video
   socket.on('joinVideo', room => {
     if (!roomVideoSockets[room]) {

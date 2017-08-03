@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { FETCH_FRIENDS, ADD_FRIEND, DEL_FRIEND, SET_FRIENDS, DEL_FROM_FRIEND_LIST, ADD_TO_FRIEND_LIST, UPDATE_TO_FRIEND_LIST } from './actionTypes';
+import { addProfile } from './profiles';
 
 export const fetchFriends = userId => {
   return (dispatch) => {
@@ -52,19 +53,43 @@ export const delFromFriendList = key => ({
 });
 
 export const updateFriend = (userId, friendId, status) => {
+  console.log('In updateFriend')
   return (dispatch) => {
       return axios
         .put(`/api/profiles/${userId}/friends/${friendId}/status/${status}`)
         .then(res => {
             if (res.status === 201) {
-              dispatch(updateToFriendList(friendId, status));
+              console.log('In updateFriend', res.data, friendId, status)
+              dispatch(updateToFriendList(userId, friendId, status));
             }
         })
   };
 };
 
-export const updateToFriendList = (key, status) => ({
+export const updateToFriendList = (userId, friendId, status) => ({
   type: UPDATE_TO_FRIEND_LIST,
-  key,
-  status
+    userId, 
+    friendId, 
+    status
 });
+
+export const searchFriend = (userId, text) => {
+  return (dispatch) => {
+      return axios
+        .get(`/api/profiles/${userId}/friends/search/${text}`)
+        .then(res => {
+            console.log(res.data)
+            if (res.status === 200) {
+              for (let key in res.data) {
+                dispatch(addProfile(res.data[key]))
+              }
+            }
+        })
+  };
+};
+
+// export const updateToFriendList = (key, status) => ({
+//   type: UPDATE_TO_FRIEND_LIST,
+//   key,
+//   status
+// });

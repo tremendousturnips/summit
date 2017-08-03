@@ -3,7 +3,8 @@ import DirectMessageItem from '../components/DirectMessageItem';
 import { getProfile } from '../actions/profiles';
 import { selectChannel } from '../actions/channels';
 
-const mapStateToProps = ({ profiles, directs, channels }) => ({ profiles, directs, channels });
+const mapStateToProps = ({ messages, profiles, directs, channels }) => 
+                        ({ messages, profiles, directs, channels });
 
 const mapDispatchToProps = (dispatch) => ({
   getProfile: (userId) => {

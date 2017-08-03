@@ -6,6 +6,7 @@ const channels = (state = { }, action) => {
     const channelNormal = {...state};
     action.channels.forEach(channel => {
       channelNormal[channel.id] = channel;
+      channelNormal[channel.id].timeStamp = Date.now();
     });
     return channelNormal;
   case ADD_CHANNEL:
