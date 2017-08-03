@@ -3,6 +3,7 @@ import { Icon, Menu, Sidebar, List, Button, Modal, Input, Label } from 'semantic
 
 import FriendListItemContainer from '../containers/FriendListItemContainer';
 import AddFriendItemContainer from '../containers/AddFriendItemContainer';
+import AddFriendSearchContainer from '../containers/AddFriendSearchContainer';
 
 class FriendListMenu extends React.Component {
     constructor(props) {
@@ -113,7 +114,7 @@ class FriendListMenu extends React.Component {
             size='small' 
           >
             <Modal.Header>
-              <AddFriendSearchContainer />
+              <AddFriendSearchContainer  />
               <Label corner='right' icon='window close' color='red' onClick={this.toggleShowModal} />
             </Modal.Header>       
             <Modal.Content scrolling>
@@ -130,9 +131,8 @@ class FriendListMenu extends React.Component {
                         }
                       }
                     }
-                  }
-                  return r;
-                })
+                    return r;
+                  })
                 .map((objectKey, index) => {
                   return <AddFriendItemContainer index={objectKey} key={index} />;
                 })}
