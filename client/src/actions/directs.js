@@ -22,7 +22,6 @@ export const addDirectChannel = (userId, friendId) => {
         .then(res => {
             if (res.status === 201) {
               const socket = getState().socket;
-              console.log('res.data', res.data)
               dispatch(addDirect(res.data));
               var channel = {
                 id: res.data.channel_id,
@@ -61,7 +60,6 @@ export const fetchDirects = (userId) => {
           dispatch(addChannel(channel, 0))
           subscribeChannel(directs[key].channel_id, socket)
           directs[key].message = directs[key].message || []
-          console.log('directs[key].messages', directs[key].message)
           dispatch(setMessages(directs[key].message, directs[key].channel_id));
         }
       })

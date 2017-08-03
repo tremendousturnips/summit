@@ -49,7 +49,6 @@ io.on('connection', socket => {
 
   //Direct Message event
   socket.on('Start direct message', direct => {
-    console.log('direct', direct)
     io.emit('Start direct message', direct)
   });
 

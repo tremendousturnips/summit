@@ -12,6 +12,11 @@ class DirectMessageItem extends Component {
       this.sendMessage = this.sendMessage.bind(this)
       this.getMessageDiff = this.getMessageDiff.bind(this)
       this.loadProfile = this.loadProfile.bind(this);
+      this.state = {
+        style: {
+          color: 'white'
+        }
+      }
 
     }
 
@@ -44,7 +49,7 @@ class DirectMessageItem extends Component {
             <Image avatar src={this.props.profiles[this.props.friend].image} alt='p' />
             <List.Content>
               <List.Header> 
-                <a onClick={this.sendMessage}>{this.props.profiles[this.props.friend].display}  
+                <a onClick={this.sendMessage} style={this.state.style} >{this.props.profiles[this.props.friend].display}  
                 {/* <Label size='mini' color='red' floating>{this.getMessageDiff()}</Label> */}
                 </a>
               </List.Header>  
