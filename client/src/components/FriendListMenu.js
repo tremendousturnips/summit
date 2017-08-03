@@ -21,9 +21,7 @@ class FriendListMenu extends React.Component {
     componentWillMount() {
       this.props.fetchFriends(this.props.user.id)
       this.props.socket.on('friend update', friend => {
-        console.log(friend)
         if (this.props.user.id === parseInt(friend.friend_id)) {
-          console.log('Reached')
           switch(friend.status) {
             case 'Accepted':
               this.props.updateFriend(friend.friend_id, friend.user_id, friend.status)
@@ -43,7 +41,6 @@ class FriendListMenu extends React.Component {
         };
       });
       this.props.socket.on('Start direct message', (direct) => {
-        console.log('direct message', direct.to_user_id, this.props.user.id)
         if (this.props.user.id === parseInt(direct.to_user_id)) {
           let d = {
             user_id: parseInt(direct.to_user_id),
@@ -52,7 +49,14 @@ class FriendListMenu extends React.Component {
             channel_id: direct.channel_id
           }
           this.props.addDirect(d)
-          this.props.subscribeChannel(direct.channel_id, this.props.socket)
+          var c = {
+            id: direct.channel_id,
+            name: '',
+            room_id: 0
+          }
+          this.props.addChannel(c, 0)
+          this.props.subscribeChannel(direct.channel_id, this.props.socket);
+          this.props.setMessages([], direct.channel_id);
         }
       });
     }

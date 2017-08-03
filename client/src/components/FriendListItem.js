@@ -15,6 +15,7 @@ class FriendListItem extends Component {
       this.messageFriend = this.messageFriend.bind(this)
       this.acceptFriend = this.acceptFriend.bind(this)
       this.denyFriend = this.denyFriend.bind(this)
+      this.loadFriend = this.loadFriend.bind(this)
 
     }
 
@@ -71,6 +72,7 @@ class FriendListItem extends Component {
     }
 
     messageFriend() {
+      console.log('In FriendListItem', this.props.friend.friend_id)
       if (this.props.directs[this.props.friend.friend_id]) {
         //Direct Message exists
         this.props.selectChannel(this.props.channels[this.props.directs[this.props.friend.friend_id].channel_id])
@@ -83,9 +85,9 @@ class FriendListItem extends Component {
 
     }
 
-    render () {
-      return (
-        <List.Item>
+    loadFriend() {
+      if (this.props.profiles[this.props.friend.friend_id]) {
+        return <List.Item>
           <List.Content floated='right'>
             {this.status()}
           </List.Content>
@@ -99,6 +101,15 @@ class FriendListItem extends Component {
             </List.Description> 
           </List.Content>    
         </List.Item>
+      } else {
+        return null
+      }
+              
+    }
+
+    render () {
+      return (
+        this.loadFriend()
       );
     }
 }

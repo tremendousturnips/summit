@@ -9,6 +9,7 @@ module.exports = {
       .fetchAll({ withRelated: ['message'] })
       .then(messages => {
         const m = messages.toJSON();
+        console.log('In directs controller', m)
         for (var key in m) {
           if (m[key].to_user_id = req.params.id) {
             m[key].to_user_id = m[key].user_id
