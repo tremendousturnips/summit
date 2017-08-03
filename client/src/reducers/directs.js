@@ -7,10 +7,10 @@ const directs = (state = {}, action) => {
     action.directs.forEach((direct)=>{
       directsNormal[direct.to_user_id] = direct;
     });
-    return directsNormal; 
+    return directsNormal;
   case ADD_DIRECT:
     //state[action.direct.to_user_id] = action.direct
-    return {...state, [action.direct.to_user_id]: action.direct };   
+    return {...state, [action.direct.to_user_id]: action.direct };
   default:
     return state;
   }

@@ -1,24 +1,36 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
 import { Comment } from 'semantic-ui-react';
 import MessageItem from './MessageItem';
 
+
 class MessageList extends Component {
-  componentDidMount() {
-    const {socket, addMessage} = this.props;
-    socket.on('message', addMessage);
+  scrollToBottom = () => {
+    const node = ReactDOM.findDOMNode(this.messagesEnd);
+    node.scrollIntoView({ behavior: "smooth" });
   }
+
+  componentDidMount() {
+    const {socket, addMessage, addProfile} = this.props;
+    socket.on('message', addMessage);
+    socket.on('user entered', addProfile); //TODO: could refactor to only addProfile if profile store does not already contain profile.id
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
   render () {
-    const { messages, profiles } = this.props;
+    const { messages, profiles, messagesByChannel, currentChannel } = this.props;
     return (
       <Comment.Group>
-        {messages.map((message, index) => <MessageItem profile={profiles[message.user_id]} message={message} key={index}/> )}
+        {messagesByChannel[currentChannel.id].map((messageId) => <MessageItem profile={profiles[messages[messageId].user_id]} message={messages[messageId]} key={messageId}/> )}
+        <div style={{ float:"left", clear: "both" }}
+             ref={(el) => { this.messagesEnd = el; }} />
       </Comment.Group>
     );
   }
 }
-MessageList.propTypes = {
-  messages: PropTypes.array.isRequired
-};
+
 
 export default MessageList;

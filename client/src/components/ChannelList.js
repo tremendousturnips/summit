@@ -24,7 +24,9 @@ class ChannelList extends Component {
       <Menu vertical text pointing secondary>
         {currentRoom.id ? <AddChannel postChannel={postChannel}/> : <br />}
         {channelsByRoom[currentRoom.id].map((channelId) => (
-          <Menu.Item active={currentChannel.id === channelId} key={channelId} onClick={()=>{selectChannel(channels[channelId])}}>{channels[channelId].name}</Menu.Item>)
+          <Menu.Item active={currentChannel.id === channelId} key={channelId} onClick={()=>{selectChannel(channels[channelId])}}>{channels[channelId].name}
+            {/* <Label size='tiny' content={1}/> */}
+          </Menu.Item>)
         )}
       </Menu>
     );

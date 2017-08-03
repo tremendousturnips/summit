@@ -21,11 +21,13 @@ const roomVideoSockets = {};
 io.on('connection', socket => {
   // Text
   socket.on('send', message => {
-    socket.to(message.channel_id).emit('message', message);
+    io.to(message.channel_id).emit('message', message);
   });
-  socket.on('join room', roomId => {
-    console.log('joined room', roomId);
-    socket.join(`/room/${roomId}`);
+  socket.on('join room', req => {
+    console.log('joined room', req.roomId);
+    socket.join(`/room/${req.roomId}`);
+    console.log('user', req.user);
+    socket.to(`/room/${req.roomId}`).emit('user entered', req.user);
   });
   socket.on('leave room', roomId => {
     socket.leave(`/room/${roomId}`);

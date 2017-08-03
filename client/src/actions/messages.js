@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { SET_MESSAGES, ADD_MESSAGE, RECEIVE_MESSAGES, SEND_MESSAGE } from './actionTypes';
 
-export const setMessages = messages => ({
+export const setMessages = (messages, channelId) => ({
   type: SET_MESSAGES,
-  messages
+  messages,
+  channelId
 });
 
 export const addMessage = message => ({
@@ -28,7 +29,6 @@ export const sendMessage = message => ({
 
 export const postMessage = message => {
   return (dispatch, getState) => {
-    dispatch(addMessage(message));
     return axios.post('/api/messages/', message).then(res => {
       getState().socket.emit('send', res.data);
     });
@@ -38,6 +38,6 @@ export const postMessage = message => {
 export const fetchMessages = (roomId, channelId) => {
   return (dispatch, getState) =>
     axios.get(`/api/rooms/${roomId}/channels/${channelId}/messages`).then(res => {
-      dispatch(setMessages(res.data));
+      dispatch(setMessages(res.data, channelId));
     });
 };
