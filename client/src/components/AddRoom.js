@@ -5,15 +5,15 @@ class AddRoom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      // open: false,
       roomName: '',
       description: '',
       error: ''
     }
   }
 
-  show = () => this.setState({ open: true });
-  close = () => this.setState({ open: false });
+  // show = () => this.setState({ open: true });
+  // close = () => this.setState({ open: false });
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -25,8 +25,8 @@ class AddRoom extends Component {
       this.setState({
         roomName: '',
         description: '',
-        error: '',
-        open: false
+        error: ''
+        // open: false
       });
     } else {
       this.setState({
@@ -41,14 +41,15 @@ class AddRoom extends Component {
       [e.target.name]: e.target.value
     });
   }
+  
   render() {
-    const { open, error } = this.state;
-
+    const { /*open,*/ error } = this.state;
+    const {open} = this.props;
     return (
       <div>
-        <Button onClick={this.show} size='mini'>Create Room</Button>
+        {/* <Button onClick={this.show} size='mini'>Create Room</Button> */}
 
-        <Modal size='small' open={open} onClose={this.close} closeIcon='close' dimmer='blurring'>
+        <Modal size='small' open={open} onClose={this.props.close} closeIcon='close' dimmer='blurring'>
           <Modal.Header>
             Create a New Room
           </Modal.Header>
