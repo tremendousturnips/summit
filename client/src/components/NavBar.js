@@ -39,7 +39,6 @@ class NavBar extends React.Component {
   render() {
     return (
       <Menu className="nav-bar" pointing>
-        <Menu.Item name="friends" onClick={this.handleFriends} />
         <Menu.Item
           name={this.state.videoName}
           icon={this.state.videoIcon}
@@ -47,6 +46,7 @@ class NavBar extends React.Component {
           onClick={this.joinVideoChat}
           position="right"
         />
+        <Menu.Item name="friends" icon="users" onClick={this.handleFriends} />
       </Menu>
     );
   }
