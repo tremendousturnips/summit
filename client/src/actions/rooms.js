@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { SELECT_ROOM, ADD_ROOM, SET_ROOMS } from './actionTypes';
 import { fetchChannels, postChannel } from './channels';
+import { fetchProfiles } from './profiles';
 
 //TODO: create action and corresponding socket event to send 
   //profile data to new users who join a room
@@ -63,16 +64,17 @@ export const joinRoom = room => {
 }
 
 export const fetchRooms = () => {
-  return (dispatch, getStore) => {
+  return (dispatch, getState) => {
     
-    return axios.get(`/api/profiles/${getStore().user.id}/rooms`)
+    return axios.get(`/api/profiles/${getState().user.id}/rooms`)
       .then((res)=>{
         dispatch(setRooms(res.data));
       })
       .then(()=>{
-        const {rooms, socket} = getStore();
+        const {rooms, socket} = getState();
         for (let roomId in rooms) {
           Promise.all([
+            dispatch(fetchProfiles(roomId)),
             dispatch(fetchChannels(roomId)),
             subscribeRoom(roomId, socket)
           ])
