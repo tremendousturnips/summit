@@ -1,13 +1,15 @@
-import React, {Component} from 'react';
-import { Dropdown} from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { Dropdown } from 'semantic-ui-react';
 import RoomSearch from './RoomSearch';
 import AddRoom from './AddRoom';
 
 const options = [
-  {key: 'Room',
-  text: 'Room',
-  value: 'Room',
-  content: 'Room'}
+  {
+    key: 'Room',
+    text: 'Room',
+    value: 'Room',
+    content: 'Room'
+  }
 ];
 
 class RoomDropdown extends Component {
@@ -25,14 +27,20 @@ class RoomDropdown extends Component {
   }
 
   render() {
-    const { postRoom, joinRoom } = this.props;
+    const { rooms, postRoom, joinRoom } = this.props;
     return (
-      <div>
-        <RoomSearch joinRoom={joinRoom}/>
-        <br/> 
-        <Dropdown placeholder='Your Rooms' onChange={this.handleChange} fluid selection options={this.props.rooms || options}/>
-        <br/>
-        <AddRoom postRoom={postRoom}/>
+      <div className="room-dropdown">
+        <RoomSearch joinRoom={joinRoom} />
+        <br />
+        <AddRoom postRoom={postRoom} />
+        <h4>Current Room</h4>
+        <Dropdown
+          placeholder="Your Rooms"
+          onChange={this.handleChange}
+          fluid
+          selection
+          options={rooms || options}
+        />
       </div>
     );
   }

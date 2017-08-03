@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Container, Label } from 'semantic-ui-react';
+import { Icon, Label } from 'semantic-ui-react';
 
 import VideoChatContainer from '../containers/VideoChatContainer';
 
@@ -20,12 +20,12 @@ class VideoChatBar extends Component {
   render() {
     const { visible } = this.state;
     return visible
-      ? <Container className="video-chat-bar">
+      ? <div className="video-chat-bar">
           <Label>
             <Icon name="video" /> Video Chat
           </Label>
           <VideoChatContainer />
-        </Container>
+        </div>
       : null;
   }
 }

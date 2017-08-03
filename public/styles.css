@@ -1,51 +1,44 @@
 #root {
-  height: 100%;
-  width: 100%;
-}
-
-.container {
   height: 100vh;
   width: 100vw;
 }
 
-#nav-bar {
-  margin-top: 1rem;
+.app-container {
+  height: 100vh;
 }
 
-.ui.comments {
-  max-width: 100vw;
-  max-height: 60vh;
+.nav-bar {
+  margin-top: 1rem !important;
+}
+
+.message-list {
+  height: 75vh;
   overflow-y: scroll;
-  margin: 2rem 1rem !important;
+  margin: 2rem 0 !important;
   border: .1rem solid #eee;
   border-radius: .3rem;
 }
 
-.ui.message.comment {
-  margin: .7rem !important;
+.message-list-item {
+  margin: .5rem 1rem !important;
   box-shadow: none;
 }
 
-i.add.circle.icon {
-  float: right;
+.nav-bar,
+.message-list,
+.message-input {
+  max-width: 70vw !important;
 }
 
-form.ui.form {
-  width: 100%;
-  margin: 0 auto 2rem auto;
+.video-chat-bar {
+  margin-left: 0 !important;
 }
 
-.remotes-videos >  {
+.video-box {
   display: inline-block;
-}
-
-.vsc-initialized,
-.local-video,
-#peers {
-  display: inline-block !important;
   margin-right: 2rem;
 }
-/*
-.item.local-video {
-  padding: 0;
-} */
+
+ .mute-button {
+  position: absolute;
+}

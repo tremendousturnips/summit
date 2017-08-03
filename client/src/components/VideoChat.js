@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container } from 'semantic-ui-react';
 import VideoBox from './VideoBox';
 import ICE_SERVERS from '../../../config/ice_servers';
 
@@ -23,8 +22,8 @@ class VideoChat extends React.Component {
     const mediaOptions = {
       audio: true,
       video: {
-        width: { exact: 352 },
-        height: { exact: 240 }
+        width: { exact: 200 },
+        height: { exact: 150 }
       }
     };
 
@@ -169,12 +168,12 @@ class VideoChat extends React.Component {
     const { localMediaStream, peerMediaStreams } = this.state;
     const peerStreams = Object.values(peerMediaStreams).filter(stream => !!stream);
     return (
-      <Container>
+      <div>
         {localMediaStream ? <VideoBox id="localMediaStream" stream={localMediaStream} /> : ''}
         {peerStreams.map(stream =>
           <VideoBox key={stream.id} id={stream.id} stream={stream.stream} />
         )}
-      </Container>
+      </div>
     );
   }
 }
