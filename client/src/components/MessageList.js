@@ -11,8 +11,9 @@ class MessageList extends Component {
   }
 
   componentDidMount() {
-    const {socket, addMessage} = this.props;
+    const {socket, addMessage, addProfile} = this.props;
     socket.on('message', addMessage);
+    socket.on('user entered', addProfile);
   }
 
   componentDidUpdate() {

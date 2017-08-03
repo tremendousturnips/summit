@@ -33,7 +33,7 @@ export const postRoom = room => {
         Promise.all([
           axios.post(`/api/roles`, {room_id: res.data.id, user_id: getState().user.id, privilege_level: 'admin'}),
           dispatch(addRoom(res.data)),
-          subscribeRoom(res.data.id, getState().socket),
+          subscribeRoom(res.data.id, getState().user, getState().socket),
           dispatch(postChannel({name: 'General', room_id: res.data.id}))
         ]);
       })
@@ -45,8 +45,8 @@ export const setRooms = rooms => ({
   rooms
 });
 
-export const subscribeRoom = (roomId, socket) => {
-  socket.emit('join room', roomId);
+export const subscribeRoom = (roomId, user, socket) => {
+  socket.emit('join room', {roomId, user});
 };
 
 //TODO: refactor this action to be more reusable as is it very similar to postRoom and fetchRooms
@@ -56,7 +56,7 @@ export const joinRoom = room => {
       Promise.all([
         axios.post(`/api/roles`, {room_id: room.id, user_id: getState().user.id, privilege_level: 'guest'}),
         dispatch(addRoom(room)),
-        subscribeRoom(room.id, getState().socket),
+        subscribeRoom(room.id, getState().user, getState().socket),
         dispatch(fetchChannels(room.id))
       ]);
     }
@@ -76,7 +76,7 @@ export const fetchRooms = () => {
           Promise.all([
             dispatch(fetchProfiles(roomId)),
             dispatch(fetchChannels(roomId)),
-            subscribeRoom(roomId, socket)
+            subscribeRoom(roomId, getState().user, socket)
           ])
         }
       })
