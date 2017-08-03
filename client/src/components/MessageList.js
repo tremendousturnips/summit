@@ -21,7 +21,6 @@ class MessageList extends Component {
 
   render () {
     const { messages, profiles, messagesByChannel, currentChannel } = this.props;
-    console.log(messagesByChannel);
     return (
       <Comment.Group>
         {messagesByChannel[currentChannel.id].map((messageId) => <MessageItem profile={profiles[messages[messageId].user_id]} message={messages[messageId]} key={messageId}/> )}

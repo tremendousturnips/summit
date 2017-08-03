@@ -27,7 +27,8 @@ export const receiveChannel = channel => {
   return (dispatch, getState) => {
     return Promise.all([
       dispatch(addChannel(channel)),
-      subscribeChannel(channel.id, getState().socket)
+      subscribeChannel(channel.id, getState().socket),
+      dispatch(fetchMessages(channel.room_id, channel.id))
     ]);
   };
 };
