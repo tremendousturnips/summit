@@ -1,123 +1,94 @@
 import React from 'react';
-import { Icon, Menu, Sidebar, List, Button, Modal, Input, Label } from 'semantic-ui-react';
+import { Icon, Menu, List, Button, Modal, Input, Label } from 'semantic-ui-react';
 
 import FriendListItemContainer from '../containers/FriendListItemContainer';
 import AddFriendItemContainer from '../containers/AddFriendItemContainer';
 
 class FriendList extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       showModal: false
-    }
+    };
 
-    this.handleDone = this.handleDone.bind(this)
-    this.handleAddFriend = this.handleAddFriend.bind(this)
-    this.toggleShowModal = this.toggleShowModal.bind(this)
+    this.toggleShowModal = this.toggleShowModal.bind(this);
   }
-    
+
   componentWillMount() {
-    this.props.fetchFriends(this.props.user.id)
-    this.props.socket.on('friend update', friend => {
-      if (this.props.user.id === parseInt(friend.friend_id)) {
-        switch(friend.status) {
-          case 'Accepted':
-            this.props.updateFriend(friend.friend_id, friend.user_id, friend.status)
-            break;
-          case 'Denied':
-            this.props.updateFriend(friend.friend_id, friend.user_id, 'Blocked')
-            break;
-          case 'Pending':
-            this.props.updateFriend(friend.friend_id, friend.user_id, friend.status)
-            break;
-          case 'Removed':
-            this.props.updateFriend(friend.friend_id, friend.user_id, friend.status)
-            break;  
-          default:
-            break;  
+    const {
+      user,
+      socket,
+      fetchFriends,
+      updateFriend,
+      addDirect,
+      addChannel,
+      subscribeChannel,
+      setMessages
+    } = this.props;
+    fetchFriends(user.id);
+    socket.on('friend update', friend => {
+      const { friend_id, user_id, status } = friend;
+      if (user.id === parseInt(friend_id)) {
+        switch (status) {
+        case 'Denied':
+          updateFriend(friend_id, user_id, 'Blocked');
+          break;
+        case 'Accepted':
+        case 'Pending':
+        case 'Removed':
+          updateFriend(friend_id, user_id, status);
+        default:
+          break;
         }
-      };
+      }
     });
-    this.props.socket.on('Start direct message', (direct) => {
-      if (this.props.user.id === parseInt(direct.to_user_id)) {
-        let d = {
-          user_id: parseInt(direct.to_user_id),
-          to_user_id : direct.user_id,
-          id: direct.id || '',
-          channel_id: direct.channel_id
-        }
-        this.props.addDirect(d)
-        var c = {
-          id: direct.channel_id,
+    socket.on('Start direct message', direct => {
+      const { to_user_id, user_id, id, channel_id } = direct;
+      if (user.id === parseInt(to_user_id)) {
+        const d = {
+          user_id: parseInt(to_user_id),
+          to_user_id: user_id,
+          id: id || '',
+          channel_id
+        };
+        addDirect(d);
+        const c = {
+          id: channel_id,
           name: '',
           room_id: 0
-        }
-        this.props.addChannel(c, 0)
-        this.props.subscribeChannel(direct.channel_id, this.props.socket);
-        this.props.setMessages([], direct.channel_id);
+        };
+        addChannel(c, 0);
+        subscribeChannel(channel_id, socket);
+        setMessages([], channel_id);
       }
     });
   }
 
-toggleShowModal() {
+  toggleShowModal() {
     this.setState({
       showModal: !this.state.showModal
-    })
-  }
-
-  handleDone() {
-    this.props.showFriendListStat();
-  }
-
-  handleAddFriend() {
-    this.toggleShowModal()
-  }
-
-  componentDidMount() {
+    });
   }
 
   render() {
+    const { friends } = this.props;
+    const friendItems = Object.keys(friends).map(objectKey =>
+      <FriendListItemContainer friend={friends[objectKey]} index={objectKey} key={objectKey} />
+    );
+
     return (
       <Modal trigger={<Menu.Item name="friends" icon="users" />}>
-        <Menu.Item name="home">
+        <Modal.Header name="home">
           <Icon name="group" />
           Friends
-        </Menu.Item>
-        <Menu.Item>
+        </Modal.Header>
+        <Modal.Content>
           <List relaxed="very" verticalAlign="top">
-            {Object.keys(this.props.friends).map(objectKey => {
-              return (
-                <FriendListItemContainer
-                  friend={this.props.friends[objectKey]}
-                  index={objectKey}
-                  key={objectKey}
-                />
-              );
-            })}
+            {friendItems}
           </List>
-        </Menu.Item>
-        <Menu.Item name="addFriend">
-          <Button.Group labeled>
-            <Button
-              compact
-              icon="add user"
-              color="red"
-              content="Add"
-              onClick={this.toggleShowModal}
-              inverted
-            />
-            <Button
-              compact
-              icon="checkmark"
-              color="green"
-              content="Done"
-              onClick={this.handleDone}
-              inverted
-            />
-          </Button.Group>
-        </Menu.Item>
-        <Modal open={this.state.showModal} onClose={this.handleCloseModal} size="small">
+        </Modal.Content>
+        <Modal trigger={<Button compact icon="add user" color="green" content="Add Friends" inverted />}>
           <Modal.Header>
             <Input
               focus
@@ -126,7 +97,6 @@ toggleShowModal() {
               placeholder="Search users..."
               action="Search"
             />
-            <Label corner="right" icon="window close" color="red" onClick={this.toggleShowModal} />
           </Modal.Header>
           <Modal.Content scrolling>
             <List animated verticalAlign="middle">
@@ -149,11 +119,6 @@ toggleShowModal() {
                 })}
             </List>
           </Modal.Content>
-          <Modal.Actions>
-            <Button color="green" onClick={this.toggleShowModal} inverted>
-              <Icon name="checkmark" /> Done
-            </Button>
-          </Modal.Actions>
         </Modal>
       </Modal>
     );

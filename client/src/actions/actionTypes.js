@@ -26,9 +26,6 @@ export const SET_ROOMS = 'SET_ROOMS';
 // video
 export const TOGGLE_VIDEO_STAT = 'TOGGLE_VIDEO_STAT';
 
-// Show Friend List
-export const SHOW_FRIEND_LIST_STAT = 'SHOW_FRIEND_LIST_STAT';
-
 //friends
 export const FETCH_FRIENDS = 'FETCH_FRIENDS';
 export const ADD_FRIEND = 'ADD_FRIEND';
@@ -41,4 +38,3 @@ export const UPDATE_TO_FRIEND_LIST = 'UPDATE_TO_FRIEND_LIST';
 //Directs
 export const SET_DIRECTS = 'SET_DIRECTS';
 export const ADD_DIRECT = 'ADD_DIRECT';
-

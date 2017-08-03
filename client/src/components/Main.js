@@ -6,7 +6,6 @@ import NavBarContainer from '../containers/NavBarContainer';
 import VideoChatBarContainer from '../containers/VideoChatBarContainer';
 import MessageContainer from '../containers/MessageContainer';
 import InputContainer from '../containers/InputContainer';
-import FriendListContainer from '../containers/FriendListContainer';
 
 export default () =>
   <div>
@@ -17,7 +16,6 @@ export default () =>
         <VideoChatBarContainer />
         <MessageContainer />
         <InputContainer />
-        <FriendListContainer />
       </Sidebar.Pusher>
     </Sidebar.Pushable>
   </div>;
