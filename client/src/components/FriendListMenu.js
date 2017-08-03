@@ -114,7 +114,7 @@ class FriendListMenu extends React.Component {
             size='small' 
           >
             <Modal.Header>
-              <AddFriendSearchContainer />
+              <AddFriendSearchContainer  />
               <Label corner='right' icon='window close' color='red' onClick={this.toggleShowModal} />
             </Modal.Header>       
             <Modal.Content scrolling>
