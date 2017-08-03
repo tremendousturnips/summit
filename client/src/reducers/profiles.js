@@ -9,7 +9,12 @@ const profiles = (state = {}, action) => {
     });
     return {...state, ...profilesNormal};
   case 'ADD_PROFILE': 
+<<<<<<< HEAD
     return {...state, [action.profile.id]: action.profile};
+=======
+    //state[action.profile.id] = action.profile;
+    return {...state,[action.profile.id]: action.profile} 
+>>>>>>> ef9bdb1ba65b16421cb5ff85ec806882dbda706d
   default:
     return state;
   }
