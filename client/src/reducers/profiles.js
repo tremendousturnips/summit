@@ -9,12 +9,7 @@ const profiles = (state = {}, action) => {
     });
     return {...state, ...profilesNormal};
   case 'ADD_PROFILE': 
-<<<<<<< HEAD
     return {...state, [action.profile.id]: action.profile};
-=======
-    //state[action.profile.id] = action.profile;
-    return {...state,[action.profile.id]: action.profile} 
->>>>>>> search friends
   default:
     return state;
   }
