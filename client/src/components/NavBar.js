@@ -38,7 +38,7 @@ class NavBar extends React.Component {
 
   render() {
     return (
-      <Menu id="nav-bar" pointing>
+      <Menu className="nav-bar" pointing>
         <Menu.Item name="friends" onClick={this.handleFriends} />
         <Menu.Item
           name={this.state.videoName}

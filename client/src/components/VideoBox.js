@@ -1,42 +1,53 @@
 import React, { Component } from 'react';
-import { Button, Label, Segment } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 
 class VideoBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mute: true,
-      muteText: 'Unmute'
+      muted: this.props.id === 'localMediaStream'
     };
     this.toggleMute = this.toggleMute.bind(this);
   }
 
   componentDidMount() {
-    document.getElementById(this.props.id).srcObject = this.props.stream; // TODO - REACTIFY
+    const { id, stream } = this.props;
+    document.getElementById(id).srcObject = stream;
   }
 
   toggleMute() {
     this.setState({
-      muteText: this.state.mute ? 'Mute' : 'Unmute',
-      mute: !this.state.mute
+      muted: !this.state.muted
     });
   }
 
   render() {
-    // const video = <video autoPlay height="100" width="100" id={this.props.id} muted={this.state.mute} />;
-    // video.srcObject = this.props.stream;
+    const { id } = this.props;
+    const { muted } = this.state;
     return (
-      <div>
-        <video autoPlay height="100" width="100" id={this.props.id} muted={this.state.mute} />
+      <div className="video-box">
+        <video
+          className="stream-container"
+          autoPlay
+          height="150"
+          width="200"
+          id={id}
+          muted={muted}
+        />
         <br />
-        <Button
-          toggle
-          active={this.state.mute}
-          onClick={this.toggleMute}
-          compact
-        >
-          {this.state.muteText}
-        </Button>
+        {id !== 'localMediaStream'
+          ? <Button
+              className="mute-button"
+              toggle
+              active={!muted}
+              color="red"
+              onClick={this.toggleMute}
+              compact
+            >
+              <Icon name={muted ? 'microphone' : 'microphone slash'} />
+              {muted ? 'Unmute' : 'Mute'}
+            </Button>
+          : ''}
       </div>
     );
   }
