@@ -51,10 +51,10 @@ exports.seed = function(knex, Promise) {
     })
     .then(() => {
       return knex('friends').insert([
-        { user_id: 1, friend_id: 2, status:'Accepted' },
-        { user_id: 2, friend_id: 1, status:'Accepted'},
-        { user_id: 3, friend_id: 1, status:'Accepted'},
-        { user_id: 1, friend_id: 3, status:'Accepted'}
+        // { user_id: 1, friend_id: 2, status:'Accepted' },
+        // { user_id: 2, friend_id: 1, status:'Accepted'},
+        // { user_id: 3, friend_id: 1, status:'Accepted'},
+        // { user_id: 1, friend_id: 3, status:'Accepted'}
       ]);
     })
     .then(() => {
@@ -99,8 +99,8 @@ exports.seed = function(knex, Promise) {
     })
     .then(() => {
       return knex('directs').insert([
-        { user_id:1, to_user_id: 2, channel_id: 10 },
-        { user_id:1, to_user_id: 3, channel_id: 11 }
+        // { user_id:1, to_user_id: 2, channel_id: 10 },
+        // { user_id:1, to_user_id: 3, channel_id: 11 }
       ]);
     });
   // return Promise.all(tableDeletes)

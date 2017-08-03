@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { SET_DIRECTS, ADD_DIRECT } from './actionTypes';
 import { setMessages } from './messages';
-import { setChannels, subscribeChannel } from './channels';
+import { setChannels, subscribeChannel, selectChannel } from './channels';
 
 export const setDirects = directs => ({
   type: 'SET_DIRECTS',
@@ -28,6 +28,8 @@ export const addDirectChannel = (userId, friendId) => {
               }]
               dispatch(setChannels(channel, 'direct'))
               subscribeChannel(res.data.channel_id, socket)
+              dispatch(selectChannel(channel));
+              socket.emit('Start direct message', res.data)
             }
         })
   } 
