@@ -20,10 +20,11 @@ class MessageList extends Component {
   }
 
   render () {
-    const { messages, profiles } = this.props;
+    const { messages, profiles, messagesByChannel, currentChannel } = this.props;
+    console.log(messagesByChannel);
     return (
       <Comment.Group>
-        {messages.map((message, index) => <MessageItem profile={profiles[message.user_id]} message={message} key={index}/> )}
+        {messagesByChannel[currentChannel.id].map((messageId) => <MessageItem profile={profiles[messages[messageId].user_id]} message={messages[messageId]} key={messageId}/> )}
         <div style={{ float:"left", clear: "both" }}
              ref={(el) => { this.messagesEnd = el; }} />
       </Comment.Group>
