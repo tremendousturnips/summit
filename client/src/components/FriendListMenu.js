@@ -139,6 +139,19 @@ class FriendListMenu extends React.Component {
           }
         };
       });
+      this.props.socket.on('Start direct message', (direct) => {
+        console.log('direct message', direct.to_user_id, this.props.user.id)
+        if (this.props.user.id === parseInt(direct.to_user_id)) {
+          let d = {
+            user_id: parseInt(direct.to_user_id),
+            to_user_id : direct.user_id,
+            id: direct.id || '',
+            channel_id: direct.channel_id
+          }
+          this.props.addDirect(d)
+          this.props.subscribeChannel(direct.channel_id, this.props.socket)
+        }
+      });
     }
 
     toggleShowModal() {
