@@ -6,29 +6,75 @@ import AddFriendItemContainer from '../containers/AddFriendItemContainer';
 
 class FriendList extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       showModal: false
-    };
+    }
 
-    this.handleDone = this.handleDone.bind(this);
-    this.toggleShowModal = this.toggleShowModal.bind(this);
+    this.handleDone = this.handleDone.bind(this)
+    this.handleAddFriend = this.handleAddFriend.bind(this)
+    this.toggleShowModal = this.toggleShowModal.bind(this)
   }
-
+    
   componentWillMount() {
-    const { user, fetchFriends } = this.props;
-    fetchFriends(user.id);
+    this.props.fetchFriends(this.props.user.id)
+    this.props.socket.on('friend update', friend => {
+      if (this.props.user.id === parseInt(friend.friend_id)) {
+        switch(friend.status) {
+          case 'Accepted':
+            this.props.updateFriend(friend.friend_id, friend.user_id, friend.status)
+            break;
+          case 'Denied':
+            this.props.updateFriend(friend.friend_id, friend.user_id, 'Blocked')
+            break;
+          case 'Pending':
+            this.props.updateFriend(friend.friend_id, friend.user_id, friend.status)
+            break;
+          case 'Removed':
+            this.props.updateFriend(friend.friend_id, friend.user_id, friend.status)
+            break;  
+          default:
+            break;  
+        }
+      };
+    });
+    this.props.socket.on('Start direct message', (direct) => {
+      if (this.props.user.id === parseInt(direct.to_user_id)) {
+        let d = {
+          user_id: parseInt(direct.to_user_id),
+          to_user_id : direct.user_id,
+          id: direct.id || '',
+          channel_id: direct.channel_id
+        }
+        this.props.addDirect(d)
+        var c = {
+          id: direct.channel_id,
+          name: '',
+          room_id: 0
+        }
+        this.props.addChannel(c, 0)
+        this.props.subscribeChannel(direct.channel_id, this.props.socket);
+        this.props.setMessages([], direct.channel_id);
+      }
+    });
   }
 
-  toggleShowModal() {
+toggleShowModal() {
     this.setState({
       showModal: !this.state.showModal
-    });
+    })
   }
 
   handleDone() {
     this.props.showFriendListStat();
+  }
+
+  handleAddFriend() {
+    this.toggleShowModal()
+  }
+
+  componentDidMount() {
   }
 
   render() {
