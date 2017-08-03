@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Button, Modal, Form } from 'semantic-ui-react'
+import { Button, Modal, Form, Message } from 'semantic-ui-react'
 
 class AddRoom extends Component {
   constructor(props) {
@@ -7,7 +7,8 @@ class AddRoom extends Component {
     this.state = {
       open: false,
       roomName: '',
-      description: ''
+      description: '',
+      error: ''
     }
   }
 
@@ -16,12 +17,20 @@ class AddRoom extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.postRoom({name: this.state.roomName, description: this.state.description});
-    this.setState({
-      roomName: '',
-      description: '',
-      open: false
-    });
+    const {roomName, description} = this.state;
+    if (roomName.trim().length) {
+      this.props.postRoom({name: roomName, description});
+      this.setState({
+        roomName: '',
+        description: '',
+        error: '',
+        open: false
+      });
+    } else {
+      this.setState({
+        error: 'You must provide a room name.'
+      });
+    }
   };
 
   handleChange = (e) => {
@@ -31,7 +40,7 @@ class AddRoom extends Component {
     });
   }
   render() {
-    const { open } = this.state;
+    const { open, error } = this.state;
 
     return (
       <div>
@@ -41,6 +50,12 @@ class AddRoom extends Component {
           <Modal.Header>
             Create a New Room
           </Modal.Header>
+          {console.log(error)}
+          {error.length ?
+          <Modal.Description>
+            <Message negative content={error}/>
+          </Modal.Description> :
+          <div></div>}
           <Modal.Content>
             <Form onSubmit={this.handleSubmit}>
               <Form.Field>
