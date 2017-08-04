@@ -3,11 +3,19 @@ import { Icon, Menu, List, Button, Modal, Input, Label } from 'semantic-ui-react
 
 import FriendListItemContainer from '../containers/FriendListItemContainer';
 import AddFriendItemContainer from '../containers/AddFriendItemContainer';
+import AddFriendSearchContainer from '../containers/AddFriendSearchContainer';
 
 class FriendList extends React.Component {
   constructor() {
     super();
+
+    this.state= ({
+      open: false
+    })
+
+    this.closeModal = this.closeModal.bind(this)
   }
+
 
   componentWillMount() {
     const {
@@ -59,6 +67,12 @@ class FriendList extends React.Component {
     });
   }
 
+  closeModal() {
+    this.setState({
+      open: true
+    })
+  }
+
   render() {
     const { friends, profiles, user } = this.props;
     const friendItems = Object.keys(friends).map(key =>
@@ -91,16 +105,9 @@ class FriendList extends React.Component {
           size="small"
           closeIcon="close"
           dimmer="blurring"
+          close={this.state.open}
         >
-          <Modal.Header>
-            <Input
-              focus
-              icon="users"
-              iconPosition="left"
-              placeholder="Search users..."
-              action="Search"
-            />
-          </Modal.Header>
+          <AddFriendSearchContainer closeModal={this.closeModal}/>
           <Modal.Content scrolling>
             <List animated verticalAlign="middle">
               {profileItems}

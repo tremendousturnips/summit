@@ -9,13 +9,14 @@ module.exports = {
       .fetchAll({ withRelated: ['message'] })
       .then(messages => {
         const m = messages.toJSON();
-        console.log('In directs controller', m)
+        console.log('In directs controller before swap', m)
         for (var key in m) {
-          if (m[key].to_user_id = req.params.id) {
+          if (m[key].to_user_id === req.params.id) {
             m[key].to_user_id = m[key].user_id
             m[key].user_id = req.params.id
           }
         }
+        console.log('In directs controller after swap', m)
         res.status(200).send(m);
       })
       .catch(err => {
