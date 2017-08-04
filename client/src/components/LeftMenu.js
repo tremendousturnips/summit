@@ -6,8 +6,14 @@ import ChannelContainer from '../containers/ChannelContainer';
 import DirectMessageListContainer from '../containers/DirectMessageListContainer';
 
 class LeftMenu extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      visible: true
+    };
+
+    this.searchDirect = this.searchDirect.bind(this)
   }
 
   componentWillMount() {
@@ -20,6 +26,10 @@ class LeftMenu extends Component {
     return directs && Object.keys(directs).length
       ? <DirectMessageListContainer />
       : <p>Start conversations...</p>;
+  }
+
+  searchDirect() {
+    console.log('In serachDirect')
   }
 
   render() {
@@ -50,7 +60,10 @@ class LeftMenu extends Component {
           <ChannelContainer />
         </Menu.Item>
         <Menu.Item>
-          <Menu.Header>Direct Messages</Menu.Header>
+          <Menu.Header>
+            Direct Messages          
+            {/* <Icon name='plus' size='small' onClick={this.searchDirect} /> */}
+          </Menu.Header>
           <br />
           {this.getDirectMessage()}
         </Menu.Item>
