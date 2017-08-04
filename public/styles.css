@@ -37,8 +37,16 @@
   max-width: 70vw !important;
 }
 
+.message-input {
+  margin-bottom: 2rem;
+}
+
 .disabled-input {
   color: rgba(0, 0, 0, 1) !important;
+}
+
+.downsize {
+  height: 50vh !important;
 }
 
 .video-chat-bar {

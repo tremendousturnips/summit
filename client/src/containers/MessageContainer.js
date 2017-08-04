@@ -3,16 +3,14 @@ import MessageList from '../components/MessageList';
 import { receiveMessage, fetchMessages } from '../actions/messages';
 import { addProfile } from '../actions/profiles';
 
-const mapStateToProps = ({ messages, messagesByChannel, socket, currentChannel, profiles}) => { 
-  return {
-    // messages: messages.filter(message => message.channel_id === currentChannel.id),
+const mapStateToProps = ({ messages, messagesByChannel, socket, currentChannel, profiles, toggleVideo }) => ({
     messages,
     messagesByChannel,
     socket,
     currentChannel,
-    profiles
-  };
-};
+    profiles,
+    toggleVideo
+});
 
 const mapDispatchToProps = dispatch => ({
   receiveMessage: message => {
