@@ -3,10 +3,13 @@ import RoomDropdown from '../components/RoomDropdown';
 import { postRoom, fetchRooms, changeRoom, joinRoom } from '../actions/rooms';
 
 const mapStateToProps = ({user, currentRoom, rooms}) => {
-  rooms = Object.keys(rooms).map( room => {
-    return {key: rooms[room].id, text: rooms[room].name, value: rooms[room].id, content: rooms[room].name};
+  const realRooms = [];
+  Object.keys(rooms).forEach( roomId => {
+    if( roomId ) {
+      realRooms.push({key: roomId, text: rooms[roomId].name, value: roomId, content: rooms[roomId].name});
+    }
   });
-  return {user, currentRoom, rooms};
+  return {user, currentRoom, rooms: realRooms};
 }
 
 const mapDispatchToProps = (dispatch) => ({
