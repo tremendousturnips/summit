@@ -1,25 +1,34 @@
 import React, {Component} from 'react';
-import { Button, Modal, Form } from 'semantic-ui-react'
+import { Button, Modal, Form, Message } from 'semantic-ui-react'
 
 class AddChannel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
-      channelName: ''
+      channelName: '',
+      error: ''
     }
   }
 
-  show = () => this.setState({ open: true });
-  close = () => this.setState({ open: false });
+  // show = () => this.setState({ open: true });
+  // close = () => this.setState({ open: false });
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.postChannel({name: this.state.channelName});
-    this.setState({
-      channelName: '',
-      open: false
-    });
+    const {postChannel} = this.props;
+    let {channelName, error} = this.state;
+    channelName = channelName.trim();
+    if (channelName.length) {
+      this.props.postChannel({name: channelName});
+      this.setState({
+        channelName: '',
+        error: '',
+      },this.props.close);
+    } else {
+      this.setState({
+        error: 'You must provide a channel name.'
+      })
+    }
   };
 
   handleChange = (e) => {
@@ -28,17 +37,22 @@ class AddChannel extends Component {
       channelName: e.target.value
     });
   }
+
   render() {
-    const { open } = this.state
+    const { error } = this.state;
 
+        // {/* <Button onClick={this.show} size='mini'>Add Channel</Button> */}
     return (
-      <div>
-        <Button onClick={this.show} size='mini'>Add Channel</Button>
 
-        <Modal size='small' open={open} onClose={this.close} closeIcon='close' dimmer='blurring'>
+        <Modal size='small' open={this.props.open} onClose={this.props.close} closeIcon='close' dimmer='blurring'>
           <Modal.Header>
             Create Text Channel
           </Modal.Header>
+          {error.length ?
+          <Modal.Description>
+            <Message negative content={error}/>
+          </Modal.Description> :
+          <div></div>}
           <Modal.Content>
             <Form onSubmit={this.handleSubmit}>
               <Form.Field>
@@ -48,7 +62,6 @@ class AddChannel extends Component {
             </Form>
           </Modal.Content>
         </Modal>
-      </div>
     )
   }
 }

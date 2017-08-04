@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import MessageList from '../components/MessageList';
-import { addMessage, fetchMessages } from '../actions/messages';
+import { receiveMessage, fetchMessages } from '../actions/messages';
 import { addProfile } from '../actions/profiles';
 
 const mapStateToProps = ({ messages, messagesByChannel, socket, currentChannel, profiles}) => { 
@@ -15,8 +15,8 @@ const mapStateToProps = ({ messages, messagesByChannel, socket, currentChannel, 
 };
 
 const mapDispatchToProps = dispatch => ({
-  addMessage: message => {
-    dispatch(addMessage(message));
+  receiveMessage: message => {
+    dispatch(receiveMessage(message));
   },
   addProfile: profile => {
     dispatch(addProfile(profile));

@@ -1,27 +1,38 @@
 import React, {Component} from 'react';
-import { Button, Modal, Form } from 'semantic-ui-react'
+import { Button, Modal, Form, Message } from 'semantic-ui-react'
 
 class AddRoom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      // open: false,
       roomName: '',
-      description: ''
+      description: '',
+      error: ''
     }
   }
 
-  show = () => this.setState({ open: true });
-  close = () => this.setState({ open: false });
+  // show = () => this.setState({ open: true });
+  // close = () => this.setState({ open: false });
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.postRoom({name: this.state.roomName, description: this.state.description});
-    this.setState({
-      roomName: '',
-      description: '',
-      open: false
-    });
+    let {roomName, description} = this.state;
+    roomName = roomName.trim();
+    description = description.trim();
+    if (roomName.length) {
+      this.props.postRoom({name: roomName, description});
+      this.setState({
+        roomName: '',
+        description: '',
+        error: ''
+        // open: false
+      }, this.props.close);
+    } else {
+      this.setState({
+        error: 'You must provide a room name.'
+      });
+    }
   };
 
   handleChange = (e) => {
@@ -30,17 +41,23 @@ class AddRoom extends Component {
       [e.target.name]: e.target.value
     });
   }
+  
   render() {
-    const { open } = this.state;
-
+    const { /*open,*/ error } = this.state;
+    const {open} = this.props;
     return (
       <div>
-        <Button onClick={this.show} size='mini'>Create Room</Button>
+        {/* <Button onClick={this.show} size='mini'>Create Room</Button> */}
 
-        <Modal size='small' open={open} onClose={this.close} closeIcon='close' dimmer='blurring'>
+        <Modal size='small' open={open} onClose={this.props.close} closeIcon='close' dimmer='blurring'>
           <Modal.Header>
             Create a New Room
           </Modal.Header>
+          {error.length ?
+          <Modal.Description>
+            <Message negative content={error}/>
+          </Modal.Description> :
+          <div></div>}
           <Modal.Content>
             <Form onSubmit={this.handleSubmit}>
               <Form.Field>

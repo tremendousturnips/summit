@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_MESSAGES, ADD_MESSAGE, RECEIVE_MESSAGES, SEND_MESSAGE } from './actionTypes';
+import { SET_MESSAGES, ADD_MESSAGE, COUNT_MESSAGE, SEND_MESSAGE } from './actionTypes';
 
 export const setMessages = (messages, channelId) => ({
   type: SET_MESSAGES,
@@ -12,14 +12,18 @@ export const addMessage = message => ({
   message
 });
 
-export const receiveMessages = (room, data) => {
-  //unused
-  return {
-    type: RECEIVE_MESSAGES,
-    room,
-    messages,
-    receivedAt: Date.now()
-  };
+export const countMessage = message => ({
+  type: COUNT_MESSAGE,
+  message
+})
+
+export const receiveMessage = (message) => {
+  return (dispatch, getState) => {
+    dispatch(addMessage(message));
+    if( message.channel_id !== getState().currentChannel.id ) {
+      dispatch(countMessage(message));
+    }
+  }
 };
 
 export const sendMessage = message => ({

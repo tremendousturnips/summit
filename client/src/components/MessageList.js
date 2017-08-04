@@ -10,8 +10,8 @@ class MessageList extends Component {
   };
 
   componentDidMount() {
-    const { socket, addMessage, addProfile } = this.props;
-    socket.on('message', addMessage);
+    const { socket, receiveMessage, addProfile } = this.props;
+    socket.on('message', receiveMessage);
     socket.on('user entered', addProfile); //TODO: could refactor to only addProfile if profile store does not already contain profile.id
   }
 

@@ -30,9 +30,9 @@ class RoomDropdown extends Component {
     const { rooms, postRoom, joinRoom } = this.props;
     return (
       <div className="room-dropdown">
-        <RoomSearch joinRoom={joinRoom} />
+        <RoomSearch joinRoom={joinRoom} postRoom={postRoom}/>
         <br />
-        <AddRoom postRoom={postRoom} />
+        {/* <AddRoom postRoom={postRoom} /> */}
         <h4>Current Room</h4>
         <Dropdown
           placeholder="Your Rooms"

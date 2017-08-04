@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { SELECT_ROOM, ADD_ROOM, SET_ROOMS } from './actionTypes';
-import { fetchChannels, postChannel } from './channels';
+import { fetchChannels, postChannel, selectChannel } from './channels';
 import { fetchProfiles, addProfile } from './profiles';
 
 //TODO: create action and corresponding socket event to send 
@@ -15,8 +15,12 @@ export const selectRoom = room => ({
 });
 
 export const changeRoom = roomId => {
-  return (dispatch) => {
-    dispatch(selectRoom({id: roomId}));
+  return (dispatch, getState) => {
+    const firstChannelId = getState().channelsByRoom[roomId][0];
+    Promise.all([
+      dispatch(selectRoom({id: roomId})),
+      dispatch(selectChannel(getState().channels[firstChannelId]))
+    ]);
   }
 }
 
