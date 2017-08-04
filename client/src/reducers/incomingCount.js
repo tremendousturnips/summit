@@ -1,8 +1,8 @@
-import { SELECT_CHANNEL, ADD_MESSAGE } from '../actions/actionTypes';
+import { SELECT_CHANNEL, COUNT_MESSAGE } from '../actions/actionTypes';
 
 const incomingCount = (state = {0: 0}, action) => {
   switch (action.type) {
-  case ADD_MESSAGE:
+  case COUNT_MESSAGE:
     const messages = state[action.message.channel_id] || [];
     const count = state[action.message.channel_id] ? state[action.message.channel_id] + 1: 1; 
     return {

@@ -8,6 +8,7 @@ export const SET_MESSAGES = 'SET_MESSAGES';
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const RECEIVE_MESSAGES = 'RECEIVE_MESSAGES';
 export const SEND_MESSAGE = 'SEND_MESSAGE';
+export const COUNT_MESSAGE = 'COUNT_MESSAGE';
 
 // sockets
 export const SET_SOCKET = 'SET_SOCKET';
