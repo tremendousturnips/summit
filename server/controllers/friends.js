@@ -88,7 +88,7 @@ module.exports = {
     console.log(searchText)
     Profile.forge()
     .query((qb) => {
-      qb.where('first'.toLowerCase().trim(), 'LIKE', searchText).orWhere('last', 'LIKE', searchText).orWhere('display','LIKE', searchText)
+      qb.where('first', 'LIKE', searchText).orWhere('last', 'LIKE', searchText).orWhere('display','LIKE', searchText)
     })
     .fetchAll()
     .then(profiles => {

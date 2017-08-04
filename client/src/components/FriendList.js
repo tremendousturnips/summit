@@ -3,6 +3,7 @@ import { Icon, Menu, List, Button, Modal, Input, Label } from 'semantic-ui-react
 
 import FriendListItemContainer from '../containers/FriendListItemContainer';
 import AddFriendItemContainer from '../containers/AddFriendItemContainer';
+import AddFriendSearchContainer from '../containers/AddFriendSearchContainer';
 
 class FriendList extends React.Component {
   constructor() {
@@ -92,15 +93,7 @@ class FriendList extends React.Component {
           closeIcon="close"
           dimmer="blurring"
         >
-          <Modal.Header>
-            <Input
-              focus
-              icon="users"
-              iconPosition="left"
-              placeholder="Search users..."
-              action="Search"
-            />
-          </Modal.Header>
+          <AddFriendSearchContainer />
           <Modal.Content scrolling>
             <List animated verticalAlign="middle">
               {profileItems}
