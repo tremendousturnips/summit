@@ -45,6 +45,10 @@
   color: rgba(0, 0, 0, 1) !important;
 }
 
+.downsize {
+  height: 50vh !important;
+}
+
 .video-chat-bar {
   margin-left: 0 !important;
 }

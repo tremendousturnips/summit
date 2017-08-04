@@ -69,15 +69,14 @@ class AddFriendSearch extends Component {
       <Modal.Header>
         <Search
           className="user-search"
-          input={{ fluid: true }}
           onSearchChange={this.handleChange}
           results={results}
           loading={isLoading}
           onResultSelect={this.handleResultSelect}
           placeholder="Search users"
-          size='small'
+          size='tiny'
         />
-      </Modal.Header>  
+      </Modal.Header>
     );
   }
 }
@@ -116,16 +115,16 @@ export default AddFriendSearch;
 //         this.setState({
 //           input: this.state.input.slice(0, this.state.input.length - 2)
 //         })
-//       } else { 
+//       } else {
 //         this.setState({
 //           input: this.state.input + e.key
 //         })
-//       } 
+//       }
 //     }
 
 //     render () {
 //       return (
-//         <Input focus icon="users" iconPosition="left" placeholder="Search users..."  onKeyPress={this.searchUsers} value={this.state.input} /> 
+//         <Input focus icon="users" iconPosition="left" placeholder="Search users..."  onKeyPress={this.searchUsers} value={this.state.input} />
 //       );
 //     }
 // }

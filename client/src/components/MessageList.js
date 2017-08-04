@@ -20,9 +20,9 @@ class MessageList extends Component {
   }
 
   render() {
-    const { messages, profiles, messagesByChannel, currentChannel } = this.props;
+    const { messages, profiles, messagesByChannel, currentChannel, toggleVideo } = this.props;
     return (
-      <Comment.Group className="message-list">
+      <Comment.Group className={`message-list ${toggleVideo ? 'downsize' : ''}`} size="large">
         {messagesByChannel[currentChannel.id].map(messageId =>
           <MessageItem
             profile={profiles[messages[messageId].user_id]}
