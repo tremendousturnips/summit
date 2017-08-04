@@ -52,7 +52,9 @@ class LeftMenu extends Component {
           <RoomContainer />
         </Menu.Item>
         <Menu.Item>
-          <Menu.Header>Channels</Menu.Header>
+          {/* <Menu.Header>Channels
+            <Icon style={{float: 'right'}} name='add circle' size='mini' link/>
+          </Menu.Header> */}
           <ChannelContainer />
         </Menu.Item>
         <Menu.Item>

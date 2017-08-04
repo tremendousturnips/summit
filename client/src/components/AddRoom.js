@@ -27,7 +27,7 @@ class AddRoom extends Component {
         description: '',
         error: ''
         // open: false
-      });
+      }, this.props.close);
     } else {
       this.setState({
         error: 'You must provide a room name.'

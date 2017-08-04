@@ -5,14 +5,13 @@ class AddChannel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
       channelName: '',
       error: ''
     }
   }
 
-  show = () => this.setState({ open: true });
-  close = () => this.setState({ open: false });
+  // show = () => this.setState({ open: true });
+  // close = () => this.setState({ open: false });
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -24,8 +23,7 @@ class AddChannel extends Component {
       this.setState({
         channelName: '',
         error: '',
-        open: false
-      });
+      },this.props.close);
     } else {
       this.setState({
         error: 'You must provide a channel name.'
@@ -41,13 +39,12 @@ class AddChannel extends Component {
   }
 
   render() {
-    const { open, error } = this.state;
+    const { error } = this.state;
 
+        // {/* <Button onClick={this.show} size='mini'>Add Channel</Button> */}
     return (
-      <div>
-        <Button onClick={this.show} size='mini'>Add Channel</Button>
 
-        <Modal size='small' open={open} onClose={this.close} closeIcon='close' dimmer='blurring'>
+        <Modal size='small' open={this.props.open} onClose={this.props.close} closeIcon='close' dimmer='blurring'>
           <Modal.Header>
             Create Text Channel
           </Modal.Header>
@@ -65,7 +62,6 @@ class AddChannel extends Component {
             </Form>
           </Modal.Content>
         </Modal>
-      </div>
     )
   }
 }
