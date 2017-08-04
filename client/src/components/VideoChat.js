@@ -9,7 +9,7 @@ class VideoChat extends React.Component {
     this.state = {
       localMediaStream: null,
       peerMediaStreams: {},
-      room: 'default' // CHANGE THIS TO USER'S ROOM
+      room: this.props.currentRoom.id // CHANGE THIS TO USER'S ROOM
     };
   }
 
