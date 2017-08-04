@@ -60,6 +60,7 @@ class AddFriendSearch extends Component {
       };
       this.props.socket.emit('friend update', friend )
     }
+    this.props.closeModal()
   }
 
   render() {

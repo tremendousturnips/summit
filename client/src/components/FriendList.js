@@ -8,7 +8,14 @@ import AddFriendSearchContainer from '../containers/AddFriendSearchContainer';
 class FriendList extends React.Component {
   constructor() {
     super();
+
+    this.state= ({
+      open: false
+    })
+
+    this.closeModal = this.closeModal.bind(this)
   }
+
 
   componentWillMount() {
     const {
@@ -60,6 +67,12 @@ class FriendList extends React.Component {
     });
   }
 
+  closeModal() {
+    this.setState({
+      open: true
+    })
+  }
+
   render() {
     const { friends, profiles, user } = this.props;
     const friendItems = Object.keys(friends).map(key =>
@@ -92,8 +105,9 @@ class FriendList extends React.Component {
           size="small"
           closeIcon="close"
           dimmer="blurring"
+          close={this.state.open}
         >
-          <AddFriendSearchContainer />
+          <AddFriendSearchContainer closeModal={this.closeModal}/>
           <Modal.Content scrolling>
             <List animated verticalAlign="middle">
               {profileItems}
