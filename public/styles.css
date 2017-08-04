@@ -15,6 +15,7 @@
 .left-sidebar {
   background: #222b37 !important;
   font-family: 'Montserrat', sans-serif !important;
+  height: 100vh !important;
 }
 
 .message-list {
@@ -35,6 +36,10 @@
 .message-list,
 .message-input {
   max-width: 70vw !important;
+}
+
+.message-input {
+  margin-bottom: 2rem;
 }
 
 .disabled-input {
