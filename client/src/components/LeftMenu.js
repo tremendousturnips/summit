@@ -38,7 +38,7 @@ class LeftMenu extends Component {
       <Sidebar
         className="left-sidebar"
         as={Menu}
-        visible="true"
+        visible={true}
         icon="labeled"
         vertical
         inverted
