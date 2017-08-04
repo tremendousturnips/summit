@@ -29,6 +29,7 @@ class ChannelList extends Component {
       currentChannel,
       channelsByRoom,
       channels,
+      incomingCount,
       postChannel,
       selectChannel
     } = this.props;
@@ -39,10 +40,12 @@ class ChannelList extends Component {
           {currentRoom.id ? <Icon style={{float: 'right'}} name='add circle' link onClick={this.show}/>
           : <div></div>}
         </Menu.Header>
-        <Menu vertical text pointing>
+        <Menu vertical text secondary>
           {currentRoom.id ? channelsByRoom[currentRoom.id].map((channelId) => (
             <Menu.Item active={currentChannel.id === channelId} key={channelId} onClick={()=>{selectChannel(channels[channelId])}}>{channels[channelId].name}
-               {/* <Label size='tiny' content={1} color='red'/> */}
+                {incomingCount[channelId] ? 
+                  <Label size='tiny' content={incomingCount[channelId]} color='red' style={{float: 'right', position: 'absolute'}}/> : 
+                  <div />}
             </Menu.Item>)
           ) : <div></div>}
           <AddChannel postChannel={postChannel} open={open} close={this.close}/>
