@@ -6,6 +6,7 @@
       // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
       window.__PRELOADED_STATE__ = <%- JSON.stringify( user ).replace(/</g, '\\u003c'); %>
     </script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <script src="/dist/bundle.js"></script>
 
 <% include foot.ejs%>

@@ -61,29 +61,16 @@ class FriendList extends React.Component {
 
   render() {
     const { friends, profiles, user } = this.props;
-    const friendItems = Object.keys(friends).map(objectKey =>
-      <FriendListItemContainer friend={friends[objectKey]} index={objectKey} key={objectKey} />
+    const friendItems = Object.keys(friends).map(key =>
+      <FriendListItemContainer friend={friends[key]} index={key} key={key} />
     );
     const profileItems = Object.keys(profiles)
-      .filter(objectKey => {
-        let r = true;
-        if (parseInt(objectKey) === user.id) {
-          r = false;
-        } else {
-          for (const key in friends) {
-            if (objectKey === key) {
-              r = false;
-            }
-          }
-        }
-        return r;
-      })
-      .map((objectKey, index) => {
-        return <AddFriendItemContainer index={objectKey} key={index} />;
-      });
+      .filter(key => !(parseInt(key) === user.id || friends[key]))
+      .map((key, index) => <AddFriendItemContainer index={key} key={index} />);
 
     return (
       <Modal
+        className="friend-modal"
         trigger={<Menu.Item name="friends" icon="users" />}
         size="small"
         closeIcon="close"
@@ -99,6 +86,7 @@ class FriendList extends React.Component {
           </List>
         </Modal.Content>
         <Modal
+          className="add-friend-modal"
           trigger={<Button compact icon="add user" color="green" content="Add Friends" inverted />}
           size="small"
           closeIcon="close"
