@@ -107,7 +107,11 @@ class FriendList extends React.Component {
           dimmer="blurring"
           close={this.state.open}
         >
+<<<<<<< HEAD
           <AddFriendSearchContainer closeModal={this.closeModal}/>
+=======
+          <AddFriendSearchContainer />
+>>>>>>> be2c815b203db2237c8bd4d5ed9542950fbd97de
           <Modal.Content scrolling>
             <List animated verticalAlign="middle">
               {profileItems}
