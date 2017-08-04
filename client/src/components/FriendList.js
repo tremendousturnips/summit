@@ -5,14 +5,8 @@ import FriendListItemContainer from '../containers/FriendListItemContainer';
 import AddFriendItemContainer from '../containers/AddFriendItemContainer';
 
 class FriendList extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showModal: false
-    };
-
-    this.toggleShowModal = this.toggleShowModal.bind(this);
+  constructor() {
+    super();
   }
 
   componentWillMount() {
@@ -65,20 +59,23 @@ class FriendList extends React.Component {
     });
   }
 
-  toggleShowModal() {
-    this.setState({
-      showModal: !this.state.showModal
-    });
-  }
-
   render() {
-    const { friends } = this.props;
-    const friendItems = Object.keys(friends).map(objectKey =>
-      <FriendListItemContainer friend={friends[objectKey]} index={objectKey} key={objectKey} />
+    const { friends, profiles, user } = this.props;
+    const friendItems = Object.keys(friends).map(key =>
+      <FriendListItemContainer friend={friends[key]} index={key} key={key} />
     );
+    const profileItems = Object.keys(profiles)
+      .filter(key => !(parseInt(key) === user.id || friends[key]))
+      .map((key, index) => <AddFriendItemContainer index={key} key={index} />);
 
     return (
-      <Modal trigger={<Menu.Item name="friends" icon="users" />}>
+      <Modal
+        className="friend-modal"
+        trigger={<Menu.Item name="friends" icon="users" />}
+        size="small"
+        closeIcon="close"
+        dimmer="blurring"
+      >
         <Modal.Header name="home">
           <Icon name="group" />
           Friends
@@ -88,7 +85,13 @@ class FriendList extends React.Component {
             {friendItems}
           </List>
         </Modal.Content>
-        <Modal trigger={<Button compact icon="add user" color="green" content="Add Friends" inverted />}>
+        <Modal
+          className="add-friend-modal"
+          trigger={<Button compact icon="add user" color="green" content="Add Friends" inverted />}
+          size="small"
+          closeIcon="close"
+          dimmer="blurring"
+        >
           <Modal.Header>
             <Input
               focus
@@ -100,23 +103,7 @@ class FriendList extends React.Component {
           </Modal.Header>
           <Modal.Content scrolling>
             <List animated verticalAlign="middle">
-              {Object.keys(this.props.profiles)
-                .filter(objectKey => {
-                  let r = true;
-                  if (parseInt(objectKey) === this.props.user.id) {
-                    r = false;
-                  } else {
-                    for (var key in this.props.friends) {
-                      if (objectKey === key) {
-                        r = false;
-                      }
-                    }
-                  }
-                  return r;
-                })
-                .map((objectKey, index) => {
-                  return <AddFriendItemContainer index={objectKey} key={index} />;
-                })}
+              {profileItems}
             </List>
           </Modal.Content>
         </Modal>

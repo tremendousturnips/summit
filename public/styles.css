@@ -1,6 +1,7 @@
 #root {
   height: 100vh;
   width: 100vw;
+  background-color: #f1f4f5;
 }
 
 .app-container {
@@ -11,12 +12,18 @@
   margin-top: 1rem !important;
 }
 
+.left-sidebar {
+  background: #222b37 !important;
+  font-family: 'Montserrat', sans-serif !important;
+}
+
 .message-list {
   height: 75vh;
   overflow-y: scroll;
   margin: 2rem 0 !important;
   border: .1rem solid #eee;
   border-radius: .3rem;
+  background-color: #fff;
 }
 
 .message-list-item {
@@ -30,6 +37,10 @@
   max-width: 70vw !important;
 }
 
+.disabled-input {
+  color: rgba(0, 0, 0, 1) !important;
+}
+
 .video-chat-bar {
   margin-left: 0 !important;
 }
@@ -41,4 +52,12 @@
 
  .mute-button {
   position: absolute;
+}
+
+.friend-modal, .add-friend-modal {
+  text-align: center !important;
+}
+
+.friend-modal button {
+  margin-bottom: 1rem !important;
 }

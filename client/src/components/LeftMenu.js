@@ -6,12 +6,8 @@ import ChannelContainer from '../containers/ChannelContainer';
 import DirectMessageListContainer from '../containers/DirectMessageListContainer';
 
 class LeftMenu extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      visible: true
-    };
+  constructor() {
+    super();
   }
 
   componentWillMount() {
@@ -27,16 +23,14 @@ class LeftMenu extends Component {
   }
 
   render() {
-    const { visible } = this.state;
     const { user } = this.props;
     return (
       <Sidebar
         className="left-sidebar"
         as={Menu}
-        visible={visible}
+        visible="true"
         icon="labeled"
         vertical
-        color="blue"
         inverted
       >
         <Menu.Item>

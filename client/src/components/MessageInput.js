@@ -38,6 +38,7 @@ class MessageInput extends Component {
     return (
       <Form className="message-input" onSubmit={this.handleSubmit}>
         <Form.Input
+          className={currentChannel.id ? '' : 'disabled-input'}
           fluid
           action={{ icon: 'send' }}
           size="medium"
