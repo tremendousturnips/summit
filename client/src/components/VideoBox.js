@@ -5,7 +5,7 @@ class VideoBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      muted: this.props.id === 'localMediaStream'
+      muted: false
     };
     this.toggleMute = this.toggleMute.bind(this);
   }
@@ -16,14 +16,21 @@ class VideoBox extends Component {
   }
 
   toggleMute() {
+    const { toggleAudio, id } = this.props;
     this.setState({
       muted: !this.state.muted
     });
+    toggleAudio(id);
   }
 
   render() {
     const { id } = this.props;
     const { muted } = this.state;
+    const buttonText =
+      id === 'localMediaStream'
+        ? muted ? 'Join Audio' : 'Leave Audio'
+        : muted ? 'Unmute' : 'Mute';
+
     return (
       <div className="video-box">
         <video
@@ -32,22 +39,20 @@ class VideoBox extends Component {
           height="150"
           width="200"
           id={id}
-          muted={muted}
+          muted={id === 'localMediaStream' ? true : muted}
         />
         <br />
-        {id !== 'localMediaStream'
-          ? <Button
-              className="mute-button"
-              toggle
-              active={!muted}
-              color="red"
-              onClick={this.toggleMute}
-              compact
-            >
-              <Icon name={muted ? 'microphone' : 'microphone slash'} />
-              {muted ? 'Unmute' : 'Mute'}
-            </Button>
-          : ''}
+        <Button
+          className="mute-button"
+          toggle
+          active={muted}
+          color="red"
+          onClick={this.toggleMute}
+          compact
+        >
+          <Icon name={muted ? 'microphone' : 'microphone slash'} />
+          {buttonText}
+        </Button>
       </div>
     );
   }
