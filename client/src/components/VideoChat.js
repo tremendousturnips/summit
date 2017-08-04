@@ -9,8 +9,9 @@ class VideoChat extends React.Component {
     this.state = {
       localMediaStream: null,
       peerMediaStreams: {},
-      room: this.props.currentRoom.id // CHANGE THIS TO USER'S ROOM
+      room: this.props.currentRoom.id
     };
+    this.toggleAudioStream = this.toggleAudioStream.bind(this);
   }
 
   componentDidMount() {
@@ -40,7 +41,9 @@ class VideoChat extends React.Component {
           {
             localMediaStream
           },
-          () => this.props.socket.emit('joinVideo', this.state.room)
+          () => {
+            this.props.socket.emit('joinVideo', this.state.room);
+          }
         );
       },
       () => {
@@ -156,6 +159,17 @@ class VideoChat extends React.Component {
     });
   }
 
+  toggleAudioStream(streamId) {
+    const { localMediaStream, peerMediaStreams } = this.state;
+    if (streamId === 'localMediaStream' && localMediaStream) {
+      const audioEnabled = localMediaStream.getAudioTracks()[0].enabled;
+      localMediaStream.getAudioTracks()[0].enabled = !audioEnabled;
+    } else if (peerMediaStreams[streamId]) {
+      const audioEnabled = peerMediaStreams[streamId].stream.getAudioTracks()[0].enabled;
+      peerMediaStreams[streamId].stream.getAudioTracks()[0].enabled = !audioEnabled;
+    }
+  }
+
   componentWillUnmount() {
     const { localMediaStream, room } = this.state;
     if (localMediaStream) {
@@ -169,9 +183,20 @@ class VideoChat extends React.Component {
     const peerStreams = Object.values(peerMediaStreams).filter(stream => !!stream);
     return (
       <div>
-        {localMediaStream ? <VideoBox id="localMediaStream" stream={localMediaStream} /> : ''}
+        {localMediaStream
+          ? <VideoBox
+              id="localMediaStream"
+              stream={localMediaStream}
+              toggleAudio={this.toggleAudioStream}
+            />
+          : ''}
         {peerStreams.map(stream =>
-          <VideoBox key={stream.id} id={stream.id} stream={stream.stream} />
+          <VideoBox
+            key={stream.id}
+            id={stream.id}
+            stream={stream.stream}
+            toggleAudio={this.toggleAudioStream}
+          />
         )}
       </div>
     );
