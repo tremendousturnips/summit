@@ -55,7 +55,7 @@
 
 .video-box {
   display: inline-block;
-  margin-right: 2rem;
+  margin: 0 2rem 1rem 0;
 }
 
  .mute-button {

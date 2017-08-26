@@ -44,12 +44,12 @@ io.on('connection', socket => {
 
   //Friends event
   socket.on('friend update', friend => {
-    io.emit('friend update', friend)
+    io.emit('friend update', friend);
   });
 
   //Direct Message event
   socket.on('Start direct message', direct => {
-    io.emit('Start direct message', direct)
+    io.emit('Start direct message', direct);
   });
 
   // Video
